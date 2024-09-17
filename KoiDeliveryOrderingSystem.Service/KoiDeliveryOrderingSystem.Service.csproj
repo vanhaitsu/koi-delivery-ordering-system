@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KoiDeliveryOrderingSystem.Common\KoiDeliveryOrderingSystem.Common.csproj" />
+    <ProjectReference Include="..\KoiDeliveryOrderingSystem.Data\KoiDeliveryOrderingSystem.Data.csproj" />
+  </ItemGroup>
+
+</Project>
