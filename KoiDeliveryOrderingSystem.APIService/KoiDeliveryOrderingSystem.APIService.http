@@ -1,0 +1,6 @@
+@KoiDeliveryOrderingSystem.APIService_HostAddress = http://localhost:5294
+
+GET {{KoiDeliveryOrderingSystem.APIService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
