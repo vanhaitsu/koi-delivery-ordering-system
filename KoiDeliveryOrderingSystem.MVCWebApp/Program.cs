@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Dependencies
-builder.Services.AddScoped<FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext>();
+//builder.Services.AddScoped<FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext>();
 
 var app = builder.Build();
 
