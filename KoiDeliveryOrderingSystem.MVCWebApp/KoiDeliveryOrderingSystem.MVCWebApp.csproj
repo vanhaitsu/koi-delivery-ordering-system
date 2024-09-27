@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KoiDeliveryOrderingSystem.APIService\KoiDeliveryOrderingSystem.APIService.csproj" />
+    <ProjectReference Include="..\KoiDeliveryOrderingSystem.Common\KoiDeliveryOrderingSystem.Common.csproj" />
     <ProjectReference Include="..\KoiDeliveryOrderingSystem.Data\KoiDeliveryOrderingSystem.Data.csproj" />
   </ItemGroup>
 
