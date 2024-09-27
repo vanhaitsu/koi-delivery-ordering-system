@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KoiDeliveryOrderingSystem.Common;
+using KoiDeliveryOrderingSystem.MVCWebApp.Models;
+using KoiDeliveryOrderingSystem.MVCWebApp.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using KoiDeliveryOrderingSystem.Data.Models;
-using KoiDeliveryOrderingSystem.Common;
 using Newtonsoft.Json;
-using KoiDeliveryOrderingSystem.Service.Base;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
@@ -65,10 +64,27 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         }
 
         // GET: ShipmentTrackings/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
-            ViewData["OrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId");
-            ViewData["ShipperId"] = new SelectList(_context.Shippers, "ShipperId", "ShipperId");
+            //ViewData["OrderId"] = new SelectList();
+
+            var shippers = new List<Shipper>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Shippers"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                        if (result != null && result.Data != null)
+                        {
+                            shippers = JsonConvert.DeserializeObject<List<Shipper>>(result.Data.ToString());
+                        }
+                    }
+                }
+            }
+            ViewData["ShipperId"] = new SelectList(shippers, "ShipperId", "FullName");
             return View();
         }
 
@@ -79,34 +95,73 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TrackingId,ShipperId,OrderId,UpdateTime,CurrentLocation,ShipmentStatus,TemperatureDuringTransit,HumidityDuringTransit,HandlerName,Remarks,EstimatedArrival")] ShipmentTracking shipmentTracking)
         {
+            bool saveStatus = false;
             if (ModelState.IsValid)
             {
-                _context.Add(shipmentTracking);
-                await _context.SaveChangesAsync();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.PostAsJsonAsync(Const.APIEndPoint + "ShipmentTrackings/", shipmentTracking))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                            if (result != null && result.Status == Const.SUCCESS_CREATE_CODE)
+                            {
+                                saveStatus = true;
+                            }
+                            else
+                            {
+                                saveStatus = false;
+                            }
+                        }
+                    }
+                }
+            }
+            if (saveStatus)
+            {
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["OrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId", shipmentTracking.OrderId);
-            ViewData["ShipperId"] = new SelectList(_context.Shippers, "ShipperId", "ShipperId", shipmentTracking.ShipperId);
-            return View(shipmentTracking);
+            else
+            {
+                var shippers = new List<Shipper>();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Shippers"))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                            if (result != null && result.Data != null)
+                            {
+                                shippers = JsonConvert.DeserializeObject<List<Shipper>>(result.Data.ToString());
+                            }
+                        }
+                    }
+                }
+                ViewData["ShipperId"] = new SelectList(shippers, "ShipperId", "FullName", shipmentTracking.ShipperId);
+                return View(shipmentTracking);
+            }
         }
 
         // GET: ShipmentTrackings/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var shipmentTracking = await _context.ShipmentTrackings.FindAsync(id);
-            if (shipmentTracking == null)
-            {
-                return NotFound();
-            }
-            ViewData["OrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId", shipmentTracking.OrderId);
-            ViewData["ShipperId"] = new SelectList(_context.Shippers, "ShipperId", "ShipperId", shipmentTracking.ShipperId);
-            return View(shipmentTracking);
-        }
+        //    var shipmentTracking = await _context.ShipmentTrackings.FindAsync(id);
+        //    if (shipmentTracking == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["OrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId", shipmentTracking.OrderId);
+        //    ViewData["ShipperId"] = new SelectList(_context.Shippers, "ShipperId", "ShipperId", shipmentTracking.ShipperId);
+        //    return View(shipmentTracking);
+        //}
 
         //    // POST: ShipmentTrackings/Edit/5
         //    // To protect from overposting attacks, enable the specific properties you want to bind to.

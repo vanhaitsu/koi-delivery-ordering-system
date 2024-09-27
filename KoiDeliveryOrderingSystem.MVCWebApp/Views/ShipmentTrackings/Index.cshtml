@@ -1,4 +1,4 @@
-﻿@model IEnumerable<KoiDeliveryOrderingSystem.Data.Models.ShipmentTracking>
+﻿@model IEnumerable<KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentTracking>
 
 @{
     ViewData["Title"] = "Index";
@@ -40,7 +40,7 @@
                 @Html.DisplayNameFor(model => model.Order)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Shipper)
+                @Html.DisplayNameFor(model => model.Shipper.FullName)
             </th>
             <th></th>
         </tr>
