@@ -12,6 +12,7 @@ namespace KoiDeliveryOrderingSystem.Data
     {
         private FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext context;
         private ShipmentTrackingRepository shipmentTrackingRepository;
+        private PackagingProcessRepository packagingProcessRepository;
 
         public UnitOfWork()
         {
@@ -19,6 +20,7 @@ namespace KoiDeliveryOrderingSystem.Data
         }
 
         public ShipmentTrackingRepository ShipmentTrackingRepository => shipmentTrackingRepository ??= new ShipmentTrackingRepository(context);
+        public PackagingProcessRepository PackagingProcessRepository => packagingProcessRepository ??= new PackagingProcessRepository(context);
 
         ////TO-DO CODE HERE/////////////////
 
