@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\KoiDeliveryOrderingSystem.Common\KoiDeliveryOrderingSystem.Common.csproj" />
     <ProjectReference Include="..\KoiDeliveryOrderingSystem.Data\KoiDeliveryOrderingSystem.Data.csproj" />
+    <ProjectReference Include="..\KoiDeliveryOrderingSystem.Service\KoiDeliveryOrderingSystem.Service.csproj" />
   </ItemGroup>
 
 </Project>

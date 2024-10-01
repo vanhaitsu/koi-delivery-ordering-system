@@ -1,3 +1,7 @@
+using KoiDeliveryOrderingSystem.Data.Models;
+using KoiDeliveryOrderingSystem.Data.Repository;
+using KoiDeliveryOrderingSystem.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ShipmentTrackingService>();
 builder.Services.AddScoped<ShipmentTrackingRepository>();
 
-builder.Services.AddScoped<ShipmentOrderDetail>();
+//builder.Services.AddScoped<ShipmentOrderDetailService>();
 builder.Services.AddScoped<ShipmentTrackingRepository>();
 
 var app = builder.Build();

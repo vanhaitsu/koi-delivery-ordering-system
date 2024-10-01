@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Common;
-using KoiDeliveryOrderingSystem.Service.Base;
 using Newtonsoft.Json;
+using KoiDeliveryOrderingSystem.MVCWebApp.Base;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
