@@ -13,77 +13,108 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UpdateTime)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CurrentLocation)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ShipmentStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TemperatureDuringTransit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HumidityDuringTransit)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.HandlerName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EstimatedArrival)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order)
+                @Html.DisplayNameFor(model => model.UpdateTime)
+            </th>
+            @* <th>
+            @Html.DisplayNameFor(model => model.UpdateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Shipper.FullName)
+            @Html.DisplayNameFor(model => model.CurrentLocation)
             </th>
+            <th>
+            @Html.DisplayNameFor(model => model.ShipmentStatus)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.TemperatureDuringTransit)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.HumidityDuringTransit)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.HandlerName)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.EstimatedArrival)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.Shipper.FullName)
+            </th> *@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdateTime)
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipmentStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HandlerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstimatedArrival)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateTime)
+                </td>
+                @*   <td>
+            @Html.DisplayFor(modelItem => item.UpdateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CurrentLocation)
+            @Html.DisplayFor(modelItem => item.CurrentLocation)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ShipmentStatus)
+            @Html.DisplayFor(modelItem => item.ShipmentStatus)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TemperatureDuringTransit)
+            @Html.DisplayFor(modelItem => item.TemperatureDuringTransit)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HumidityDuringTransit)
+            @Html.DisplayFor(modelItem => item.HumidityDuringTransit)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HandlerName)
+            @Html.DisplayFor(modelItem => item.HandlerName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Remarks)
+            @Html.DisplayFor(modelItem => item.Remarks)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EstimatedArrival)
+            @Html.DisplayFor(modelItem => item.EstimatedArrival)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Order.OrderId)
+            @Html.DisplayFor(modelItem => item.Order.OrderId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Shipper.ShipperId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TrackingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TrackingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TrackingId">Delete</a>
-            </td>
-        </tr>
-}
+            @Html.DisplayFor(modelItem => item.Shipper.ShipperId)
+            </td> *@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TrackingId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TrackingId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TrackingId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

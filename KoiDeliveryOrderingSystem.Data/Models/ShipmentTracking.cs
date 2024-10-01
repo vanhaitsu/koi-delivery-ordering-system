@@ -31,5 +31,5 @@ public partial class ShipmentTracking
 
     public virtual ShipmentOrder Order { get; set; }
 
-    public virtual Shipper Shipper { get; set; }
+    public virtual Shipper? Shipper { get; set; }
 }
