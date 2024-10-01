@@ -1,0 +1,89 @@
+﻿@model IEnumerable<KoiDeliveryOrderingSystem.Data.Models.PackagingProcess>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PackagingType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PackagingInstructions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PackagingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HandlerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QualityCheckStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimatedPackagingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualPackagingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PackagingCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipmentOrder)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackagingType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackagingInstructions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackagingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HandlerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QualityCheckStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedPackagingTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualPackagingTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackagingCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipmentOrder.OrderId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PackagingProcessId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PackagingProcessId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PackagingProcessId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

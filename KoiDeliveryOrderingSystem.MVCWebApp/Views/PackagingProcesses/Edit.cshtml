@@ -1,0 +1,79 @@
+﻿@model KoiDeliveryOrderingSystem.Data.Models.PackagingProcess
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PackagingProcess</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PackagingProcessId" />
+            <div class="form-group">
+                <label asp-for="ShipmentOrderId" class="control-label"></label>
+                <select asp-for="ShipmentOrderId" class="form-control" asp-items="ViewBag.ShipmentOrderId"></select>
+                <span asp-validation-for="ShipmentOrderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PackagingType" class="control-label"></label>
+                <input asp-for="PackagingType" class="form-control" />
+                <span asp-validation-for="PackagingType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PackagingInstructions" class="control-label"></label>
+                <input asp-for="PackagingInstructions" class="form-control" />
+                <span asp-validation-for="PackagingInstructions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PackagingDate" class="control-label"></label>
+                <input asp-for="PackagingDate" class="form-control" />
+                <span asp-validation-for="PackagingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HandlerName" class="control-label"></label>
+                <input asp-for="HandlerName" class="form-control" />
+                <span asp-validation-for="HandlerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QualityCheckStatus" class="control-label"></label>
+                <input asp-for="QualityCheckStatus" class="form-control" />
+                <span asp-validation-for="QualityCheckStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedPackagingTime" class="control-label"></label>
+                <input asp-for="EstimatedPackagingTime" class="form-control" />
+                <span asp-validation-for="EstimatedPackagingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualPackagingTime" class="control-label"></label>
+                <input asp-for="ActualPackagingTime" class="form-control" />
+                <span asp-validation-for="ActualPackagingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PackagingCost" class="control-label"></label>
+                <input asp-for="PackagingCost" class="form-control" />
+                <span asp-validation-for="PackagingCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
