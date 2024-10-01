@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using KoiDeliveryOrderingSystem.Data.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using KoiDeliveryOrderingSystem.Common;
+using KoiDeliveryOrderingSystem.MVCWebApp.Models;
+using KoiDeliveryOrderingSystem.MVCWebApp.Base;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using KoiDeliveryOrderingSystem.Service.Base;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
@@ -59,19 +63,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         }
 
         // GET: ShipmentTrackings/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["OrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId");
-        //    ViewData["ShipperId"] = new SelectList(_context.Shippers, "ShipperId", "ShipperId");
-        //    return View();
-        //}
-
-        //// POST: ShipmentTrackings/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> CreateAsync()
         {
             //ViewData["OrderId"] = new SelectList();
 
@@ -91,12 +83,68 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                     }
                 }
             }
-            ViewData["ShipperId"] = new SelectList(shippers, "ShipperId", "FullName" +
-                "");
+            ViewData["ShipperId"] = new SelectList(shippers, "ShipperId", "FullName");
             return View();
         }
 
-        //// GET: ShipmentTrackings/Edit/5
+        // POST: ShipmentTrackings/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("TrackingId,ShipperId,OrderId,UpdateTime,CurrentLocation,ShipmentStatus,TemperatureDuringTransit,HumidityDuringTransit,HandlerName,Remarks,EstimatedArrival")] ShipmentTracking shipmentTracking)
+        {
+            bool saveStatus = false;
+            if (ModelState.IsValid)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.PostAsJsonAsync(Const.APIEndPoint + "ShipmentTrackings/", shipmentTracking))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                            if (result != null && result.Status == Const.SUCCESS_CREATE_CODE)
+                            {
+                                saveStatus = true;
+                            }
+                            else
+                            {
+                                saveStatus = false;
+                            }
+                        }
+                    }
+                }
+            }
+            if (saveStatus)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                var shippers = new List<Shipper>();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Shippers"))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                            if (result != null && result.Data != null)
+                            {
+                                shippers = JsonConvert.DeserializeObject<List<Shipper>>(result.Data.ToString());
+                            }
+                        }
+                    }
+                }
+                ViewData["ShipperId"] = new SelectList(shippers, "ShipperId", "FullName", shipmentTracking.ShipperId);
+                return View(shipmentTracking);
+            }
+        }
+
+        // GET: ShipmentTrackings/Edit/5
         //public async Task<IActionResult> Edit(int? id)
         //{
         //    if (id == null)
