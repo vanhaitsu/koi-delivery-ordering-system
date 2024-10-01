@@ -13,6 +13,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ShipmentTrackingService>();
 builder.Services.AddScoped<ShipmentTrackingRepository>();
+builder.Services.AddScoped<ShipperService>();
+builder.Services.AddScoped<ShipperRepository>();
 builder.Services.AddScoped<PackagingProcessRepository>();
 builder.Services.AddScoped<PackagingProcessService>();
 builder.Services.AddSwaggerGen();

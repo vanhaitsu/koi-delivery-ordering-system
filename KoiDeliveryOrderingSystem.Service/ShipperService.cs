@@ -10,35 +10,35 @@ using System.Threading.Tasks;
 
 namespace KoiDeliveryOrderingSystem.Service
 {
-    public interface IShipmentTrackingService
-    {
-        Task<IBusinessResult> GetAll();
-        Task<IBusinessResult> GetById(int id);
-        Task<IBusinessResult> Create(ShipmentTracking shipmentTracking);
-        Task<IBusinessResult> Update(ShipmentTracking shipmentTracking);
-        Task<IBusinessResult> Save(ShipmentTracking shipmentTracking);
-        Task<IBusinessResult> DeleteById(int id);
-    }
+        public interface IShipperService
+        {
+            Task<IBusinessResult> GetAll();
+            Task<IBusinessResult> GetById(int id);
+            Task<IBusinessResult> Create(Shipper shipper);
+            Task<IBusinessResult> Update(Shipper shipper);
+            Task<IBusinessResult> Save(Shipper shipper);
+            Task<IBusinessResult> DeleteById(int id);
+        }
 
-    public class ShipmentTrackingService : IShipmentTrackingService
+    public class ShipperService : IShipperService
     {
         private readonly UnitOfWork _unitOfWork;
 
-        public ShipmentTrackingService()
+        public ShipperService()
         {
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public async Task<IBusinessResult> Create(ShipmentTracking shipmentTracking)
+        public async Task<IBusinessResult> Create(Shipper shipper)
         {
-            if (shipmentTracking == null)
+            if (shipper == null)
             {
                 return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
             }
 
             try
             {
-                var result = await _unitOfWork.ShipmentTrackingRepository.CreateAsync(shipmentTracking);
+                var result = await _unitOfWork.ShipperRepository.CreateAsync(shipper);
 
                 if (result > 0)
                 {
@@ -58,16 +58,16 @@ namespace KoiDeliveryOrderingSystem.Service
 
         public async Task<IBusinessResult> DeleteById(int id)
         {
-            var shipmentTracking = await _unitOfWork.ShipmentTrackingRepository.GetByIdAsync(id);
+            var shipper = await _unitOfWork.ShipperRepository.GetByIdAsync(id);
 
-            if (shipmentTracking == null)
+            if (shipper == null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
 
             try
             {
-                var result = await _unitOfWork.ShipmentTrackingRepository.RemoveAsync(shipmentTracking);
+                var result = await _unitOfWork.ShipperRepository.RemoveAsync(shipper);
 
                 if (result)
                 {
@@ -88,45 +88,45 @@ namespace KoiDeliveryOrderingSystem.Service
 
         public async Task<IBusinessResult> GetAll()
         {
-            var shipmentTrackings = await _unitOfWork.ShipmentTrackingRepository.GetAllAsync();
+            var shippers = await _unitOfWork.ShipperRepository.GetAllAsync();
 
-            if (shipmentTrackings == null)
+            if (shippers == null)
             {
-                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG, new List<ShipmentTracking>());
+                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG, new List<Shipper>());
             }
             else
             {
-                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shipmentTrackings);
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shippers);
             }
         }
 
         public async Task<IBusinessResult> GetById(int id)
         {
-            var shipmentTracking = await _unitOfWork.ShipmentTrackingRepository.GetByIdAsync(id);
+            var shipper = await _unitOfWork.ShipperRepository.GetByIdAsync(id);
 
-            if (shipmentTracking == null)
+            if (shipper == null)
             {
-                return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG, new ShipmentTracking());
+                return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG, new Shipper());
             }
 
-            return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shipmentTracking);
+            return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shipper);
         }
 
 
-        public async Task<IBusinessResult> Update(ShipmentTracking shipmentTracking)
+        public async Task<IBusinessResult> Update(Shipper shipper)
         {
-            if (shipmentTracking == null)
+            if (shipper == null)
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
 
             try
             {
-                var result = await _unitOfWork.ShipmentTrackingRepository.UpdateAsync(shipmentTracking);
+                var result = await _unitOfWork.ShipperRepository.UpdateAsync(shipper);
 
                 if (result > 0)
                 {
-                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, shipmentTracking);
+                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, shipper);
                 }
                 else
                 {
@@ -139,32 +139,21 @@ namespace KoiDeliveryOrderingSystem.Service
             }
         }
 
-        public async Task<IBusinessResult> Save(ShipmentTracking shipmentTracking)
+        public async Task<IBusinessResult> Save(Shipper shipper)
         {
             try
             {
                 int result = -1;
 
-                var shipmentTrackingTmp = await _unitOfWork.ShipmentTrackingRepository.GetByIdAsync(shipmentTracking.TrackingId);
+                var shipmentTrackingTmp = await _unitOfWork.ShipperRepository.GetByIdAsync(shipper.ShipperId);
 
                 if (shipmentTrackingTmp != null)
                 {
-                    // Update các field thủ công
-                    shipmentTrackingTmp.ShipperId = shipmentTracking.ShipperId;
-                    shipmentTrackingTmp.OrderId = shipmentTracking.OrderId;
-                    shipmentTrackingTmp.CurrentLocation = shipmentTracking.CurrentLocation;
-                    shipmentTrackingTmp.ShipmentStatus = shipmentTracking.ShipmentStatus;
-                    shipmentTrackingTmp.TemperatureDuringTransit = shipmentTracking.TemperatureDuringTransit;
-                    shipmentTrackingTmp.HumidityDuringTransit = shipmentTracking.HumidityDuringTransit;
-                    shipmentTrackingTmp.HandlerName = shipmentTracking.HandlerName;
-                    shipmentTrackingTmp.Remarks = shipmentTracking.Remarks;
-                    shipmentTrackingTmp.EstimatedArrival = shipmentTracking.EstimatedArrival;
-
-                    result = await _unitOfWork.ShipmentTrackingRepository.UpdateAsync(shipmentTrackingTmp);
+                    result = await _unitOfWork.ShipperRepository.UpdateAsync(shipper);
 
                     if (result > 0)
                     {
-                        return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, shipmentTracking);
+                        return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, shipper);
                     }
                     else
                     {
@@ -173,7 +162,7 @@ namespace KoiDeliveryOrderingSystem.Service
                 }
                 else
                 {
-                    result = await _unitOfWork.ShipmentTrackingRepository.CreateAsync(shipmentTracking);
+                    result = await _unitOfWork.ShipperRepository.CreateAsync(shipper);
 
                     if (result > 0)
                     {
