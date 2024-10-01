@@ -149,7 +149,18 @@ namespace KoiDeliveryOrderingSystem.Service
 
                 if (shipmentTrackingTmp != null)
                 {
-                    result = await _unitOfWork.ShipmentTrackingRepository.UpdateAsync(shipmentTracking);
+                    // Update các field thủ công
+                    shipmentTrackingTmp.ShipperId = shipmentTracking.ShipperId;
+                    shipmentTrackingTmp.OrderId = shipmentTracking.OrderId;
+                    shipmentTrackingTmp.CurrentLocation = shipmentTracking.CurrentLocation;
+                    shipmentTrackingTmp.ShipmentStatus = shipmentTracking.ShipmentStatus;
+                    shipmentTrackingTmp.TemperatureDuringTransit = shipmentTracking.TemperatureDuringTransit;
+                    shipmentTrackingTmp.HumidityDuringTransit = shipmentTracking.HumidityDuringTransit;
+                    shipmentTrackingTmp.HandlerName = shipmentTracking.HandlerName;
+                    shipmentTrackingTmp.Remarks = shipmentTracking.Remarks;
+                    shipmentTrackingTmp.EstimatedArrival = shipmentTracking.EstimatedArrival;
+
+                    result = await _unitOfWork.ShipmentTrackingRepository.UpdateAsync(shipmentTrackingTmp);
 
                     if (result > 0)
                     {
