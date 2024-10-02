@@ -1,3 +1,7 @@
+using KoiDeliveryOrderingSystem.Data.Models;
+using KoiDeliveryOrderingSystem.Data.Repository;
+using KoiDeliveryOrderingSystem.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +9,13 @@ builder.Services.AddControllersWithViews();
 
 // Dependencies
 //builder.Services.AddScoped<FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped<ShipmentTrackingService>();
+builder.Services.AddScoped<ShipmentTrackingRepository>();
+
+//builder.Services.AddScoped<ShipmentOrderDetailService>();
+builder.Services.AddScoped<ShipmentTrackingRepository>();
 
 var app = builder.Build();
 

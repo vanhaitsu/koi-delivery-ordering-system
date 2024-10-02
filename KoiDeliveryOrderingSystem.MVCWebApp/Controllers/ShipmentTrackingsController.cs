@@ -43,7 +43,6 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 return NotFound();
             }
 
-
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentTrackings/" + id))
