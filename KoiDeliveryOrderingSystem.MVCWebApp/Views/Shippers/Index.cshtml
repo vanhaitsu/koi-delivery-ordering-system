@@ -1,0 +1,47 @@
+﻿<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Full Name
+            </th><th>
+                Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="Shipper">
+    </tbody>
+</table>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadData();
+        });
+
+        function loadData() {
+            // alert("Load data progressing ...");
+
+            $.ajax({
+                url: 'https://localhost:7122/api/Shippers',
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    // alert("Server reponse: " + result.message);
+                    var html = '';
+                    $.each(result.data, function (key, item) {
+                        html += '<tr>';
+                        html += '<td>' + item.fullName + '</td>';
+                        html += '<td>' + item.email + '</td>';
+                        html += '</tr>';
+                    });
+                    $('.Shipper').html(html);
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+    </script>
+}
