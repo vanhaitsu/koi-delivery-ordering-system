@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace KoiDeliveryOrderingSystem.Common
 {
     public class Const
     {
-        public static string APIEndPoint = "https://localhost:7005/api/";
-
+        public static string APIEndPoint = "https://localhost:7278/api/";
+        
         #region Error Codes
 
         public static int ERROR_EXCEPTION = -4;
