@@ -13,8 +13,6 @@ public partial class ShipmentOrder
 
     public int? PricingId { get; set; }
 
-    public int? PackagingProcessId { get; set; }
-
     public DateTime? OrderDate { get; set; }
 
     public string OriginLocation { get; set; }
@@ -34,8 +32,6 @@ public partial class ShipmentOrder
     public string OrderStatus { get; set; }
 
     public virtual Customer Customer { get; set; }
-
-    public virtual PricingPolicy PackagingProcess { get; set; }
 
     public virtual ICollection<PackagingProcess> PackagingProcesses { get; set; } = new List<PackagingProcess>();
 
