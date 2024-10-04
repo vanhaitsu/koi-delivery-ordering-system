@@ -1,0 +1,96 @@
+﻿@model IEnumerable<KoiDeliveryOrderingSystem.Data.Models.HealthCheck>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@* 
+                @Html.DisplayNameFor(model => model.HealthCheckId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipmentTrackingId)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.CheckDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Condition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Temperature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoctorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recommendations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PackagingType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextCheckupDate)
+            </th>
+            <th>@* 
+                @Html.DisplayNameFor(model => model.ShipmentOrderDetail)
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@* 
+                    @Html.DisplayFor(modelItem => item.HealthCheckId)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipmentTrackingId)
+                </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Condition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Temperature)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DoctorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Recommendations)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PackagingType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NextCheckupDate)
+                </td>
+              @*   <td>
+                    @Html.DisplayFor(modelItem => item.ShipmentOrderDetail.ShipmentOrderDetailId)
+                </td> *@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.HealthCheckId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.HealthCheckId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.HealthCheckId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

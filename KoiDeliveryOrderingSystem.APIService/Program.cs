@@ -15,6 +15,8 @@ builder.Services.AddScoped<ShipmentTrackingService>();
 builder.Services.AddScoped<ShipmentTrackingRepository>();
 builder.Services.AddScoped<ShipperService>();
 builder.Services.AddScoped<ShipperRepository>();
+builder.Services.AddScoped<HealthCheckService>(); 
+builder.Services.AddScoped<HealCheckRepository>();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>

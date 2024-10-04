@@ -27,7 +27,5 @@ public partial class PricingPolicy
 
     public DateTime? ExpiryDate { get; set; }
 
-    public virtual ICollection<ShipmentOrder> ShipmentOrderPackagingProcesses { get; set; } = new List<ShipmentOrder>();
-
-    public virtual ICollection<ShipmentOrder> ShipmentOrderPricings { get; set; } = new List<ShipmentOrder>();
+    public virtual ICollection<ShipmentOrder> ShipmentOrders { get; set; } = new List<ShipmentOrder>();
 }
