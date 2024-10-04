@@ -102,7 +102,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 }
             }
 
-            ViewData["ShipmentTrackingId"] = new SelectList(shipmentTrackings, "ShipmentTrackingId", "ShipmentTrackingId");
+            ViewData["ShipmentTrackingId"] = new SelectList(shipmentTrackings, "TrackingId", "TrackingId");
             ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "Description");
             return View();
         }
