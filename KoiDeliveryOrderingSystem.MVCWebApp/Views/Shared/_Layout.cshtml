@@ -22,6 +22,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Shipment Tracking
@@ -35,10 +36,21 @@
                                 </li>
                             </ul>
                         </div>
+
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Health Checks
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item dropdown-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="HealthChecks" asp-action="Index">Health Checks</a>
+                                </li>
+                                <li class="nav-item dropdown-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="HealthChecksAjax" asp-action="Index">Health Checks (Ajax)</a>
+                                </li>
+                            </ul>
+                        </div>
                         
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="HealthChecks" asp-action="Index">Health Check</a>
-                        </li>
                         @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Shippers" asp-action="Index">Shippers</a>
                         </li> *@
