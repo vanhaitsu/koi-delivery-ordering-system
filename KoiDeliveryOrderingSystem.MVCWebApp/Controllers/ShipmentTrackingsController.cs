@@ -65,7 +65,23 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         // GET: ShipmentTrackings/Create
         public async Task<IActionResult> CreateAsync()
         {
-            //ViewData["OrderId"] = new SelectList();
+            var orders = new List<ShipmentOrder>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                        if (result != null && result.Data != null)
+                        {
+                            orders = JsonConvert.DeserializeObject<List<ShipmentOrder>>(result.Data.ToString());
+                        }
+                    }
+                }
+            }
+            ViewData["OrderId"] = new SelectList(orders, "OrderId", "OrderId");
 
             var shippers = new List<Shipper>();
             using (var httpClient = new HttpClient())
@@ -176,7 +192,23 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 
 
             // Get dropdown data ------------------------------------------------------------
-            //ViewData["OrderId"] = new SelectList();
+            var orders = new List<ShipmentOrder>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                        if (result != null && result.Data != null)
+                        {
+                            orders = JsonConvert.DeserializeObject<List<ShipmentOrder>>(result.Data.ToString());
+                        }
+                    }
+                }
+            }
+            ViewData["OrderId"] = new SelectList(orders, "OrderId", "OrderId");
 
             var shippers = new List<Shipper>();
             using (var httpClient = new HttpClient())
@@ -239,6 +271,24 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             }
             else
             {
+                var orders = new List<ShipmentOrder>();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders"))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                            if (result != null && result.Data != null)
+                            {
+                                orders = JsonConvert.DeserializeObject<List<ShipmentOrder>>(result.Data.ToString());
+                            }
+                        }
+                    }
+                }
+                ViewData["OrderId"] = new SelectList(orders, "OrderId", "OrderId");
+
                 var shippers = new List<Shipper>();
                 using (var httpClient = new HttpClient())
                 {
@@ -347,10 +397,5 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 return View();
             }
         }
-
-        //private bool ShipmentTrackingExists(int id)
-        //{
-        //    return _context.ShipmentTrackings.Any(e => e.TrackingId == id);
-        //}
     }
 }

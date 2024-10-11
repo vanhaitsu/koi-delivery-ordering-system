@@ -12,10 +12,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>@* 
+            <th>
                 @Html.DisplayNameFor(model => model.HealthCheckId)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.ShipmentTrackingId)
             </th> *@
             <th>
@@ -33,7 +33,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.DoctorName)
             </th>
-            <th>
+           @*  <th>
                 @Html.DisplayNameFor(model => model.Recommendations)
             </th>
             <th>
@@ -42,7 +42,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.NextCheckupDate)
             </th>
-            <th>@* 
+            <th>
                 @Html.DisplayNameFor(model => model.ShipmentOrderDetail)
             </th> *@
             <th></th>
@@ -52,10 +52,11 @@
         @foreach (var item in Model)
         {
             <tr>
-                <th>@* 
+                <th>
+
                     @Html.DisplayFor(modelItem => item.HealthCheckId)
                 </th>
-                <td>
+               @*  <td>
                     @Html.DisplayFor(modelItem => item.ShipmentTrackingId)
                 </td> *@
                 <td>
@@ -73,7 +74,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DoctorName)
                 </td>
-                <td>
+                @* <td>
                     @Html.DisplayFor(modelItem => item.Recommendations)
                 </td>
                 <td>
@@ -82,7 +83,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.NextCheckupDate)
                 </td>
-              @*   <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.ShipmentOrderDetail.ShipmentOrderDetailId)
                 </td> *@
                 <td>

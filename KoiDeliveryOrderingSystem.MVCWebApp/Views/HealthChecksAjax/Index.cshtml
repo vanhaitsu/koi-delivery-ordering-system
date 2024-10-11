@@ -1,0 +1,413 @@
+﻿@{
+    ViewData["Title"] = "Health Checks";
+}
+
+<h1>Health Checks</h1>
+
+<!-- Create Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
+    Create New
+</button>
+
+<!-- Create Modal -->
+<div class="modal fade" id="create" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createModalLabel">Create Health Check</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createForm">
+                    <div class="form-group">
+                        <label for="healthCheckId" class="control-label">Health Check ID</label>
+                        <input type="number" id="healthCheckId" class="form-control" required />
+                        <span class="text-danger" id="healthCheckIdError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="shipmentOrderDetailId" class="control-label">Shipment Order Detail</label>
+                        <select id="shipmentOrderDetailId" class="form-control" required></select>
+                        <span class="text-danger" id="shipmentOrderDetailIdError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="shipmentTrackingId" class="control-label">Shipment Tracking</label>
+                        <select id="shipmentTrackingId" class="form-control" required></select>
+                        <span class="text-danger" id="shipmentTrackingIdError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkDate" class="control-label">Check Date</label>
+                        <input type="datetime-local" id="checkDate" class="form-control" required />
+                        <span class="text-danger" id="checkDateError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight" class="control-label">Weight</label>
+                        <input type="number" id="weight" class="form-control" required />
+                        <span class="text-danger" id="weightError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="condition" class="control-label">Condition</label>
+                        <input type="text" id="condition" class="form-control" required />
+                        <span class="text-danger" id="conditionError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="temperature" class="control-label">Temperature</label>
+                        <input type="number" id="temperature" class="form-control" required />
+                        <span class="text-danger" id="temperatureError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorName" class="control-label">Doctor Name</label>
+                        <input type="text" id="doctorName" class="form-control" required />
+                        <span class="text-danger" id="doctorNameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="recommendations" class="control-label">Recommendations</label>
+                        <input type="text" id="recommendations" class="form-control" />
+                        <span class="text-danger" id="recommendationsError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="packagingType" class="control-label">Packaging Type</label>
+                        <input type="text" id="packagingType" class="form-control" />
+                        <span class="text-danger" id="packagingTypeError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="nextCheckupDate" class="control-label">Next Checkup Date</label>
+                        <input type="datetime-local" id="nextCheckupDate" class="form-control" />
+                        <span class="text-danger" id="nextCheckupDateError"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="button" value="Create" class="btn btn-primary" onclick="submitForm()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editModalLabel">Edit Health Check</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <input type="hidden" id="editHealthCheckId" />
+                    <div class="form-group">
+                        <label for="editShipmentOrderDetailId" class="control-label">Shipment Order Detail</label>
+                        <select id="editShipmentOrderDetailId" class="form-control" required></select>
+                        <span class="text-danger" id="editShipmentOrderDetailIdError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editShipmentTrackingId" class="control-label">Shipment Tracking</label>
+                        <select id="editShipmentTrackingId" class="form-control" required></select>
+                        <span class="text-danger" id="editShipmentTrackingIdError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCheckDate" class="control-label">Check Date</label>
+                        <input type="datetime-local" id="editCheckDate" class="form-control" required />
+                        <span class="text-danger" id="editCheckDateError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editWeight" class="control-label">Weight</label>
+                        <input type="number" id="editWeight" class="form-control" required />
+                        <span class="text-danger" id="editWeightError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCondition" class="control-label">Condition</label>
+                        <input type="text" id="editCondition" class="form-control" required />
+                        <span class="text-danger" id="editConditionError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTemperature" class="control-label">Temperature</label>
+                        <input type="number" id="editTemperature" class="form-control" required />
+                        <span class="text-danger" id="editTemperatureError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDoctorName" class="control-label">Doctor Name</label>
+                        <input type="text" id="editDoctorName" class="form-control" required />
+                        <span class="text-danger" id="editDoctorNameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRecommendations" class="control-label">Recommendations</label>
+                        <input type="text" id="editRecommendations" class="form-control" />
+                        <span class="text-danger" id="editRecommendationsError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPackagingType" class="control-label">Packaging Type</label>
+                        <input type="text" id="editPackagingType" class="form-control" />
+                        <span class="text-danger" id="editPackagingTypeError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editNextCheckupDate" class="control-label">Next Checkup Date</label>
+                        <input type="datetime-local" id="editNextCheckupDate" class="form-control" />
+                        <span class="text-danger" id="editNextCheckupDateError"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="button" value="Save Changes" class="btn btn-primary" onclick="updateHealthCheck()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="details" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="detailsModalLabel">Health Check Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsContent"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmation" tabindex="-1" aria-labelledby="deleteConfirmationLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteConfirmationLabel">Confirm Deletion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this health check?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Health Check ID</th>
+            <th>Check Date</th>
+            <th>Weight</th>
+            <th>Condition</th>
+            <th>Temperature</th>
+            <th>Doctor Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="HealthChecks"></tbody>
+</table>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadData();
+            loadShipmentOrderDetailData();
+            loadShipmentTrackingData();
+        });
+
+        function loadData() {
+            $.ajax({
+                url: 'https://localhost:7122/api/HealthChecks',
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var html = '';
+                    $.each(result.data, function (key, item) {
+                        html += '<tr>';
+                        html += '<td>' + item.healthCheckId + '</td>';
+                        html += '<td>' + new Date(item.checkDate).toLocaleString() + '</td>';
+                        html += '<td>' + item.weight + '</td>';
+                        html += '<td>' + item.condition + '</td>';
+                        html += '<td>' + item.temperature + '</td>';
+                        html += '<td>' + item.doctorName + '</td>';
+                        html += '<td>';
+                        html += `<a href="#" onclick="showEditModal(${item.healthCheckId})">Edit</a> | `;
+                        html += `<a href="#" onclick="showDetailsModal(${item.healthCheckId})">Details</a> | `;
+                        html += `<a href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmation" onclick="deleteHealthCheck(${item.healthCheckId})">Delete</a>`;
+                        html += '</td>';
+                        html += '</tr>';
+                    });
+                    $('.HealthChecks').html(html);
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function loadShipmentOrderDetailData() {
+            $.ajax({
+                url: 'https://localhost:7122/api/ShipmentOrderDetails',
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var html = '';
+                    $.each(result.data, function (key, item) {
+                        html += `<option value="${item.shipmentOrderDetailId}">${item.description}</option>`;
+                    });
+                    $('#shipmentOrderDetailId, #editShipmentOrderDetailId').append(html);
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function loadShipmentTrackingData() {
+            $.ajax({
+                url: 'https://localhost:7122/api/ShipmentTrackings',
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var html = '';
+                    $.each(result.data, function (key, item) {
+                        html += `<option value="${item.trackingId}">${item.trackingId}</option>`;
+                    });
+                    $('#shipmentTrackingId, #editShipmentTrackingId').append(html);
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function submitForm() {
+            const formData = {
+                HealthCheckId: $('#healthCheckId').val(),
+                ShipmentOrderDetailId: $('#shipmentOrderDetailId').val(),
+                ShipmentTrackingId: $('#shipmentTrackingId').val(),
+                CheckDate: $('#checkDate').val(),
+                Weight: $('#weight').val(),
+                Condition: $('#condition').val(),
+                Temperature: $('#temperature').val(),
+                DoctorName: $('#doctorName').val(),
+                Recommendations: $('#recommendations').val(),
+                PackagingType: $('#packagingType').val(),
+                NextCheckupDate: $('#nextCheckupDate').val(),
+            };
+
+            $.ajax({
+                url: 'https://localhost:7122/api/HealthChecks',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    loadData();
+                    $('#create').modal('hide');
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function showEditModal(healthCheckId) {
+            $.ajax({
+                url: `https://localhost:7122/api/HealthChecks/${healthCheckId}`,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $('#editHealthCheckId').val(data.data.healthCheckId);
+                    $('#editShipmentOrderDetailId').val(data.data.shipmentOrderDetailId);
+                    $('#editShipmentTrackingId').val(data.data.shipmentTrackingId);
+                    $('#editCheckDate').val(data.data.checkDate);
+                    $('#editWeight').val(data.data.weight);
+                    $('#editCondition').val(data.data.condition);
+                    $('#editTemperature').val(data.data.temperature);
+                    $('#editDoctorName').val(data.data.doctorName);
+                    $('#editRecommendations').val(data.data.recommendations);
+                    $('#editPackagingType').val(data.data.packagingType);
+                    $('#editNextCheckupDate').val(data.data.nextCheckupDate);
+                    $('#edit').modal('show');
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function updateHealthCheck() {
+            const formData = {
+                HealthCheckId: $('#editHealthCheckId').val(),
+                ShipmentOrderDetailId: $('#editShipmentOrderDetailId').val(),
+                ShipmentTrackingId: $('#editShipmentTrackingId').val(),
+                CheckDate: $('#editCheckDate').val(),
+                Weight: $('#editWeight').val(),
+                Condition: $('#editCondition').val(),
+                Temperature: $('#editTemperature').val(),
+                DoctorName: $('#editDoctorName').val(),
+                Recommendations: $('#editRecommendations').val(),
+                PackagingType: $('#editPackagingType').val(),
+                NextCheckupDate: $('#editNextCheckupDate').val(),
+            };
+
+            $.ajax({
+                url: `https://localhost:7122/api/HealthChecks/${formData.HealthCheckId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    loadData();
+                    $('#edit').modal('hide');
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function showDetailsModal(healthCheckId) {
+            $.ajax({
+                url: `https://localhost:7122/api/HealthChecks/${healthCheckId}`,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    let html = `<p><strong>Health Check ID:</strong> ${data.data.healthCheckId}</p>`;
+                    html += `<p><strong>Check Date:</strong> ${new Date(data.data.checkDate).toLocaleString()}</p>`;
+                    html += `<p><strong>Weight:</strong> ${data.data.weight}</p>`;
+                    html += `<p><strong>Condition:</strong> ${data.data.condition}</p>`;
+                    html += `<p><strong>Temperature:</strong> ${data.data.temperature}</p>`;
+                    html += `<p><strong>Doctor Name:</strong> ${data.data.doctorName}</p>`;
+                    html += `<p><strong>Recommendations:</strong> ${data.data.recommendations}</p>`;
+                    html += `<p><strong>Packaging Type:</strong> ${data.data.packagingType}</p>`;
+                    html += `<p><strong>Next Checkup Date:</strong> ${new Date(data.data.nextCheckupDate).toLocaleString()}</p>`;
+                    $('#detailsContent').html(html);
+                    $('#details').modal('show');
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function deleteHealthCheck(healthCheckId) {
+            $('#confirmDelete').off('click').on('click', function () {
+                $.ajax({
+                    url: `https://localhost:7122/api/HealthChecks/${healthCheckId}`,
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    success: function () {
+                        loadData();
+                        $('#deleteConfirmation').modal('hide');
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
+        }
+    </script>
+}
