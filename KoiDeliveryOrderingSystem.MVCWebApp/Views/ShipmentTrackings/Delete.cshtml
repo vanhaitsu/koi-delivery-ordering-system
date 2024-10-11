@@ -62,14 +62,27 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Order)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Order.OrderId)
+        <dd class="col-sm-10">
+            @* @Html.DisplayFor(model => model.Order.OrderId) *@
+            @if (Model.Order.ShipmentOrderDetails != null && Model.Order.ShipmentOrderDetails.Any())
+            {
+                <ul>
+                    @foreach (var order in Model.Order.ShipmentOrderDetails)
+                    {
+                        <li>(@order.AnimalType.Description) @order.Description</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>No orders available.</span>
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Shipper)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Shipper.ShipperId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Shipper.FullName)
         </dd>
     </dl>
     

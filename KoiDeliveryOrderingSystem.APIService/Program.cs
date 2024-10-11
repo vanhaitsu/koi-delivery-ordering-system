@@ -15,7 +15,21 @@ builder.Services.AddScoped<ShipmentTrackingService>();
 builder.Services.AddScoped<ShipmentTrackingRepository>();
 builder.Services.AddScoped<ShipperService>();
 builder.Services.AddScoped<ShipperRepository>();
+builder.Services.AddScoped<HealthCheckService>(); 
+builder.Services.AddScoped<HealCheckRepository>();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:7005")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
 
 
 var app = builder.Build();
@@ -26,6 +40,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
 

@@ -9,9 +9,9 @@ public partial class ShipmentTracking
 {
     public int TrackingId { get; set; }
 
-    public int ShipperId { get; set; }
+    public int? ShipperId { get; set; }
 
-    public int OrderId { get; set; }
+    public int? OrderId { get; set; }
 
     public DateTime? UpdateTime { get; set; }
 
@@ -19,15 +19,17 @@ public partial class ShipmentTracking
 
     public string ShipmentStatus { get; set; }
 
-    public decimal TemperatureDuringTransit { get; set; }
+    public decimal? TemperatureDuringTransit { get; set; }
 
-    public decimal HumidityDuringTransit { get; set; }
+    public decimal? HumidityDuringTransit { get; set; }
 
     public string HandlerName { get; set; }
 
     public string Remarks { get; set; }
 
-    public DateTime EstimatedArrival { get; set; }
+    public DateTime? EstimatedArrival { get; set; }
+
+    public virtual ICollection<HealthCheck> HealthChecks { get; set; } = new List<HealthCheck>();
 
     public virtual ShipmentOrder Order { get; set; }
 

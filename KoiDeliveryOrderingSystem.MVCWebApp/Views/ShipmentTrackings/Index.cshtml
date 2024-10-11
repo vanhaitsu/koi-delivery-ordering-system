@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CurrentLocation)
             </th>
             <th>
@@ -27,36 +30,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.UpdateTime)
             </th>
-            @* <th>
-            @Html.DisplayNameFor(model => model.UpdateTime)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.CurrentLocation)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.ShipmentStatus)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.TemperatureDuringTransit)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.HumidityDuringTransit)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.HandlerName)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Remarks)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.EstimatedArrival)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Order)
-            </th>
-            <th>
-            @Html.DisplayNameFor(model => model.Shipper.FullName)
-            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -64,6 +37,12 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @foreach (var details in item.Order.ShipmentOrderDetails)
+                    {
+                        <p>(@details.AnimalType.Description) @details.Description</p>
+                    }
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CurrentLocation)
                 </td>
@@ -79,36 +58,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.UpdateTime)
                 </td>
-                @*   <td>
-            @Html.DisplayFor(modelItem => item.UpdateTime)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.CurrentLocation)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.ShipmentStatus)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.TemperatureDuringTransit)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.HumidityDuringTransit)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.HandlerName)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.EstimatedArrival)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Order.OrderId)
-            </td>
-            <td>
-            @Html.DisplayFor(modelItem => item.Shipper.ShipperId)
-            </td> *@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TrackingId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.TrackingId">Details</a> |

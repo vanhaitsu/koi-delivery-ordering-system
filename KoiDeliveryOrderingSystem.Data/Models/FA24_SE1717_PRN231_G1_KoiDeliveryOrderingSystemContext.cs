@@ -51,13 +51,13 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-    //        => optionsBuilder.UseSqlServer("Data Source=VANHAITSU\\DANGVANHAI;Initial Catalog=FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystem;User ID=sa;Password=12345");
+    //        => optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystem;User ID=sa;Password=12345");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AnimalType>(entity =>
         {
-            entity.HasKey(e => e.AnimalTypeId).HasName("PK__AnimalTy__1E8A48B6A89549FA");
+            entity.HasKey(e => e.AnimalTypeId).HasName("PK__AnimalTy__1E8A48B6CFC39B2D");
 
             entity.ToTable("AnimalType");
 
@@ -67,7 +67,7 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.CustomerId).HasName("PK__Customer__A4AE64D8F58742AF");
+            entity.HasKey(e => e.CustomerId).HasName("PK__Customer__A4AE64D84382BC27");
 
             entity.ToTable("Customer");
 
@@ -83,7 +83,7 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
         modelBuilder.Entity<HealthCheck>(entity =>
         {
-            entity.HasKey(e => e.HealthCheckId).HasName("PK__HealthCh__27355EBFA0AC9D1F");
+            entity.HasKey(e => e.HealthCheckId).HasName("PK__HealthCh__27355EBFB5AC860B");
 
             entity.ToTable("HealthCheck");
 
@@ -99,12 +99,16 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
             entity.HasOne(d => d.ShipmentOrderDetail).WithMany(p => p.HealthChecks)
                 .HasForeignKey(d => d.ShipmentOrderDetailId)
-                .HasConstraintName("FK__HealthChe__Shipm__47DBAE45");
+                .HasConstraintName("FK__HealthChe__Shipm__70DDC3D8");
+
+            entity.HasOne(d => d.ShipmentTracking).WithMany(p => p.HealthChecks)
+                .HasForeignKey(d => d.ShipmentTrackingId)
+                .HasConstraintName("FK__HealthChe__Shipm__71D1E811");
         });
 
         modelBuilder.Entity<PackagingProcess>(entity =>
         {
-            entity.HasKey(e => e.PackagingProcessId).HasName("PK__Packagin__087F8713F9C114AE");
+            entity.HasKey(e => e.PackagingProcessId).HasName("PK__Packagin__087F871393071FCC");
 
             entity.ToTable("PackagingProcess");
 
@@ -121,12 +125,12 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
             entity.HasOne(d => d.ShipmentOrder).WithMany(p => p.PackagingProcesses)
                 .HasForeignKey(d => d.ShipmentOrderId)
-                .HasConstraintName("FK__Packaging__Shipm__4E88ABD4");
+                .HasConstraintName("FK__Packaging__Shipm__74AE54BC");
         });
 
         modelBuilder.Entity<PricingPolicy>(entity =>
         {
-            entity.HasKey(e => e.PricingId).HasName("PK__PricingP__EC306B1225CB18BF");
+            entity.HasKey(e => e.PricingId).HasName("PK__PricingP__EC306B12CABFD8E9");
 
             entity.ToTable("PricingPolicy");
 
@@ -144,7 +148,7 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
         modelBuilder.Entity<ShipmentOrder>(entity =>
         {
-            entity.HasKey(e => e.OrderId).HasName("PK__Shipment__C3905BCFFF43B557");
+            entity.HasKey(e => e.OrderId).HasName("PK__Shipment__C3905BCFC66CB96B");
 
             entity.ToTable("ShipmentOrder");
 
@@ -160,20 +164,16 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
             entity.HasOne(d => d.Customer).WithMany(p => p.ShipmentOrders)
                 .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("FK__ShipmentO__Custo__3D5E1FD2");
+                .HasConstraintName("FK__ShipmentO__Custo__6383C8BA");
 
-            entity.HasOne(d => d.PackagingProcess).WithMany(p => p.ShipmentOrderPackagingProcesses)
-                .HasForeignKey(d => d.PackagingProcessId)
-                .HasConstraintName("FK__ShipmentO__Packa__3F466844");
-
-            entity.HasOne(d => d.Pricing).WithMany(p => p.ShipmentOrderPricings)
+            entity.HasOne(d => d.Pricing).WithMany(p => p.ShipmentOrders)
                 .HasForeignKey(d => d.PricingId)
-                .HasConstraintName("FK__ShipmentO__Prici__3E52440B");
+                .HasConstraintName("FK__ShipmentO__Prici__6477ECF3");
         });
 
         modelBuilder.Entity<ShipmentOrderDetail>(entity =>
         {
-            entity.HasKey(e => e.ShipmentOrderDetailId).HasName("PK__Shipment__3B970C5BA9C047DD");
+            entity.HasKey(e => e.ShipmentOrderDetailId).HasName("PK__Shipment__3B970C5B153461F6");
 
             entity.Property(e => e.ShipmentOrderDetailId).ValueGeneratedNever();
             entity.Property(e => e.Achievement).HasMaxLength(255);
@@ -193,16 +193,16 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
             entity.HasOne(d => d.AnimalType).WithMany(p => p.ShipmentOrderDetails)
                 .HasForeignKey(d => d.AnimalTypeId)
-                .HasConstraintName("FK__ShipmentO__Anima__44FF419A");
+                .HasConstraintName("FK__ShipmentO__Anima__6A30C649");
 
             entity.HasOne(d => d.ShipmentOrder).WithMany(p => p.ShipmentOrderDetails)
                 .HasForeignKey(d => d.ShipmentOrderId)
-                .HasConstraintName("FK__ShipmentO__Shipm__440B1D61");
+                .HasConstraintName("FK__ShipmentO__Shipm__693CA210");
         });
 
         modelBuilder.Entity<ShipmentTracking>(entity =>
         {
-            entity.HasKey(e => e.TrackingId).HasName("PK__Shipment__3C19EDF1C8BAD2A6");
+            entity.HasKey(e => e.TrackingId).HasName("PK__Shipment__3C19EDF12EBC46F5");
 
             entity.ToTable("ShipmentTracking");
 
@@ -218,16 +218,16 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
 
             entity.HasOne(d => d.Order).WithMany(p => p.ShipmentTrackings)
                 .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("FK__ShipmentT__Order__4BAC3F29");
+                .HasConstraintName("FK__ShipmentT__Order__6E01572D");
 
             entity.HasOne(d => d.Shipper).WithMany(p => p.ShipmentTrackings)
                 .HasForeignKey(d => d.ShipperId)
-                .HasConstraintName("FK__ShipmentT__Shipp__4AB81AF0");
+                .HasConstraintName("FK__ShipmentT__Shipp__6D0D32F4");
         });
 
         modelBuilder.Entity<Shipper>(entity =>
         {
-            entity.HasKey(e => e.ShipperId).HasName("PK__Shipper__1F8AFE59292A75AF");
+            entity.HasKey(e => e.ShipperId).HasName("PK__Shipper__1F8AFE59709C62F9");
 
             entity.ToTable("Shipper");
 
