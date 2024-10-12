@@ -68,7 +68,7 @@
                 <ul>
                     @foreach (var order in Model.Order.ShipmentOrderDetails)
                     {
-                        <li>@order.AnimalType.Description</li>
+                        <li>(@order.AnimalType.Description) @order.Description</li>
                     }
                 </ul>
             }

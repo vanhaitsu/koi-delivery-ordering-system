@@ -30,4 +30,6 @@ public partial class HealthCheck
     public DateTime? NextCheckupDate { get; set; }
 
     public virtual ShipmentOrderDetail ShipmentOrderDetail { get; set; }
+
+    public virtual ShipmentTracking ShipmentTracking { get; set; }
 }

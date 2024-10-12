@@ -40,7 +40,7 @@
                 <td>
                     @foreach (var details in item.Order.ShipmentOrderDetails)
                     {
-                        <p>@details.AnimalType.Description</p>
+                        <p>(@details.AnimalType.Description) @details.Description</p>
                     }
                 </td>
                 <td>

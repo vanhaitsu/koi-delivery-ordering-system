@@ -29,7 +29,9 @@ public partial class ShipmentTracking
 
     public DateTime? EstimatedArrival { get; set; }
 
+    public virtual ICollection<HealthCheck> HealthChecks { get; set; } = new List<HealthCheck>();
+
     public virtual ShipmentOrder Order { get; set; }
 
-    public virtual Shipper? Shipper { get; set; }
+    public virtual Shipper Shipper { get; set; }
 }
