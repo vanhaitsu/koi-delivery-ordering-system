@@ -84,15 +84,15 @@ namespace KoiDeliveryOrderingSystem.Service
 
         public async Task<IBusinessResult> GetAll()
         {
-            var packagingProcesses = await _unitOfWork.PackagingProcessRepository.GetAllAsync();
+            var shipmentTrackings = await _unitOfWork.PackagingProcessRepository.GetAllAsync();
 
-            if (packagingProcesses == null)
+            if (shipmentTrackings == null)
             {
-                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG, new List<ShipmentTracking>());
+                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG, new List<PackagingProcess>());
             }
             else
             {
-                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, packagingProcesses);
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shipmentTrackings);
             }
         }
 

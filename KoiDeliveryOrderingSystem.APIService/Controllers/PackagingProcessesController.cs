@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using KoiDeliveryOrderingSystem.Service;
 using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Common;
+using KoiDeliveryOrderingSystem.Service.Base;
 
 namespace KoiDeliveryOrderingSystem.APIService.Controllers
 {
@@ -11,43 +12,29 @@ namespace KoiDeliveryOrderingSystem.APIService.Controllers
     [ApiController]
     public class PackagingProcessesController : ControllerBase
     {
-        private readonly IPackagingProcessService _packagingProcessService;
+        private readonly PackagingProcessService _packagingProcessService;
 
-        public PackagingProcessesController(IPackagingProcessService packagingProcessService)
+        public PackagingProcessesController(PackagingProcessService packagingProcessService)
         {
             _packagingProcessService = packagingProcessService;
         }
 
         // GET: api/PackagingProcesses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PackagingProcess>>> GetPackagingProcesses()
+        public async Task<IBusinessResult> GetPackagingProcesses()
         {
-            var result = await _packagingProcessService.GetAll();
-
-            if (result.Status != Const.SUCCESS_READ_CODE)
-            {
-                return NotFound(result.Message);
-            }
-
-            return Ok(result.Data);
+            return await _packagingProcessService.GetAll();
         }
 
         // GET: api/PackagingProcesses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PackagingProcess>> GetPackagingProcess(int id)
+        public async Task<IBusinessResult> GetPackagingProcess(int id)
         {
-            var result = await _packagingProcessService.GetById(id);
-
-            if (result.Status != Const.SUCCESS_READ_CODE)
-            {
-                return NotFound(result.Message);
-            }
-
-            return Ok(result.Data);
+            return await _packagingProcessService.GetById(id);      
         }
 
         // PUT: api/PackagingProcesses/5
-        [HttpPut("{id}")]
+        /*[HttpPut("{id}")]
         public async Task<IActionResult> PutPackagingProcess(int id, PackagingProcess packagingProcess)
         {
             if (id != packagingProcess.PackagingProcessId)
@@ -63,34 +50,20 @@ namespace KoiDeliveryOrderingSystem.APIService.Controllers
             }
 
             return NoContent();
-        }
+        }*/
 
         // POST: api/PackagingProcesses
-        [HttpPost]
-        public async Task<ActionResult<PackagingProcess>> PostPackagingProcess(PackagingProcess packagingProcess)
+      /*  [HttpPost]
+        public async Task<IBusinessResult> PostPackagingProcess(PackagingProcess packagingProcess)
         {
-            var result = await _packagingProcessService.Create(packagingProcess);
-
-            if (result.Status != Const.SUCCESS_CREATE_CODE)
-            {
-                return BadRequest(result.Message);
-            }
-
-            return CreatedAtAction("GetPackagingProcess", new { id = packagingProcess.PackagingProcessId }, packagingProcess);
-        }
+            return await _packagingProcessService.Save(packagingProcess);
+        }*/
 
         // DELETE: api/PackagingProcesses/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePackagingProcess(int id)
+        public async Task<IBusinessResult> DeletePackagingProcess(int id)
         {
-            var result = await _packagingProcessService.DeleteById(id);
-
-            if (result.Status != Const.SUCCESS_DELETE_CODE)
-            {
-                return NotFound(result.Message);
-            }
-
-            return NoContent();
+          return await _packagingProcessService.DeleteById(id);
         }
 
     }

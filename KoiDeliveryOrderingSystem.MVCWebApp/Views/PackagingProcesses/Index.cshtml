@@ -1,89 +1,49 @@
 ﻿@model IEnumerable<KoiDeliveryOrderingSystem.Data.Models.PackagingProcess>
-
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
+<h1 style="font-size: 24px; font-weight: bold;">Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" style="color: #1d72b8; text-decoration: none;">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PackagingType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PackagingInstructions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PackagingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HandlerName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QualityCheckStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstimatedPackagingTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualPackagingTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PackagingCost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShipmentOrder)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackagingType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackagingInstructions)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackagingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HandlerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QualityCheckStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstimatedPackagingTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActualPackagingTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackagingCost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipmentOrder.OrderId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PackagingProcessId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PackagingProcessId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PackagingProcessId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <thead>
+            <tr style="background-color: #f9f9f9; border-bottom: 1px solid #ddd;">
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PackagingType)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PackagingInstructions)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PackagingDate)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.HandlerName)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.QualityCheckStatus)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.Remarks)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.EstimatedPackagingTime)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.ActualPackagingTime)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PackagingCost)</th>
+                <th style="padding: 8px 12px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PackagingType)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PackagingInstructions)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PackagingDate)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.HandlerName)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.QualityCheckStatus)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.Remarks)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.EstimatedPackagingTime)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.ActualPackagingTime)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PackagingCost)</td>
+                    <td style="padding: 8px 12px;">
+                        <a asp-action="Edit" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
