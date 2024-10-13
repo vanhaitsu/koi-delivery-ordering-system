@@ -16,7 +16,8 @@ builder.Services.AddScoped<ShipmentTrackingRepository>();
 
 //builder.Services.AddScoped<ShipmentOrderDetailService>();
 builder.Services.AddScoped<ShipmentTrackingRepository>();
-
+builder.Services.AddScoped<PackagingProcessRepository>();
+builder.Services.AddScoped<PackagingProcessService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
