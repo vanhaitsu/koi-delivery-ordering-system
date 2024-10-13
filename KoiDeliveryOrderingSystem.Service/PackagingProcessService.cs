@@ -118,6 +118,17 @@ namespace KoiDeliveryOrderingSystem.Service
 
                 if (shipmentTrackingTmp != null)
                 {
+                    shipmentTrackingTmp.ShipmentOrderId = packagingProcess.ShipmentOrderId;
+                    shipmentTrackingTmp.PackagingType = packagingProcess.PackagingType;
+                    shipmentTrackingTmp.PackagingCost = packagingProcess.PackagingCost;
+                    shipmentTrackingTmp.PackagingDate = packagingProcess.PackagingDate;
+                    shipmentTrackingTmp.PackagingInstructions = packagingProcess.PackagingInstructions;
+                    shipmentTrackingTmp.Remarks = packagingProcess.Remarks;
+                    shipmentTrackingTmp.EstimatedPackagingTime = packagingProcess.EstimatedPackagingTime;
+                    shipmentTrackingTmp.ActualPackagingTime = packagingProcess.ActualPackagingTime;
+                    shipmentTrackingTmp.QualityCheckStatus = packagingProcess.QualityCheckStatus;
+                    shipmentTrackingTmp.HandlerName = packagingProcess.HandlerName; 
+
                     result = await _unitOfWork.PackagingProcessRepository.UpdateAsync(packagingProcess);
 
                     if (result > 0)

@@ -17,5 +17,22 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
         {
             _context = context;
         }
+
+        public async Task<List<PackagingProcess>> GetAllAsync()
+        {
+            var result = await _context.PackagingProcesses
+                                        .Include(x => x.ShipmentOrder)
+                                        .ToListAsync();
+            return result;
+        }
+        public async Task<PackagingProcess> GetByIdAsync(int id)
+        {
+            var packagingProcess = await _context.PackagingProcesses
+                                                 .Include(x => x.ShipmentOrder)  
+                                                 .FirstOrDefaultAsync(x => x.PackagingProcessId == id); 
+            return packagingProcess;
+        }
+
+
     }
 }

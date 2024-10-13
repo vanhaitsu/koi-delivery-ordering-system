@@ -34,30 +34,18 @@ namespace KoiDeliveryOrderingSystem.APIService.Controllers
         }
 
         // PUT: api/PackagingProcesses/5
-        /*[HttpPut("{id}")]
-        public async Task<IActionResult> PutPackagingProcess(int id, PackagingProcess packagingProcess)
+        [HttpPut("{id}")]
+        public async Task<IBusinessResult> PutPackagingProcess(PackagingProcess packagingProcess)
         {
-            if (id != packagingProcess.PackagingProcessId)
-            {
-                return BadRequest("ID mismatch");
-            }
-
-            var result = await _packagingProcessService.Update(packagingProcess);
-
-            if (result.Status != Const.SUCCESS_UPDATE_CODE)
-            {
-                return BadRequest(result.Message);
-            }
-
-            return NoContent();
-        }*/
+            return await _packagingProcessService.Save(packagingProcess);
+        }
 
         // POST: api/PackagingProcesses
-      /*  [HttpPost]
+        [HttpPost]
         public async Task<IBusinessResult> PostPackagingProcess(PackagingProcess packagingProcess)
         {
             return await _packagingProcessService.Save(packagingProcess);
-        }*/
+        }
 
         // DELETE: api/PackagingProcesses/5
         [HttpDelete("{id}")]

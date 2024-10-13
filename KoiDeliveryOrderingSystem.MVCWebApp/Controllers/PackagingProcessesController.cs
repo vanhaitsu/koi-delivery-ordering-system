@@ -5,10 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using KoiDeliveryOrderingSystem.Data.Models;
+using KoiDeliveryOrderingSystem.MVCWebApp.Models;
 using KoiDeliveryOrderingSystem.Common;
 using Newtonsoft.Json;
 using KoiDeliveryOrderingSystem.MVCWebApp.Base;
+using KoiDeliveryOrderingSystem.Data.Models;
+using PackagingProcess = KoiDeliveryOrderingSystem.MVCWebApp.Models.PackagingProcess;
+using static NuGet.Packaging.PackagingConstants;
+using ShipmentOrder = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrder;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
@@ -50,140 +55,268 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             return View(new List<PackagingProcess>());
         }
 
+        // GET: PackagingProcesses/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        /* // GET: PackagingProcesses/Details/5
-         public async Task<IActionResult> Details(int? id)
-         {
-             if (id == null)
-             {
-                 return NotFound();
-             }
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync(Const.APIEndPoint + $"PackagingProcesses/{id}");
 
-             var packagingProcess = await _context.PackagingProcesses
-                 .Include(p => p.ShipmentOrder)
-                 .FirstOrDefaultAsync(m => m.PackagingProcessId == id);
-             if (packagingProcess == null)
-             {
-                 return NotFound();
-             }
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
 
-             return View(packagingProcess);
-         }
+                    var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                    if (result != null && result.Data != null)
+                    {
+                        var packagingProcess = JsonConvert.DeserializeObject<PackagingProcess>(result.Data.ToString());
 
-         // GET: PackagingProcesses/Create
-         public IActionResult Create()
-         {
-             ViewData["ShipmentOrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId");
-             return View();
-         }
+                        if (packagingProcess == null)
+                        {
+                            return NotFound();
+                        }
 
-         // POST: PackagingProcesses/Create
-         // To protect from overposting attacks, enable the specific properties you want to bind to.
-         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-         [HttpPost]
-         [ValidateAntiForgeryToken]
-         public async Task<IActionResult> Create([Bind("PackagingProcessId,ShipmentOrderId,PackagingType,PackagingInstructions,PackagingDate,HandlerName,QualityCheckStatus,Remarks,EstimatedPackagingTime,ActualPackagingTime,PackagingCost")] PackagingProcess packagingProcess)
-         {
-             if (ModelState.IsValid)
-             {
-                 _context.Add(packagingProcess);
-                 await _context.SaveChangesAsync();
-                 return RedirectToAction(nameof(Index));
-             }
-             ViewData["ShipmentOrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId", packagingProcess.ShipmentOrderId);
-             return View(packagingProcess);
-         }
+                        return View(packagingProcess);
+                    }
+                }
+            }
+            return NotFound();
+        }
+        // POST: PackagingProcesses/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var response = await httpClient.DeleteAsync(Const.APIEndPoint + $"PackagingProcesses/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            return View();
+        }
+        // GET: PackagingProcesses/Create
+        public async Task<IActionResult> CreateAsync()
+        {
+            var orders = new List<ShipmentOrder>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                        if (result != null && result.Data != null)
+                        {
+                            Console.WriteLine("API response: " + result.Data);
+                            orders = JsonConvert.DeserializeObject<List<ShipmentOrder>>(result.Data.ToString());
+                        }
+                    }
+                }
+            }
+            ViewData["ShipmentOrderId"] = new SelectList(orders, "OrderId", "OrderId");
+            return View();
+        }
 
-         // GET: PackagingProcesses/Edit/5
-         public async Task<IActionResult> Edit(int? id)
-         {
-             if (id == null)
-             {
-                 return NotFound();
-             }
+        // POST: PackagingProcesses/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("PackagingProcessId,ShipmentOrderId,PackagingType,PackagingInstructions,PackagingDate,HandlerName,QualityCheckStatus,Remarks,EstimatedPackagingTime,ActualPackagingTime,PackagingCost")] PackagingProcess packagingProcess)
+        {
+            bool saveStatus = false;
+            if (ModelState.IsValid)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.PostAsJsonAsync(Const.APIEndPoint + "PackagingProcess/", packagingProcess))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                            if (result != null && result.Status == Const.SUCCESS_CREATE_CODE)
+                            {
+                                saveStatus = true;
+                            }
+                            else
+                            {
+                                saveStatus = false;
+                            }
+                        }
+                    }
+                }
+            }
+            if (saveStatus)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                var orders = new List<ShipmentOrder>();
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                        if (result != null && result.Data != null)
+                        {
+                            orders = JsonConvert.DeserializeObject<List<ShipmentOrder>>(result.Data.ToString());
+                        }
+                    }
+                }
+                ViewData["ShipmentOrderId"] = new SelectList(orders, "OrderId", "OrderId", packagingProcess.ShipmentOrderId);
+            }
 
-             var packagingProcess = await _context.PackagingProcesses.FindAsync(id);
-             if (packagingProcess == null)
-             {
-                 return NotFound();
-             }
-             ViewData["ShipmentOrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId", packagingProcess.ShipmentOrderId);
-             return View(packagingProcess);
-         }
 
-         // POST: PackagingProcesses/Edit/5
-         // To protect from overposting attacks, enable the specific properties you want to bind to.
-         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-         [HttpPost]
-         [ValidateAntiForgeryToken]
-         public async Task<IActionResult> Edit(int id, [Bind("PackagingProcessId,ShipmentOrderId,PackagingType,PackagingInstructions,PackagingDate,HandlerName,QualityCheckStatus,Remarks,EstimatedPackagingTime,ActualPackagingTime,PackagingCost")] PackagingProcess packagingProcess)
-         {
-             if (id != packagingProcess.PackagingProcessId)
-             {
-                 return NotFound();
-             }
+            return View(packagingProcess);
+        }
+        // GET: PackagingProcesses/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-             if (ModelState.IsValid)
-             {
-                 try
-                 {
-                     _context.Update(packagingProcess);
-                     await _context.SaveChangesAsync();
-                 }
-                 catch (DbUpdateConcurrencyException)
-                 {
-                     if (!PackagingProcessExists(packagingProcess.PackagingProcessId))
-                     {
-                         return NotFound();
-                     }
-                     else
-                     {
-                         throw;
-                     }
-                 }
-                 return RedirectToAction(nameof(Index));
-             }
-             ViewData["ShipmentOrderId"] = new SelectList(_context.ShipmentOrders, "OrderId", "OrderId", packagingProcess.ShipmentOrderId);
-             return View(packagingProcess);
-         }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "PackagingProcesses/" + id))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                        if (result != null && result.Data != null)
+                        {
+                            var packagingProcess = JsonConvert.DeserializeObject<PackagingProcess>(result.Data.ToString());
+                            return View(packagingProcess);
+                        }
+                    }
+                }
+            }
+            return View(new PackagingProcess());
+        }
+        //GET: PackagingProcesses/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            PackagingProcess packagingProcess = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "PackagingProcesses/" + id))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                        if (result != null && result.Data != null)
+                        {
+                            packagingProcess = JsonConvert.DeserializeObject<PackagingProcess>(result.Data.ToString());
+                        }
+                    }
+                }
+            }
 
-         // GET: PackagingProcesses/Delete/5
-         public async Task<IActionResult> Delete(int? id)
-         {
-             if (id == null)
-             {
-                 return NotFound();
-             }
+            if (packagingProcess == null)
+            {
+                return NotFound();
+            }
 
-             var packagingProcess = await _context.PackagingProcesses
-                 .Include(p => p.ShipmentOrder)
-                 .FirstOrDefaultAsync(m => m.PackagingProcessId == id);
-             if (packagingProcess == null)
-             {
-                 return NotFound();
-             }
 
-             return View(packagingProcess);
-         }
+            // Get dropdown data ------------------------------------------------------------
+            var orders = new List<ShipmentOrder>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                        if (result != null && result.Data != null)
+                        {
+                            orders = JsonConvert.DeserializeObject<List<ShipmentOrder>>(result.Data.ToString());
+                        }
+                    }
+                }
+            }
+            ViewData["ShipmentOrderId"] = new SelectList(orders, "OrderId", "OrderId");
+            return View(packagingProcess);
+        }
+        // POST: ShipmentTrackings/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("PackagingProcessId,ShipmentOrderId,PackagingType,PackagingInstructions,PackagingDate,HandlerName,QualityCheckStatus,Remarks,EstimatedPackagingTime,ActualPackagingTime,PackagingCost")] PackagingProcess packagingProcess)
+        {
+            if (id != packagingProcess.PackagingProcessId)
+            {
+                return NotFound();
+            }
 
-         // POST: PackagingProcesses/Delete/5
-         [HttpPost, ActionName("Delete")]
-         [ValidateAntiForgeryToken]
-         public async Task<IActionResult> DeleteConfirmed(int id)
-         {
-             var packagingProcess = await _context.PackagingProcesses.FindAsync(id);
-             if (packagingProcess != null)
-             {
-                 _context.PackagingProcesses.Remove(packagingProcess);
-             }
-
-             await _context.SaveChangesAsync();
-             return RedirectToAction(nameof(Index));
-         }
-
-         private bool PackagingProcessExists(int id)
-         {
-             return _context.PackagingProcesses.Any(e => e.PackagingProcessId == id);
-         }*/
+            bool saveStatus = false;
+            if (ModelState.IsValid)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.PutAsJsonAsync(Const.APIEndPoint + "PackagingProcesses/" + id, packagingProcess))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                            if (result != null && result.Status == Const.SUCCESS_CREATE_CODE)
+                            {
+                                saveStatus = true;
+                            }
+                            else
+                            {
+                                saveStatus = false;
+                            }
+                        }
+                    }
+                }
+            }
+            if (saveStatus)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                var orders = new List<ShipmentOrder>();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders"))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var content = await response.Content.ReadAsStringAsync();
+                            var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                            if (result != null && result.Data != null)
+                            {
+                                orders = JsonConvert.DeserializeObject<List<ShipmentOrder>>(result.Data.ToString());
+                            }
+                        }
+                    }
+                }
+                ViewData["ShipmentOrderId"] = new SelectList(orders, "OrderId", "OrderId");
+                return View(packagingProcess);
+            }
+        }
     }
 }
+
+
+
