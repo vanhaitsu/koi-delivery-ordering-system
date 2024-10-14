@@ -20,6 +20,11 @@
             <div class="modal-body">
                 <form id="createForm">
                     <div class="form-group">
+                        <label for="packagingProcessId" class="control-label">Packaging Process ID</label>
+                        <input type="text" id="packagingProcessId" class="form-control" required />
+                        <span class="text-danger" id="packagingProcessIdError"></span>
+                    </div>
+                    <div class="form-group">
                         <label for="orderId" class="control-label">Order ID</label>
                         <select id="orderId" class="form-control" required>
                             <option value="0">Select Order ID</option>
@@ -92,7 +97,7 @@
             </div>
             <div class="modal-body">
                 <form id="editForm">
-                    <input type="hidden" id="editTrackingId" />
+                    <input type="hidden" id="editPackagingProcessId" />
                     <div class="form-group">
                         <label for="editOrderId" class="control-label">Order ID</label>
                         <select id="editOrderId" class="form-control" required>
@@ -253,28 +258,7 @@
                     alert(xhr.statusText);
                 }
             });
-        }
-
-
-        function loadShipperData() {
-            $.ajax({
-                url: 'https://localhost:7122/api/Shippers',
-                type: "GET",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (result) {
-                    var html = '';
-                    $.each(result.data, function (key, item) {
-                        html += `<option value="${item.shipperId}">${item.fullName}</option>`;
-                    });
-                    $('#shipperId, #editShipperId').append(html);
-                },
-                error: function (xhr, error) {
-                    alert(xhr.statusText);
-                }
-            });
-        }
-
+        }     
         function loadOrderData() {
             $.ajax({
                 url: 'https://localhost:7122/api/ShipmentOrders',
@@ -296,6 +280,7 @@
 
         function submitPackagingProcessForm() {
             const formData = {
+                PackagingProcessId: $('#packagingProcessId').val(),
                 PackagingType: $('#packagingType').val(),
                 PackagingInstructions: $('#packagingInstructions').val(),
                 PackagingDate: $('#packagingDate').val(),
@@ -329,14 +314,14 @@
 
 
 
-        function showEditModal(trackingId) {
+        function showEditModal(packagingProcessId) {
             $.ajax({
-                url: `https://localhost:7122/api/PackagingProcesses/${trackingId}`,
+                url: `https://localhost:7122/api/PackagingProcesses/${packagingProcessId}`,
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    $('#editTrackingId').val(data.data.trackingId);
+                    $('#editPackagingProcessId').val(data.data.packagingProcessId);
                     $('#editOrderId').val(data.data.orderId);
                     $('#editPackagingType').val(data.data.packagingType);
                     $('#editPackagingInstructions').val(data.data.packagingInstructions);
@@ -354,10 +339,9 @@
                 }
             });
         }
-
         function updatePackagingProcess() {
             const formData = {
-                TrackingId: $('#editTrackingId').val(),
+                PackagingProcessId: $('#editPackagingProcessId').val(),
                 OrderId: $('#editOrderId').val(),
                 PackagingType: $('#editPackagingType').val(),
                 PackagingInstructions: $('#editPackagingInstructions').val(),
@@ -371,11 +355,12 @@
             };
 
             $.ajax({
-                url: `https://localhost:7122/api/PackagingProcesses/${formData.TrackingId}`,
+                url: `https://localhost:7122/api/PackagingProcesses/${formData.PackagingProcessId}`,
                 type: "PUT",
                 contentType: "application/json;charset=utf-8",
                 data: JSON.stringify(formData),
                 success: function (data) {
+                    loadData();
                     $('#edit').modal('hide');
                     alert('Cập nhật Packaging Process thành công');
                 },
@@ -383,8 +368,8 @@
                     alert(xhr.statusText);
                 }
             });
-
         }
+
         function showDetailsModal(packagingProcessId) {
             $.ajax({
                 url: 'https://localhost:7122/api/PackagingProcesses/' + packagingProcessId,
