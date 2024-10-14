@@ -3,7 +3,7 @@ namespace KoiDeliveryOrderingSystem.Common
 {
     public class Const
     {
-        public static string APIEndPoint = "https://localhost:7278/api/";
+        public static string APIEndPoint = "https://localhost:7122/api/";
         
         #region Error Codes
 
