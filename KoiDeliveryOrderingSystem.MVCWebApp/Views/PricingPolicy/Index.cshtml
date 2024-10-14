@@ -1,0 +1,50 @@
+﻿@model IEnumerable<KoiDeliveryOrderingSystem.MVCWebApp.Models.PricingPolicy>
+@{
+    ViewData["Title"] = "Index";
+}
+<h1 style="font-size: 24px; font-weight: bold;">Index</h1>
+
+<p>
+    <a asp-action="Create" style="color: #1d72b8; text-decoration: none;">Create New</a>
+</p>
+
+<div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <thead>
+            <tr style="background-color: #f9f9f9; border-bottom: 1px solid #ddd;">
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PricingId)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.WeightRange)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.ShippingMethod)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.BasePrice)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.AdditionalServicePrice)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.InsuranceFee)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.CustomsFee)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.Currency)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.EffectiveDate)</th>
+                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.ExpiryDate)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="border-bottom: 1px solid #ddd;">
+          <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PricingId)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.WeightRange)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.ShippingMethod)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.BasePrice)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.AdditionalServicePrice)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.InsuranceFee)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.CustomsFee)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.Currency)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.EffectiveDate)</td>
+                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.ExpiryDate)</td>
+                    <td style="padding: 8px 12px;">
+                        <a asp-action="Edit" asp-route-id="@item.PricingId" style="color: #1d72b8;">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.PricingId" style="color: #1d72b8;">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PricingId" style="color: #1d72b8;">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
