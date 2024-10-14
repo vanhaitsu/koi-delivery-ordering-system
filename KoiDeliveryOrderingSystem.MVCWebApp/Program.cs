@@ -1,4 +1,3 @@
-using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Data.Repository;
 using KoiDeliveryOrderingSystem.Service;
 
@@ -14,8 +13,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<ShipmentTrackingService>();
 builder.Services.AddScoped<ShipmentTrackingRepository>();
 
-//builder.Services.AddScoped<ShipmentOrderDetailService>();
-builder.Services.AddScoped<ShipmentTrackingRepository>();
+builder.Services.AddScoped<ShipmentOrderDetailService>();
+builder.Services.AddScoped<ShipmentOrderDetailRepository>();
+
 builder.Services.AddScoped<PackagingProcessRepository>();
 builder.Services.AddScoped<PackagingProcessService>();
 var app = builder.Build();
