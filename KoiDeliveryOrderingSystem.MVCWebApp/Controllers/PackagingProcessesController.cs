@@ -136,7 +136,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             {
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.PostAsJsonAsync(Const.APIEndPoint + "PackagingProcess/", packagingProcess))
+                    using (var response = await httpClient.PostAsJsonAsync(Const.APIEndPoint + "PackagingProcesses/", packagingProcess))
                     {
                         if (response.IsSuccessStatusCode)
                         {

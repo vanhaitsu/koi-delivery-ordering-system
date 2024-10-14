@@ -1,4 +1,4 @@
-﻿@model KoiDeliveryOrderingSystem.Data.Models.PackagingProcess
+﻿@model KoiDeliveryOrderingSystem.MVCWebApp.Models.PackagingProcess
 
 @{
     ViewData["Title"] = "Create";
@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="PackagingProcessId" class="control-label"></label>
-                <input asp-for="PackagingProcessId" class="form-control" readonly />
+                <input asp-for="PackagingProcessId" class="form-control"  />
                 <span asp-validation-for="PackagingProcessId" class="text-danger"></span>
             </div>
             <div class="form-group">

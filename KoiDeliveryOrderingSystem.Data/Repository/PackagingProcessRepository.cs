@@ -27,7 +27,7 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
         }
         public async Task<PackagingProcess> GetByIdAsync(int id)
         {
-            var packagingProcess = await _context.PackagingProcesses
+            var packagingProcess = await _context.PackagingProcesses.AsNoTracking()
                                                  .Include(x => x.ShipmentOrder)  
                                                  .FirstOrDefaultAsync(x => x.PackagingProcessId == id); 
             return packagingProcess;
