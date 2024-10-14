@@ -118,6 +118,7 @@ namespace KoiDeliveryOrderingSystem.Service
 
                 if (shipmentTrackingTmp != null)
                 {
+                    shipmentTrackingTmp.PackagingProcessId = packagingProcess.PackagingProcessId;
                     shipmentTrackingTmp.ShipmentOrderId = packagingProcess.ShipmentOrderId;
                     shipmentTrackingTmp.PackagingType = packagingProcess.PackagingType;
                     shipmentTrackingTmp.PackagingCost = packagingProcess.PackagingCost;
