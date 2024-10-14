@@ -19,6 +19,10 @@ builder.Services.AddScoped<HealthCheckService>();
 builder.Services.AddScoped<HealCheckRepository>();
 builder.Services.AddScoped<PackagingProcessRepository>();
 builder.Services.AddScoped<PackagingProcessService>();
+
+builder.Services.AddScoped<ShipmentOrderDetailRepository>();
+builder.Services.AddScoped<ShipmentOrderDetailService>();
+
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>

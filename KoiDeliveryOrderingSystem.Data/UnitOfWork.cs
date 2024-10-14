@@ -15,6 +15,7 @@ namespace KoiDeliveryOrderingSystem.Data
         private ShipperRepository shipperRepository;
         private HealCheckRepository healCheckRepository;
         private PackagingProcessRepository packagingProcessRepository;
+        private ShipmentOrderDetailRepository shipmentOrderDetailRepository;
 
         public UnitOfWork()
         {
@@ -28,6 +29,7 @@ namespace KoiDeliveryOrderingSystem.Data
             get { return healCheckRepository ??= new HealCheckRepository(); }
         }
         public PackagingProcessRepository PackagingProcessRepository => packagingProcessRepository ??= new PackagingProcessRepository(context);
+        public ShipmentOrderDetailRepository ShipmentOrderDetailRepository => shipmentOrderDetailRepository ??= new ShipmentOrderDetailRepository(context);
 
         ////TO-DO CODE HERE/////////////////
 
