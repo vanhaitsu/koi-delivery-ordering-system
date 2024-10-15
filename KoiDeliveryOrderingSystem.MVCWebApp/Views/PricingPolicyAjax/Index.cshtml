@@ -274,23 +274,23 @@
             });
         }
 
-        function showEditModal(healthCheckId) {
+        function showEditModal(pricingId) {
             $.ajax({
                 url: `https://localhost:7122/api/PricingPolicy/${pricingId}`,
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    $('#editPricingId').val(data.data.pricingId);
-                    $('#editWeightRange').val(data.data.weightRange);
-                    $('#editShippingMethod').val(data.data.shippingMethod);
-                    $('#editBasePrice').val(data.data.basePrice);
-                    $('#editAdditionalServicePrice').val(data.data.additionalServicePrice);
-                    $('#editInsuranceFee').val(data.data.insuranceFee);
-                    $('#editCustomsFee').val(data.data.customsFee);
-                    $('#editCurrency').val(data.data.currency);
-                    $('#editEffectiveDate').val(data.data.effectiveDate);
-                    $('#editExpriryDate').val(data.data.expiryDate);
+                    $('#editPricingId').val(data.pricingId);
+                    $('#editWeightRange').val(data.weightRange);
+                    $('#editShippingMethod').val(data.shippingMethod);
+                    $('#editBasePrice').val(data.basePrice);
+                    $('#editAdditionalServicePrice').val(data.additionalServicePrice);
+                    $('#editInsuranceFee').val(data.insuranceFee);
+                    $('#editCustomsFee').val(data.customsFee);
+                    $('#editCurrency').val(data.currency);
+                    $('#editEffectiveDate').val(data.effectiveDate);
+                    $('#editExpriryDate').val(data.expiryDate);
                     $('#edit').modal('show');
                 },
                 error: function (xhr) {
@@ -328,7 +328,7 @@
             });
         }
 
-        function showDetailsModal(healthCheckId) {
+        function showDetailsModal(pricingId) {
             $.ajax({
                 url: `https://localhost:7122/api/PricingPolicy/${pricingId}`,
                 type: "GET",
@@ -343,8 +343,8 @@
                     html += `<p><strong>Insurance Fee:</strong> ${data.data.insuranceFee}</p>`;
                     html += `<p><strong>Customs Fee:</strong> ${data.data.customsFee}</p>`;
                     html += `<p><strong>Currency:</strong> ${data.data.currency}</p>`;
-                    html += `<p><strong>Effective Date:</strong> ${effectiveDate ? new Date(data.data.effectiveDate).toLocaleString() : ''} < /p>`;
-                    html += `<p><strong>Expiry Date:</strong> ${expiryDate ? new Date(data.data.expiryDate).toLocaleString() : ''} < /p>`;
+                    html += `<p><strong>Effective Date:</strong> ${effectiveDate ? new Date(data.data.effectiveDate).toLocaleString() : ''} </p>`;
+                    html += `<p><strong>Expiry Date:</strong> ${expiryDate ? new Date(data.data.expiryDate).toLocaleString() : ''} </p>`;
                     $('#detailsContent').html(html);
                     $('#details').modal('show');
                 },
@@ -354,7 +354,7 @@
             });
         }
 
-        function deleteHealthCheck(healthCheckId) {
+        function deleteHealthCheck(pricingId) {
             $('#confirmDelete').off('click').on('click', function () {
                 $.ajax({
                     url: `https://localhost:7122/api/PricingPolicy/${pricingId}`,
