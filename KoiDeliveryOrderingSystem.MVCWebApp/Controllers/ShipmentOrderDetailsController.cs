@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Common;
 using Newtonsoft.Json;
 using KoiDeliveryOrderingSystem.MVCWebApp.Base;
-using KoiDeliveryOrderingSystem.MVCWebApp.Models;
 using AnimalType = KoiDeliveryOrderingSystem.MVCWebApp.Models.AnimalType;
-using ShipmentOrderDetail = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrderDetail;
+//using ShipmentOrderDetail = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrderDetail;
 using ShipmentOrder = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrder;
+using KoiDeliveryOrderingSystem.Data.Models;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
@@ -18,7 +17,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails"))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -45,7 +44,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails/" + id))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail/" + id))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -115,7 +114,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             {
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.PostAsJsonAsync(Const.APIEndPoint + "ShipmentOrderDetails/", shipmentOrderDetail))
+                    using (var response = await httpClient.PostAsJsonAsync(Const.APIEndPoint + "ShipmentOrderDetail/", shipmentOrderDetail))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -171,7 +170,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             ShipmentOrderDetail shipmentOrderDetail = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails/" + id))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail/" + id))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -247,7 +246,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             {
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.PutAsJsonAsync(Const.APIEndPoint + "ShipmentOrderDetails/" + id, shipmentOrderDetail))
+                    using (var response = await httpClient.PutAsJsonAsync(Const.APIEndPoint + "ShipmentOrderDetail/" + id, shipmentOrderDetail))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -321,7 +320,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             ShipmentOrderDetail shipmentOrderDetail = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails/" + id))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail/" + id))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -353,7 +352,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             {
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.DeleteAsync(Const.APIEndPoint + "ShipmentOrderDetails/" + id))
+                    using (var response = await httpClient.DeleteAsync(Const.APIEndPoint + "ShipmentOrderDetail/" + id))
                     {
                         if (response.IsSuccessStatusCode)
                         {
