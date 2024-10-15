@@ -23,6 +23,15 @@
         <input type="text" class="form-control" id="ShipmentMethod" name="ShipmentMethod" placeholder="Enter shipment method" value="@ViewData["ShipmentMethod"]" />
     </div>
     <div class="flex-fill">
+        <select class="form-control" id="OrderStatus" name="OrderStatus">
+            <option value="">Select Order Status</option>
+            <option value="Pending" selected="@(ViewData["OrderStatus"] == "Pending")">Pending</option>
+            <option value="Shipped" selected="@(ViewData["OrderStatus"] == "Shipped")">Shipped</option>
+            <option value="Deliveried" selected="@(ViewData["OrderStatus"] == "Deliveried")">Deliveried</option>
+            <option value="Cancelled" selected="@(ViewData["OrderStatus"] == "Cancelled")">Cancelled</option>
+        </select>
+    </div>
+    <div class="flex-fill">
         <select class="form-control" id="OrderDateSort" name="OrderDateSort">
             <option value="">Sort by Order Date</option>
             <option value="asc" selected="@(ViewData["OrderDateSort"] == "asc")">Ascending</option>

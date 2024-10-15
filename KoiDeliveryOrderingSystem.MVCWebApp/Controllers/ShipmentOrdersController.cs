@@ -26,7 +26,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         // GET: ShipmentOrders
        
 
-        public async Task<IActionResult> Index(string originLocation, string destinationLocation, string additionalServices, string shipmentMethod, string orderDateSort, string totalQuantitySort, int page = 1)
+        public async Task<IActionResult> Index(string originLocation, string destinationLocation, string additionalServices, string shipmentMethod, string orderDateSort, string totalQuantitySort, string orderStatus, int page = 1)
         {
             List<Data.Models.ShipmentOrder> data = new List<Data.Models.ShipmentOrder>();
 
@@ -48,37 +48,40 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 
             if (!string.IsNullOrEmpty(originLocation))
             {
-                data = data.Where(x => x.OriginLocation.Contains(originLocation, StringComparison.OrdinalIgnoreCase)).ToList();
+                data = data.Where(_ => _.OriginLocation.Contains(originLocation, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             if (!string.IsNullOrEmpty(destinationLocation))
             {
-                data = data.Where(x => x.DestinationLocation.Contains(destinationLocation, StringComparison.OrdinalIgnoreCase)).ToList();
+                data = data.Where(_ => _.DestinationLocation.Contains(destinationLocation, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             if (!string.IsNullOrEmpty(additionalServices))
             {
-                data = data.Where(x => x.AdditionalServices.Contains(additionalServices, StringComparison.OrdinalIgnoreCase)).ToList();
+                data = data.Where(_ => _.AdditionalServices.Contains(additionalServices, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             if (!string.IsNullOrEmpty(shipmentMethod))
             {
-                data = data.Where(x => x.ShipmentMethod.Contains(shipmentMethod, StringComparison.OrdinalIgnoreCase)).ToList();
+                data = data.Where(_ => _.ShipmentMethod.Contains(shipmentMethod, StringComparison.OrdinalIgnoreCase)).ToList();
             }
-
+            if (!string.IsNullOrEmpty(orderStatus))
+            {
+                data = data.Where(_ => _.OrderStatus.Equals(orderStatus, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
             if (orderDateSort == "asc")
             {
-                data = data.OrderBy(x => x.OrderDate).ToList();
+                data = data.OrderBy(_ => _.OrderDate).ToList();
             }
             else if (orderDateSort == "desc")
             {
-                data = data.OrderByDescending(x => x.OrderDate).ToList();
+                data = data.OrderByDescending(_ => _.OrderDate).ToList();
             }
 
             if (totalQuantitySort == "asc")
             {
-                data = data.OrderBy(x => x.TotalQuantity).ToList();
+                data = data.OrderBy(_ => _.TotalQuantity).ToList();
             }
             else if (totalQuantitySort == "desc")
             {
-                data = data.OrderByDescending(x => x.TotalQuantity).ToList();
+                data = data.OrderByDescending(_ => _.TotalQuantity).ToList();
             }
 
             int pageSize = 3; 
@@ -91,6 +94,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             ViewData["AdditionalServices"] = additionalServices;
             ViewData["ShipmentMethod"] = shipmentMethod;
             ViewData["OrderDateSort"] = orderDateSort;
+            ViewData["OrderStatus"] = orderStatus;
             ViewData["TotalQuantitySort"] = totalQuantitySort;
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
