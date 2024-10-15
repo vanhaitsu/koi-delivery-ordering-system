@@ -1,0 +1,101 @@
+﻿@model IEnumerable<KoiDeliveryOrderingSystem.Data.Models.ShipmentOrder>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form method="get" asp-action="Index" class="d-flex mb-4 align-items-end" style="gap: 10px;">
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="OriginLocation" name="OriginLocation" placeholder="Enter origin location" value="@ViewData["OriginLocation"]" />
+    </div>
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="DestinationLocation" name="DestinationLocation" placeholder="Enter destination location" value="@ViewData["DestinationLocation"]" />
+    </div>
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="AdditionalServices" name="AdditionalServices" placeholder="Enter additional services" value="@ViewData["AdditionalServices"]" />
+    </div>
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="ShipmentMethod" name="ShipmentMethod" placeholder="Enter shipment method" value="@ViewData["ShipmentMethod"]" />
+    </div>
+    <div class="flex-fill">
+        <select class="form-control" id="OrderDateSort" name="OrderDateSort">
+            <option value="">Sort by Order Date</option>
+            <option value="asc" selected="@(ViewData["OrderDateSort"] == "asc")">Ascending</option>
+            <option value="desc" selected="@(ViewData["OrderDateSort"] == "desc")">Descending</option>
+        </select>
+    </div>
+    <div class="flex-fill">
+        <select class="form-control" id="TotalQuantitySort" name="TotalQuantitySort">
+            <option value="">Sort by Total Quantity</option>
+            <option value="asc" selected="@(ViewData["TotalQuantitySort"] == "asc")">Ascending</option>
+            <option value="desc" selected="@(ViewData["TotalQuantitySort"] == "desc")">Descending</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
+            <th>@Html.DisplayNameFor(model => model.OriginLocation)</th>
+            <th>@Html.DisplayNameFor(model => model.DestinationLocation)</th>
+            <th>@Html.DisplayNameFor(model => model.TotalWeight)</th>
+            <th>@Html.DisplayNameFor(model => model.TotalQuantity)</th>
+            <th>@Html.DisplayNameFor(model => model.ShipmentMethod)</th>
+            <th>@Html.DisplayNameFor(model => model.AdditionalServices)</th>
+            <th>@Html.DisplayNameFor(model => model.AdditionalFee)</th>
+            <th>@Html.DisplayNameFor(model => model.OrderStatus)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.OriginLocation)</td>
+                <td>@Html.DisplayFor(modelItem => item.DestinationLocation)</td>
+                <td>@Html.DisplayFor(modelItem => item.TotalWeight)</td>
+                <td>@Html.DisplayFor(modelItem => item.TotalQuantity)</td>
+                <td>@Html.DisplayFor(modelItem => item.ShipmentMethod)</td>
+                <td>@Html.DisplayFor(modelItem => item.AdditionalServices)</td>
+                <td>@Html.DisplayFor(modelItem => item.AdditionalFee)</td>
+                <td>@Html.DisplayFor(modelItem => item.OrderStatus)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-OriginLocation="@ViewData["OriginLocation"]" asp-route-DestinationLocation="@ViewData["DestinationLocation"]" asp-route-AdditionalServices="@ViewData["AdditionalServices"]" asp-route-ShipmentMethod="@ViewData["ShipmentMethod"]">Previous</a>
+            </li>
+        }
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-OriginLocation="@ViewData["OriginLocation"]" asp-route-DestinationLocation="@ViewData["DestinationLocation"]" asp-route-AdditionalServices="@ViewData["AdditionalServices"]" asp-route-ShipmentMethod="@ViewData["ShipmentMethod"]">@i</a>
+            </li>
+        }
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-OriginLocation="@ViewData["OriginLocation"]" asp-route-DestinationLocation="@ViewData["DestinationLocation"]" asp-route-AdditionalServices="@ViewData["AdditionalServices"]" asp-route-ShipmentMethod="@ViewData["ShipmentMethod"]">Next</a>
+            </li>
+        }
+    </ul>
+</nav>

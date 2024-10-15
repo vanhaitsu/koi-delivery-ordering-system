@@ -145,14 +145,16 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
             entity.Property(e => e.ShippingMethod).HasMaxLength(100);
             entity.Property(e => e.WeightRange).HasMaxLength(100);
         });
-
         modelBuilder.Entity<ShipmentOrder>(entity =>
         {
-            entity.HasKey(e => e.OrderId).HasName("PK__Shipment__C3905BCFC66CB96B");
+            entity.HasKey(e => e.OrderId)
+                .HasName("PK__Shipment__C3905BCFC66CB96B");
 
             entity.ToTable("ShipmentOrder");
 
-            entity.Property(e => e.OrderId).ValueGeneratedNever();
+            entity.Property(e => e.OrderId)
+                .ValueGeneratedOnAdd();
+
             entity.Property(e => e.AdditionalFee).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.AdditionalServices).HasMaxLength(255);
             entity.Property(e => e.DestinationLocation).HasMaxLength(255);
@@ -162,14 +164,17 @@ public partial class FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext : Db
             entity.Property(e => e.ShipmentMethod).HasMaxLength(100);
             entity.Property(e => e.TotalWeight).HasColumnType("decimal(18, 2)");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.ShipmentOrders)
+            entity.HasOne(d => d.Customer)
+                .WithMany(p => p.ShipmentOrders)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK__ShipmentO__Custo__6383C8BA");
 
-            entity.HasOne(d => d.Pricing).WithMany(p => p.ShipmentOrders)
+            entity.HasOne(d => d.Pricing)
+                .WithMany(p => p.ShipmentOrders)
                 .HasForeignKey(d => d.PricingId)
                 .HasConstraintName("FK__ShipmentO__Prici__6477ECF3");
         });
+
 
         modelBuilder.Entity<ShipmentOrderDetail>(entity =>
         {

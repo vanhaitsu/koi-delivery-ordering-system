@@ -1,0 +1,453 @@
+﻿@{
+    ViewData["Title"] = "Shipment Orders";
+}
+
+<h1>Shipment Orders</h1>
+
+<!-- Create Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
+    Create New
+</button>
+
+<!-- Create Modal -->
+<div class="modal fade" id="create" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createModalLabel">Create Shipment Order</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <form id="createForm">
+                        <div class="form-group">
+                            <label for="customerId" class="control-label">Customer</label>
+                            <select id="customerId" class="form-control" required>
+                            </select>
+                            <span class="text-danger" id="customerIdError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="pricingId" class="control-label">Pricing</label>
+                            <select id="pricingId" class="form-control" required>
+                            </select>
+                            <span class="text-danger" id="pricingIdError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="orderDate" class="control-label">Order Date</label>
+                            <input type="datetime-local" id="orderDate" class="form-control" required />
+                            <span class="text-danger" id="orderDateError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="originLocation" class="control-label">Origin Location</label>
+                            <input type="text" id="originLocation" class="form-control" required />
+                            <span class="text-danger" id="originLocationError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="destinationLocation" class="control-label">Destination Location</label>
+                            <input type="text" id="destinationLocation" class="form-control" required />
+                            <span class="text-danger" id="destinationLocationError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="totalWeight" class="control-label">Total Weight</label>
+                            <input type="number" id="totalWeight" class="form-control" required />
+                            <span class="text-danger" id="totalWeightError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="totalQuantity" class="control-label">Total Quantity</label>
+                            <input type="number" id="totalQuantity" class="form-control" required />
+                            <span class="text-danger" id="totalQuantityError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipmentMethod" class="control-label">Shipment Method</label>
+                            <input type="text" id="shipmentMethod" class="form-control" required />
+                            <span class="text-danger" id="shipmentMethodError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalServices" class="control-label">Additional Services</label>
+                            <input type="text" id="additionalServices" class="form-control" />
+                            <span class="text-danger" id="additionalServicesError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalFee" class="control-label">Additional Fee</label>
+                            <input type="number" id="additionalFee" class="form-control" />
+                            <span class="text-danger" id="additionalFeeError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="orderStatus" class="control-label">Order Status</label>
+                            <input type="text" id="orderStatus" class="form-control" required />
+                            <span class="text-danger" id="orderStatusError"></span>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="button" form="createForm" value="Create" class="btn btn-primary" onclick="submitShipmentOrderForm()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editModalLabel">Edit Shipment Order</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="form-group">
+                            <label for="editOrderId" class="control-label">OrderID</label>
+                            <input type="text" id="editOrderId" class="form-control" readonly />
+                            <span class="text-danger" id="editOrderIdError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editCustomerId" class="control-label">Customer</label>
+                            <select id="editCustomerId" class="form-control" required>
+                            </select>
+                            <span class="text-danger" id="editCustomerIdError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPricingId" class="control-label">Pricing</label>
+                            <select id="editPricingId" class="form-control" required>
+                            </select>
+                            <span class="text-danger" id="editPricingIdError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOrderDate" class="control-label">Order Date</label>
+                            <input type="datetime-local" id="editOrderDate" class="form-control" required />
+                            <span class="text-danger" id="editOrderDateError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOriginLocation" class="control-label">Origin Location</label>
+                            <input type="text" id="editOriginLocation" class="form-control" required />
+                            <span class="text-danger" id="editOriginLocationError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDestinationLocation" class="control-label">Destination Location</label>
+                            <input type="text" id="editDestinationLocation" class="form-control" required />
+                            <span class="text-danger" id="editDestinationLocationError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTotalWeight" class="control-label">Total Weight</label>
+                            <input type="number" id="editTotalWeight" class="form-control" required />
+                            <span class="text-danger" id="editTotalWeightError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTotalQuantity" class="control-label">Total Quantity</label>
+                            <input type="number" id="editTotalQuantity" class="form-control" required />
+                            <span class="text-danger" id="editTotalQuantityError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editShipmentMethod" class="control-label">Shipment Method</label>
+                            <input type="text" id="editShipmentMethod" class="form-control" required />
+                            <span class="text-danger" id="editShipmentMethodError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAdditionalServices" class="control-label">Additional Services</label>
+                            <input type="text" id="editAdditionalServices" class="form-control" />
+                            <span class="text-danger" id="editAdditionalServicesError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editAdditionalFee" class="control-label">Additional Fee</label>
+                            <input type="number" id="editAdditionalFee" class="form-control" />
+                            <span class="text-danger" id="editAdditionalFeeError"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOrderStatus" class="control-label">Order Status</label>
+                            <input type="text" id="editOrderStatus" class="form-control" required />
+                            <span class="text-danger" id="editOrderStatusError"></span>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="button" form="editForm" value="Save Changes" class="btn btn-primary" onclick="updateShipmentOrder()" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="details" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="detailsModalLabel">Shipment Order Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsContent"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmation" tabindex="-1" aria-labelledby="deleteConfirmationLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteConfirmationLabel">Confirm Deletion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this shipment order?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer ID</th>
+            <th>Pricing ID</th>
+            <th>Order Date</th>
+            <th>Origin Location</th>
+            <th>Destination Location</th>
+            <th>Total Weight</th>
+            <th>Total Quantity</th>
+            <th>Shipment Method</th>
+            <th>Additional Services</th>
+            <th>Additional Fee</th>
+            <th>Order Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody class="ShipmentOrders"></tbody>
+</table>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadShipmentOrders();
+            loadCustomers();
+            loadPricingDetails();
+        });
+
+        function loadShipmentOrders() {
+            $.ajax({
+                url: 'https://localhost:7122/api/ShipmentOrders',
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var html = '';
+                    $.each(result.data, function (key, item) {
+                        html += '<tr>';
+                        html += '<td>' + item.orderId + '</td>';
+                        html += '<td>' + item.customerId + '</td>';
+                        html += '<td>' + item.pricingId + '</td>';
+                        html += '<td>' + new Date(item.orderDate).toLocaleString() + '</td>';
+                        html += '<td>' + item.originLocation + '</td>';
+                        html += '<td>' + item.destinationLocation + '</td>';
+                        html += '<td>' + item.totalWeight + '</td>';
+                        html += '<td>' + item.totalQuantity + '</td>';
+                        html += '<td>' + item.shipmentMethod + '</td>';
+                        html += '<td>' + item.additionalServices + '</td>';
+                        html += '<td>' + item.additionalFee + '</td>';
+                        html += '<td>' + item.orderStatus + '</td>';
+                        html += '<td>';
+                        html += `<a href="#" onclick="showEditModal(${item.orderId})">Edit</a> | `;
+                        html += `<a href="#" onclick="showDetailsModal(${item.orderId})">Details</a> | `;
+                        html += `<a href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmation" onclick="deleteShipmentOrder(${item.orderId})">Delete</a>`;
+                        html += '</td>';
+                        html += '</tr>';
+                    });
+                    $('.ShipmentOrders').html(html);
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function loadCustomers() {
+            $.ajax({
+                url: 'https://localhost:7122/api/Users',
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var html = '';
+                    $.each(result.data, function (key, item) {
+                        html += `<option value="${item.customerId}">${item.customerId}</option>`;
+                    });
+                    $('#customerId, #editCustomerId').append(html);
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function loadPricingDetails() {
+            $.ajax({
+                url: 'https://localhost:7122/api/PricingPolicy',
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var html = '';
+                    $.each(result.data, function (key, item) {
+                        html += `<option value="${item.pricingId}">${item.pricingId}</option>`;
+                    });
+                    $('#pricingId, #editPricingId').append(html);
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function submitShipmentOrderForm() {
+            const formData = {
+                CustomerId: $('#customerId').val(),
+                PricingId: $('#pricingId').val(),
+                OrderDate: $('#orderDate').val(),
+                OriginLocation: $('#originLocation').val(),
+                DestinationLocation: $('#destinationLocation').val(),
+                TotalWeight: $('#totalWeight').val(),
+                TotalQuantity: $('#totalQuantity').val(),
+                ShipmentMethod: $('#shipmentMethod').val(),
+                AdditionalServices: $('#additionalServices').val(),
+                AdditionalFee: $('#additionalFee').val(),
+                OrderStatus: $('#orderStatus').val(),
+            };
+            console.log(formData);
+            $.ajax({
+                url: 'https://localhost:7122/api/ShipmentOrders',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    loadShipmentOrders();
+                    $('#createForm')[0].reset();
+                    $('#create').modal('hide');
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function showEditModal(orderId) {
+            $.ajax({
+                url: `https://localhost:7122/api/ShipmentOrders/${orderId}`,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $('#editOrderId').val(data.data.orderId);
+                    $('#editCustomerId').val(data.data.customerId);
+                    $('#editPricingId').val(data.data.pricingId);
+                    $('#editOrderDate').val(data.data.orderDate);
+                    $('#editOriginLocation').val(data.data.originLocation);
+                    $('#editDestinationLocation').val(data.data.destinationLocation);
+                    $('#editTotalWeight').val(data.data.totalWeight);
+                    $('#editTotalQuantity').val(data.data.totalQuantity);
+                    $('#editShipmentMethod').val(data.data.shipmentMethod);
+                    $('#editAdditionalServices').val(data.data.additionalServices);
+                    $('#editAdditionalFee').val(data.data.additionalFee);
+                    $('#editOrderStatus').val(data.data.orderStatus);
+                    $('#edit').modal('show');
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function updateShipmentOrder() {
+            const formData = {
+                OrderId: $('#editOrderId').val(),
+                CustomerId: $('#editCustomerId').val(),
+                PricingId: $('#editPricingId').val(),
+                OrderDate: $('#editOrderDate').val(),
+                OriginLocation: $('#editOriginLocation').val(),
+                DestinationLocation: $('#editDestinationLocation').val(),
+                TotalWeight: $('#editTotalWeight').val(),
+                TotalQuantity: $('#editTotalQuantity').val(),
+                ShipmentMethod: $('#editShipmentMethod').val(),
+                AdditionalServices: $('#editAdditionalServices').val(),
+                AdditionalFee: $('#editAdditionalFee').val(),
+                OrderStatus: $('#editOrderStatus').val(),
+            };
+
+            $.ajax({
+                url: `https://localhost:7122/api/ShipmentOrders/${formData.OrderId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    loadShipmentOrders();
+                    $('#edit').modal('hide');
+                    alert('Cập nhật Packaging Process thành công');
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function showDetailsModal(orderId) {
+            $.ajax({
+                url: `https://localhost:7122/api/ShipmentOrders/${orderId}`,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    let html = `<p><strong>Order ID:</strong> ${data.data.orderId}</p>`;
+                    html += `<p><strong>Customer ID:</strong> ${data.data.customerId}</p>`;
+                    html += `<p><strong>Pricing ID:</strong> ${data.data.pricingId}</p>`;
+                    html += `<p><strong>Order Date:</strong> ${new Date(data.data.orderDate).toLocaleString()}</p>`;
+                    html += `<p><strong>Origin Location:</strong> ${data.data.originLocation}</p>`;
+                    html += `<p><strong>Destination Location:</strong> ${data.data.destinationLocation}</p>`;
+                    html += `<p><strong>Total Weight:</strong> ${data.data.totalWeight}</p>`;
+                    html += `<p><strong>Total Quantity:</strong> ${data.data.totalQuantity}</p>`;
+                    html += `<p><strong>Shipment Method:</strong> ${data.data.shipmentMethod}</p>`;
+                    html += `<p><strong>Additional Services:</strong> ${data.data.additionalServices}</p>`;
+                    html += `<p><strong>Additional Fee:</strong> ${data.data.additionalFee}</p>`;
+                    html += `<p><strong>Order Status:</strong> ${data.data.orderStatus}</p>`;
+                    $('#detailsContent').html(html);
+                    $('#details').modal('show');
+                },
+                error: function (xhr) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function deleteShipmentOrder(id) {
+            $('#confirmDelete').off('click').on('click', function () {
+                $.ajax({
+                    url: 'https://localhost:7122/api/ShipmentOrders/' + id,
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    success: function () {
+                        loadShipmentOrders();
+                        $('#deleteConfirmation').modal('hide');
+                    },
+                    error: function (xhr) {
+                        alert(xhr.statusText);
+                    }
+                });
+            });
+        }
+    </script>
+}

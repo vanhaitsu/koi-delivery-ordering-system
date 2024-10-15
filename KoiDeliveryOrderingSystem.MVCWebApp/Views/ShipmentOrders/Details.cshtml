@@ -1,0 +1,84 @@
+﻿@model KoiDeliveryOrderingSystem.Data.Models.ShipmentOrder
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ShipmentOrder</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OriginLocation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OriginLocation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DestinationLocation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DestinationLocation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalWeight)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TotalWeight)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalQuantity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TotalQuantity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ShipmentMethod)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ShipmentMethod)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AdditionalServices)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AdditionalServices)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AdditionalFee)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AdditionalFee)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderStatus)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrderStatus)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Customer.CustomerId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Pricing)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Pricing.PricingId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.OrderId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
