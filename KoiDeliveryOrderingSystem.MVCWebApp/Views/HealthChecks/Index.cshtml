@@ -4,7 +4,58 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>HealthCheck</h1>
+
+<!-- Search Form -->
+<form method="get" class="mb-4">
+    <div class="row g-2 align-items-center">
+        <div class="col-md-9">
+            <input type="text" name="search" class="form-control" placeholder="Search..." value="@ViewBag.Search" />
+        </div>
+        <div class="col-md-3 text-end">
+            <input type="submit" value="Search" class="btn btn-primary w-100" />
+        </div>
+    </div>
+</form>
+
+<!-- Filter Dropdown Form -->
+<form method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label for="orderByDescending" class="form-label">Order</label>
+            <select name="orderByDescending" class="form-select">
+                <option value="">-- Select Order --</option>
+                <option value="true">Ascending</option>
+                <option value="false">Descending</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="order" class="form-label">Order Type</label>
+            <select name="order" class="form-select">
+                <option value="">-- Select Order Type --</option>
+                <option value="id">Id</option>
+                <option value="doctorName">Doctor Name</option>
+                <option value="temperature">Temperature</option>
+                <option value="weight">Weight</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="packagingType" class="form-label">Package Type</label>
+            <select name="packagingType" class="form-select">
+                <option value="">-- Select Package Type --</option>
+                <option value="Box">Box</option>
+                <option value="Paper">Paper</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col text-end">
+            <input type="submit" value="Apply Filters" class="btn btn-success" />
+        </div>
+    </div>
+</form>
+
+
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -35,11 +86,11 @@
             </th>
            @*  <th>
                 @Html.DisplayNameFor(model => model.Recommendations)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.PackagingType)
             </th>
-            <th>
+            @*@<th>
                 @Html.DisplayNameFor(model => model.NextCheckupDate)
             </th>
             <th>
@@ -76,11 +127,11 @@
                 </td>
                 @* <td>
                     @Html.DisplayFor(modelItem => item.Recommendations)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.PackagingType)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.NextCheckupDate)
                 </td>
                 <td>
@@ -95,3 +146,97 @@
         }
     </tbody>
 </table>
+<style>
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .pagination {
+        display: flex;
+        list-style-type: none;
+        padding: 0;
+    }
+    .pagination li {
+        margin: 0 5px;
+    }
+    .pagination .page-link {
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        text-decoration: none;
+    }
+    .pagination .page-link:hover {
+        background-color: #e9ecef;
+    }
+    .pagination .active .page-link {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .pagination .disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+</style>
+@{
+    int itemsPerPage = 10;
+    int totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / itemsPerPage);
+    int currentPage = ViewBag.CurrentPage ?? 1;
+}
+
+<div class="pagination-container">
+    <nav aria-label="Page navigation">
+        <ul class="pagination" id="paginationControls">
+            <!-- Pagination links will be dynamically generated here -->
+            @if (ViewBag.TotalCount > itemsPerPage)
+            {
+                // Previous button
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action(null, new { pageNumber = currentPage - 1, search = ViewBag.Search, order = ViewBag.Order, orderByDescending = ViewBag.OrderByDescending })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                // Page numbers
+                for (int i = 1; i <= totalPages; i++)
+                {
+                    var linkClass = (i == currentPage) ? "page-item active" : "page-item";
+                    <li class="@linkClass">
+                        <a class="page-link" href="@Url.Action(null, new { pageNumber = i, search = ViewBag.Search, order = ViewBag.Order, orderByDescending = ViewBag.OrderByDescending })">@i</a>
+                    </li>
+                }
+
+                // Next button
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action(null, new { pageNumber = currentPage + 1, search = ViewBag.Search, order = ViewBag.Order, orderByDescending = ViewBag.OrderByDescending })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+
+
+@* <div style="text-align: center; margin: 20px 0;">
+    @if (ViewBag.TotalCount > 10)
+    {
+        var totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / 10);
+        for (int i = 1; i <= totalPages; i++)
+        {
+            var linkClass = (i == ViewBag.CurrentPage) ? "pagination-link active" : "pagination-link";
+                    <a class="@linkClass" asp-route-pageNumber="@i" asp-route-search="@ViewBag.Search" asp-route-order="@ViewBag.Order" asp-route-orderByDescending="@ViewBag.OrderByDescending">@i</a>
+            @if (i < totalPages)
+            {
+                            <span> | </span>
+            }
+        }
+    }
+</div> *@

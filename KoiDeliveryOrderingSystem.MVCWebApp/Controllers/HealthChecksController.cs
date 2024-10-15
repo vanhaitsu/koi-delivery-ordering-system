@@ -4,6 +4,7 @@ using KoiDeliveryOrderingSystem.Common;
 using Newtonsoft.Json;
 using KoiDeliveryOrderingSystem.Service.Base;
 using KoiDeliveryOrderingSystem.MVCWebApp.Models;
+using KoiDeliveryOrderingSystem.Data.BaseModels;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
@@ -16,26 +17,35 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         //}
 
         // GET: HealthChecks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index( string? search, int pageNumber = 1, string? order = null, bool? orderByDescending = false, string? packagingType = null)
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "HealthChecks"))
+
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + $"HealthChecks?search={search}&pageNumber={pageNumber}&order={order}&orderByDescending={orderByDescending}&packagingType={packagingType}"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
                         var content = await response.Content.ReadAsStringAsync();
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+
                         if (result != null && result.Data != null)
                         {
-                            var data = JsonConvert.DeserializeObject<List<HealthCheck>>(result.Data.ToString());
-                            return View(data);
+                            var data = JsonConvert.DeserializeObject<QueryResultModel<HealthCheck>>(result.Data.ToString());
+
+                            if (data != null && data.Data != null)
+                            {
+                                ViewBag.TotalCount = data.TotalCount;
+                                ViewBag.CurrentPage = pageNumber;
+                                return View(data.Data);
+                            }
                         }
                     }
                 }
             }
             return View(new List<HealthCheck>());
         }
+
 
         // GET: HealthChecks/Details/5
         public async Task<IActionResult> Details(int? id)

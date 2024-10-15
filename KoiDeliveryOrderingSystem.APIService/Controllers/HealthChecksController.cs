@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Service.Base;
 using KoiDeliveryOrderingSystem.Service;
+using KoiDeliveryOrderingSystem.Data.BaseModels;
 
 namespace KoiDeliveryOrderingSystem.APIService.Controllers
 {
@@ -25,9 +26,9 @@ namespace KoiDeliveryOrderingSystem.APIService.Controllers
 
         // GET: api/HealthChecks
         [HttpGet]
-        public async Task<IBusinessResult> GetHealthChecks()
+        public async Task<IBusinessResult> GetHealthChecks([FromQuery]HealthCheckFilterModel healthCheckFilterModel)
         {
-            return await _healthCheckService.GetAll();
+            return await _healthCheckService.GetAllWithFilter(healthCheckFilterModel);
         }
 
         // GET: api/HealthChecks/5

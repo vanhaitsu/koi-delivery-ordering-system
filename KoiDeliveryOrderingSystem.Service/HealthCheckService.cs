@@ -1,5 +1,6 @@
 ﻿using KoiDeliveryOrderingSystem.Common;
 using KoiDeliveryOrderingSystem.Data;
+using KoiDeliveryOrderingSystem.Data.BaseModels;
 using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Service.Base;
 
@@ -8,6 +9,7 @@ namespace KoiDeliveryOrderingSystem.Service
     public interface IHealthCheckService
     {
         Task<IBusinessResult> GetAll();
+        Task<IBusinessResult> GetAllWithFilter(HealthCheckFilterModel healthCheckFilterModel);
         Task<IBusinessResult> GetById(int id);
         Task<IBusinessResult> Create(HealthCheck healthCheck);
         Task<IBusinessResult> Update(HealthCheck healthCheck);
@@ -65,6 +67,19 @@ namespace KoiDeliveryOrderingSystem.Service
         public async Task<IBusinessResult> GetAll()
         {
             var healChecks = await _unitOfWork.HealCheckRepository.GetAllAsync();
+            if (healChecks == null)
+            {
+                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+            }
+            else
+            {
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, healChecks);
+            }
+        }
+
+        public async Task<IBusinessResult> GetAllWithFilter(HealthCheckFilterModel healthCheckFilterModel)
+        {
+            var healChecks = await _unitOfWork.HealCheckRepository.GetAllAsync(healthCheckFilterModel);
             if (healChecks == null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
