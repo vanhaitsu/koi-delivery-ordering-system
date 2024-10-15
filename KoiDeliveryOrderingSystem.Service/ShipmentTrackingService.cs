@@ -1,6 +1,8 @@
 ﻿using KoiDeliveryOrderingSystem.Common;
 using KoiDeliveryOrderingSystem.Data;
+using KoiDeliveryOrderingSystem.Data.Base;
 using KoiDeliveryOrderingSystem.Data.Models;
+using KoiDeliveryOrderingSystem.Data.Repository;
 using KoiDeliveryOrderingSystem.Service.Base;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,7 @@ namespace KoiDeliveryOrderingSystem.Service
 {
     public interface IShipmentTrackingService
     {
-        Task<IBusinessResult> GetAll();
+        Task<IBusinessResult> GetAll(ShipmentTrackingFilterModel model);
         Task<IBusinessResult> GetById(int id);
         Task<IBusinessResult> Create(ShipmentTracking shipmentTracking);
         Task<IBusinessResult> Update(ShipmentTracking shipmentTracking);
@@ -86,9 +88,9 @@ namespace KoiDeliveryOrderingSystem.Service
         }
 
 
-        public async Task<IBusinessResult> GetAll()
+        public async Task<IBusinessResult> GetAll(ShipmentTrackingFilterModel model)
         {
-            var shipmentTrackings = await _unitOfWork.ShipmentTrackingRepository.GetAllAsync();
+            var shipmentTrackings = await _unitOfWork.ShipmentTrackingRepository.GetAllAsync(model);
 
             if (shipmentTrackings == null)
             {

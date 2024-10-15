@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Service;
 using KoiDeliveryOrderingSystem.Service.Base;
+using KoiDeliveryOrderingSystem.Data.Base;
 
 namespace KoiDeliveryOrderingSystem.APIService.Controllers
 {
@@ -27,9 +28,9 @@ namespace KoiDeliveryOrderingSystem.APIService.Controllers
         // GET: api/ShipmentTrackings
         [HttpGet]
 
-        public async Task<IBusinessResult> GetShipmentTrackings()
+        public async Task<IBusinessResult> GetShipmentTrackings([FromQuery] ShipmentTrackingFilterModel model)
         {
-            return await _shipmentTrackingService.GetAll();
+            return await _shipmentTrackingService.GetAll(model);
         }
 
         // GET: api/ShipmentTrackings/5
