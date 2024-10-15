@@ -23,7 +23,10 @@ builder.Services.AddScoped<PricingPolicyRepository>();
 builder.Services.AddScoped<PricingPolicyService>();
 builder.Services.AddScoped<ShipmentOrderDetailRepository>();
 builder.Services.AddScoped<ShipmentOrderDetailService>();
-
+builder.Services.AddScoped<ShipmentOrderService>();
+builder.Services.AddScoped<ShipmentOrderRepository>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<UserRepository>();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>

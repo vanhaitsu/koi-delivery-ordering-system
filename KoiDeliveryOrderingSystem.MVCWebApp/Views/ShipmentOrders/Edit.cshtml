@@ -1,0 +1,84 @@
+﻿@model KoiDeliveryOrderingSystem.Data.Models.ShipmentOrder
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ShipmentOrder</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OrderId" />
+            <div class="form-group">
+                <label asp-for="CustomerId" class="control-label"></label>
+                <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PricingId" class="control-label"></label>
+                <select asp-for="PricingId" class="form-control" asp-items="ViewBag.PricingId"></select>
+                <span asp-validation-for="PricingId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OriginLocation" class="control-label"></label>
+                <input asp-for="OriginLocation" class="form-control" />
+                <span asp-validation-for="OriginLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationLocation" class="control-label"></label>
+                <input asp-for="DestinationLocation" class="form-control" />
+                <span asp-validation-for="DestinationLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalWeight" class="control-label"></label>
+                <input asp-for="TotalWeight" class="form-control" />
+                <span asp-validation-for="TotalWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalQuantity" class="control-label"></label>
+                <input asp-for="TotalQuantity" class="form-control" />
+                <span asp-validation-for="TotalQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShipmentMethod" class="control-label"></label>
+                <input asp-for="ShipmentMethod" class="form-control" />
+                <span asp-validation-for="ShipmentMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalServices" class="control-label"></label>
+                <input asp-for="AdditionalServices" class="form-control" />
+                <span asp-validation-for="AdditionalServices" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalFee" class="control-label"></label>
+                <input asp-for="AdditionalFee" class="form-control" />
+                <span asp-validation-for="AdditionalFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderStatus" class="control-label"></label>
+                <input asp-for="OrderStatus" class="form-control" />
+                <span asp-validation-for="OrderStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

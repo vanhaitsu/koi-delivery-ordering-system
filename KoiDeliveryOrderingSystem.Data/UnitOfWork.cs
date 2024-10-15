@@ -12,6 +12,8 @@ namespace KoiDeliveryOrderingSystem.Data
         private PackagingProcessRepository packagingProcessRepository;
         private PricingPolicyRepository pricingPolicyRepository;
         private ShipmentOrderDetailRepository shipmentOrderDetailRepository;
+        private ShipmentOrderRepository shipmentOrderRepository;
+        private UserRepository userRepository;
 
         public UnitOfWork()
         {
@@ -20,6 +22,9 @@ namespace KoiDeliveryOrderingSystem.Data
 
         public ShipmentTrackingRepository ShipmentTrackingRepository => shipmentTrackingRepository ??= new ShipmentTrackingRepository(context);
         public ShipperRepository ShipperRepository => shipperRepository ??= new ShipperRepository(context);
+        public ShipmentOrderRepository ShipmentOrderRepository => shipmentOrderRepository ??= new ShipmentOrderRepository(context);
+        public UserRepository UserRepository => userRepository ??= new UserRepository(context);
+
         public HealCheckRepository HealCheckRepository
         {
             get { return healCheckRepository ??= new HealCheckRepository(); }
