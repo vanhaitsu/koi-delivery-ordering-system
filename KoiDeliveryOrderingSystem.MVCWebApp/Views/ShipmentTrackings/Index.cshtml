@@ -6,6 +6,24 @@
 
 <h1>Index</h1>
 
+<form method="get">
+    <input type="text" name="search" value="@ViewBag.Search" placeholder="Search..." class="form-control" />
+
+    <select class="form-select" name="order" aria-label="Order">
+        <option selected>Order</option>
+        <option value="updateTime">Update time</option>
+        <option value="shipmentStatus">Shipment status</option>
+    </select>
+
+    <select class="form-select" name="orderByDescending" aria-label="Sort order">
+        <option selected>Sort order</option>
+        <option value="false">Ascending</option>
+        <option value="true">Descending</option>
+    </select>
+
+    <input type="submit" value="Search" class="btn btn-primary"/>
+</form>
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -67,3 +85,18 @@
         }
     </tbody>
 </table>
+
+<div>
+    @if (ViewBag.TotalCount > 0)
+    {
+        var totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / 10);
+        for (int i = 1; i <= totalPages; i++)
+        {
+            <a asp-route-pageNumber="@i" asp-route-search="@ViewBag.Search" asp-route-order="@ViewBag.Order" asp-route-orderByDescending="@ViewBag.OrderByDescending">@i</a>
+            @if (i < totalPages)
+            {
+                <span> | </span>
+            }
+        }
+    }
+</div>
