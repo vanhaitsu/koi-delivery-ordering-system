@@ -1,0 +1,78 @@
+﻿@model KoiDeliveryOrderingSystem.MVCWebApp.Models.PricingPolicy
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>PackagingProcess</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PricingId" class="control-label"></label>
+                <input asp-for="PricingId" class="form-control"  />
+                <span asp-validation-for="PricingId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WeightRange" class="control-label"></label>
+                <input asp-for="WeightRange" class="form-control" />
+                <span asp-validation-for="WeightRange" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingMethod" class="control-label"></label>
+                <input asp-for="ShippingMethod" class="form-control" />
+                <span asp-validation-for="ShippingMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BasePrice" class="control-label"></label>
+                <input asp-for="BasePrice" class="form-control" />
+                <span asp-validation-for="BasePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalServicePrice" class="control-label"></label>
+                <input asp-for="AdditionalServicePrice" class="form-control" />
+                <span asp-validation-for="AdditionalServicePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InsuranceFee" class="control-label"></label>
+                <input asp-for="InsuranceFee" class="form-control" />
+                <span asp-validation-for="InsuranceFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomsFee" class="control-label"></label>
+                <input asp-for="CustomsFee" class="form-control" />
+                <span asp-validation-for="CustomsFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Currency" class="control-label"></label>
+                <input asp-for="Currency" class="form-control" />
+                <span asp-validation-for="Currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EffectiveDate" class="control-label"></label>
+                <input asp-for="EffectiveDate" class="form-control" />
+                <span asp-validation-for="EffectiveDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpiryDate" class="control-label"></label>
+                <input asp-for="ExpiryDate" class="form-control" />
+                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
