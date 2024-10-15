@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +31,7 @@ namespace KoiDeliveryOrderingSystem.Data.Base
         {
             return await _context.Set<T>().ToListAsync();
         }
+
         public void Create(T entity)
         {
             _context.Add(entity);
