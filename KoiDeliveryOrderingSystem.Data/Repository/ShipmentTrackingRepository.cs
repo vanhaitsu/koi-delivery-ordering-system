@@ -13,10 +13,52 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
     {
         public ShipmentTrackingRepository() { }
         public ShipmentTrackingRepository(FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext context) => _context = context;
-        public async Task<List<ShipmentTracking>> GetAllAsync()
+
+        public async Task<FilterResult<ShipmentTracking>> GetAllAsync(ShipmentTrackingFilterModel model)
         {
-            var result = await _context.ShipmentTrackings.Include(x => x.Order).ThenInclude(x => x.ShipmentOrderDetails).ThenInclude(x => x.AnimalType).ToListAsync();
-            return result;
+            int totalCount = 0;
+            IQueryable<ShipmentTracking> query = _context.ShipmentTrackings
+                .Include(x => x.Order)
+                    .ThenInclude(x => x.ShipmentOrderDetails)
+                        .ThenInclude(x => x.AnimalType);
+
+            // Search
+            if (!string.IsNullOrWhiteSpace(model.Search))
+            {
+                query = query.Where(x => x.HandlerName.ToLower().Contains(model.Search.ToLower()) || x.CurrentLocation.ToLower().Contains(model.Search.ToLower()) || x.Remarks.ToLower().Contains(model.Search.ToLower()));
+            }
+
+            // Sort
+            if (model.OrderByDescending)
+            {
+                query = model.Order switch
+                {
+                    "updateTime" => query.OrderByDescending(x => x.UpdateTime),
+                    "shipmentStatus" => query.OrderByDescending(x => x.ShipmentStatus),
+                    _ => query.OrderByDescending(x => x.TrackingId),
+                };
+            }
+            else
+            {
+                query = model.Order switch
+                {
+                    "updateTime" => query.OrderBy(x => x.UpdateTime),
+                    "shipmentStatus" => query.OrderBy(x => x.ShipmentStatus),
+                    _ => query.OrderBy(x => x.TrackingId),
+                };
+            }
+
+            totalCount = await query.CountAsync();
+
+            // Pagination
+            int skip = (model.PageNumer - 1) * 10;
+            query = query.Skip(skip).Take(10);
+
+            return new FilterResult<ShipmentTracking>
+            {
+                TotalCount = totalCount,
+                Data = await query.ToListAsync()
+            };
         }
 
         public async Task<ShipmentTracking> GetByIdAsync(int id)

@@ -1,10 +1,5 @@
 ﻿using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Data.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KoiDeliveryOrderingSystem.Data
 {
@@ -15,6 +10,7 @@ namespace KoiDeliveryOrderingSystem.Data
         private ShipperRepository shipperRepository;
         private HealCheckRepository healCheckRepository;
         private PackagingProcessRepository packagingProcessRepository;
+        private PricingPolicyRepository pricingPolicyRepository;
         private ShipmentOrderDetailRepository shipmentOrderDetailRepository;
 
         public UnitOfWork()
@@ -29,6 +25,7 @@ namespace KoiDeliveryOrderingSystem.Data
             get { return healCheckRepository ??= new HealCheckRepository(); }
         }
         public PackagingProcessRepository PackagingProcessRepository => packagingProcessRepository ??= new PackagingProcessRepository(context);
+        public PricingPolicyRepository PricingPolicyRepository => pricingPolicyRepository ??= new PricingPolicyRepository(context);
         public ShipmentOrderDetailRepository ShipmentOrderDetailRepository => shipmentOrderDetailRepository ??= new ShipmentOrderDetailRepository(context);
 
         ////TO-DO CODE HERE/////////////////
@@ -52,7 +49,7 @@ namespace KoiDeliveryOrderingSystem.Data
             int result = -1;
 
             //System.Data.IsolationLevel.Snapshot
-            using (var dbContextTransaction = context.Database.BeginTransaction())
+            using (Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
                 {
@@ -75,7 +72,7 @@ namespace KoiDeliveryOrderingSystem.Data
             int result = -1;
 
             //System.Data.IsolationLevel.Snapshot
-            using (var dbContextTransaction = context.Database.BeginTransaction())
+            using (Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
                 {
