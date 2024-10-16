@@ -1,4 +1,6 @@
-﻿using KoiDeliveryOrderingSystem.Data.Models;
+﻿using KoiDeliveryOrderingSystem.Data.Base;
+using KoiDeliveryOrderingSystem.Data.BaseModels;
+using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Service;
 using KoiDeliveryOrderingSystem.Service.Base;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +23,9 @@ namespace KoiDeliveryOrderingSystem.APIService.Controllers
         // GET: api/ShipmentTrackings
         [HttpGet]
 
-        public async Task<IBusinessResult> GetShipmentOrderDetails()
+        public async Task<IBusinessResult> GetShipmentOrderDetails([FromQuery] ShipmentOrderDetailFilterModel model)
         {
-            return await _shipmentOrderDetailService.GetAll();
+            return await _shipmentOrderDetailService.GetAllFilter(model);
         }
 
         // GET: api/ShipmentTrackings/5

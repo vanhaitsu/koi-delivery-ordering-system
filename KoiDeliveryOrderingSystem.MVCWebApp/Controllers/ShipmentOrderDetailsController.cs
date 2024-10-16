@@ -4,20 +4,21 @@ using KoiDeliveryOrderingSystem.Common;
 using Newtonsoft.Json;
 using KoiDeliveryOrderingSystem.MVCWebApp.Base;
 using AnimalType = KoiDeliveryOrderingSystem.MVCWebApp.Models.AnimalType;
-//using ShipmentOrderDetail = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrderDetail;
+using ShipmentOrderDetail = KoiDeliveryOrderingSystem.Data.Models.ShipmentOrderDetail;
 using ShipmentOrder = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrder;
 using KoiDeliveryOrderingSystem.Data.Models;
+using KoiDeliveryOrderingSystem.MVCWebApp.Models;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
     public class ShipmentOrderDetailsController : Controller
     {
         // GET: ShipmentOrderDetails
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search, string? status, int? pageNumber = 1, bool orderByDescending = false)
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail"))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + $"ShipmentOrderDetail?pageNumer={pageNumber}&search={search}&orderByDescending={orderByDescending}&status={status}"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -25,8 +26,17 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            var data = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
-                            return View(data);
+                            //var data = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                            var data = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                            ViewBag.TotalCount = data.TotalCount;
+                            ViewBag.CurrentPage = pageNumber;
+                            ViewBag.Search = search;
+                            ViewBag.Status = search;
+                            //ViewBag.Order = order;
+                            ViewBag.OrderByDescending = orderByDescending;
+
+                            return View(data.Data);
+                            //return View(data);
                         }
                     }
                 }
@@ -67,7 +77,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             var orders = new List<ShipmentOrder>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders"))
+                using (   var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -85,7 +95,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             var animalTypes = new List<AnimalType>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Animaltypes"))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "AnimalType"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -98,7 +108,8 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                     }
                 }
             }
-            ViewData["AnimalTypeId"] = new SelectList(animalTypes, "AnimalTypeId", "Description");
+            ViewBag.AnimalTypeId = new SelectList(animalTypes, "AnimalTypeId", "Description");
+
             return View();
         }
 
@@ -107,7 +118,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShipmentOrderDetailId,ShipmentOrderId,AnimalTypeId,AdditionalServices,Fee,Status,Weight,Length,DateOfEntry,Gender,Color,HealthStatus,Age,Achievement,Origin,ImageUrl,Description")] ShipmentOrderDetail shipmentOrderDetail)
+        public async Task<IActionResult> Create([Bind("ShipmentOrderId,AnimalTypeId,AdditionalServices,Fee,Status,Weight,Length,DateOfEntry,Gender,Color,HealthStatus,Age,Achievement,Origin,ImageUrl,Description")] ShipmentOrderDetail shipmentOrderDetail)
         {
             bool saveStatus = false;
             if (ModelState.IsValid)
@@ -141,7 +152,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 var animalTypes = new List<AnimalType>();
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Animaltypes"))
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "AnimalType"))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -154,7 +165,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         }
                     }
                 }
-                ViewData["AnimalTypeId"] = new SelectList(animalTypes, "AnimalTypeId", "Description", shipmentOrderDetail.AnimalTypeId);
+                ViewBag.AnimalTypeId = new SelectList(animalTypes, "AnimalTypeId", "Description");
                 return View(shipmentOrderDetail);
             }
         }
@@ -212,7 +223,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             var animalTypes = new List<AnimalType>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Animaltypes"))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "AnimalType"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -225,7 +236,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                     }
                 }
             }
-            ViewData["AnimalTypeId"] = new SelectList(animalTypes, "AnimalTypeId", "Description");
+            ViewBag.AnimalTypeId = new SelectList(animalTypes, "AnimalTypeId", "Description");
             return View(shipmentOrderDetail);
         }
 
@@ -291,7 +302,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 var animalTypes = new List<AnimalType>();
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Animaltypes"))
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "AnimalType"))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -304,7 +315,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         }
                     }
                 }
-                ViewData["AnimalTypeId"] = new SelectList(animalTypes, "AnimalTypeId", "Description");
+                ViewBag.AnimalTypeId = new SelectList(animalTypes, "AnimalTypeId", "Description");
                 return View(shipmentOrderDetail);
             }
         }
