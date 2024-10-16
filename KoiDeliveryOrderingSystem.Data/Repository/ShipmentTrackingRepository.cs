@@ -28,6 +28,12 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
                 query = query.Where(x => x.HandlerName.ToLower().Contains(model.Search.ToLower()) || x.CurrentLocation.ToLower().Contains(model.Search.ToLower()) || x.Remarks.ToLower().Contains(model.Search.ToLower()));
             }
 
+            // Filter
+            if (model.UpdateDate != null)
+            {
+                query = query.Where(x => x.UpdateTime.HasValue && DateOnly.FromDateTime(x.UpdateTime.Value).Equals(model.UpdateDate));
+            }
+
             // Sort
             if (model.OrderByDescending)
             {

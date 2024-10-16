@@ -31,9 +31,7 @@
                     </div>
                     <div class="form-group">
                         <label for="orderId" class="control-label">Order ID</label>
-                        <select id="orderId" class="form-control" required>
-                            <option value="0">0</option>
-                        </select>
+                        <select id="orderId" class="form-control" required></select>
                         <span class="text-danger" id="orderIdError"></span>
                     </div>
                     <div class="form-group">
@@ -213,7 +211,7 @@
                 dataType: "json",
                 success: function (result) {
                     var html = '';
-                    $.each(result.data, function (key, item) {
+                    $.each(result.data.data, function (key, item) {
                         html += '<tr>';
                         var orderDetails = item.order.shipmentOrderDetails.map(function (order) {
                             return `(${order.animalType.description}) ${order.description}`;

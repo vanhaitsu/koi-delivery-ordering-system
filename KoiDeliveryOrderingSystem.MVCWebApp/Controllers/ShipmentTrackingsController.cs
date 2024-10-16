@@ -14,11 +14,11 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
     public class ShipmentTrackingsController : Controller
     {
         // GET: ShipmentTrackings
-        public async Task<IActionResult> Index(string? search, int? pageNumber = 1, bool orderByDescending = false, string? order = null)
+        public async Task<IActionResult> Index(string? search, DateOnly? updateDate, int? pageNumber = 1, bool orderByDescending = false, string? order = null)
         {
             using (var httpClient = new HttpClient())
             {
-                var uri = $"{Const.APIEndPoint}ShipmentTrackings?pageNumer={pageNumber}&search={search}&orderByDescending={orderByDescending}&order={order}";
+                var uri = $"{Const.APIEndPoint}ShipmentTrackings?pageNumer={pageNumber}&search={search}&orderByDescending={orderByDescending}&order={order}&updateDate={updateDate}";
 
                 using (var response = await httpClient.GetAsync(uri))
                 {

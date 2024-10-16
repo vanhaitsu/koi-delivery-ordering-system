@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using KoiDeliveryOrderingSystem.Common;
 using Newtonsoft.Json;
-using KoiDeliveryOrderingSystem.Service.Base;
 using KoiDeliveryOrderingSystem.MVCWebApp.Models;
-using KoiDeliveryOrderingSystem.Data.BaseModels;
+using KoiDeliveryOrderingSystem.MVCWebApp.Base;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
@@ -83,12 +82,14 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            shipmentTrackings = JsonConvert.DeserializeObject<List<ShipmentTracking>>(result.Data.ToString());
+                            var temp = JsonConvert.DeserializeObject<FilterResult<ShipmentTracking>>(result.Data.ToString());
+                            shipmentTrackings = temp.Data;
                         }
                     }
                 }
             }
-            
+            ViewData["ShipmentTrackingId"] = new SelectList(shipmentTrackings, "TrackingId", "TrackingId");
+
             var shipmentOrderDetails = new List<ShipmentOrderDetail>();
             using (var httpClient = new HttpClient())
             {
@@ -105,8 +106,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                     }
                 }
             }
-
-            ViewData["ShipmentTrackingId"] = new SelectList(shipmentTrackings, "TrackingId", "TrackingId");
+            
             ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "Description");
             return View();
         }

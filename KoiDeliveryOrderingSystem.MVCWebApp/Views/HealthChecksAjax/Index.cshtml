@@ -302,7 +302,8 @@
     <script type="text/javascript">
         var currentPage = 1;
         $(document).ready(function () {
-            loadData(currentPage); 
+            loadData(currentPage);
+            loadShipmentTrackingData();
 
             $('#searchForm').submit(function (e) {
                 e.preventDefault();
@@ -444,7 +445,7 @@
                 dataType: "json",
                 success: function (result) {
                     var html = '';
-                    $.each(result.data, function (key, item) {
+                    $.each(result.data.data, function (key, item) {
                         html += `<option value="${item.trackingId}">${item.trackingId}</option>`;
                     });
                     $('#shipmentTrackingId, #editShipmentTrackingId').append(html);

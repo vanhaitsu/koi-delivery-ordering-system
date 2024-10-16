@@ -4,13 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Common;
 using Newtonsoft.Json;
 using KoiDeliveryOrderingSystem.MVCWebApp.Base;
 using KoiDeliveryOrderingSystem.MVCWebApp.Models;
-using KoiDeliveryOrderingSystem.Service;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {
@@ -28,7 +25,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 
         public async Task<IActionResult> Index(string originLocation, string destinationLocation, string additionalServices, string shipmentMethod, string orderDateSort, string totalQuantitySort, string orderStatus, int page = 1)
         {
-            List<Data.Models.ShipmentOrder> data = new List<Data.Models.ShipmentOrder>();
+            List<ShipmentOrder> data = new List<ShipmentOrder>();
 
             using (var httpClient = new HttpClient())
             {
@@ -40,7 +37,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            data = JsonConvert.DeserializeObject<List<Data.Models.ShipmentOrder>>(result.Data.ToString());
+                            data = JsonConvert.DeserializeObject<List<ShipmentOrder>>(result.Data.ToString());
                         }
                     }
                 }
@@ -117,19 +114,19 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            var data = JsonConvert.DeserializeObject<Data.Models.ShipmentOrder>(result.Data.ToString());
+                            var data = JsonConvert.DeserializeObject<ShipmentOrder>(result.Data.ToString());
                             return View(data);
                         }
                     }
                 }
             }
-            return View(new Data.Models.ShipmentOrder());
+            return View(new ShipmentOrder());
         }
 
         // GET: ShipmentOrders/Create
         public async Task<IActionResult> Create()
         {
-            var customers = new List<Data.Models.Customer>();
+            var customers = new List<Customer>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Users"))
@@ -140,13 +137,13 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            customers = JsonConvert.DeserializeObject<List<Data.Models.Customer>>(result.Data.ToString());
+                            customers = JsonConvert.DeserializeObject<List<Customer>>(result.Data.ToString());
                         }
                     }
                 }
             }
 
-            var pricingPolicys = new List<Data.Models.PricingPolicy>();
+            var pricingPolicys = new List<PricingPolicy>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(Const.APIEndPoint + "PricingPolicy"))
@@ -157,7 +154,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            pricingPolicys = JsonConvert.DeserializeObject<List<Data.Models.PricingPolicy>>(result.Data.ToString());
+                            pricingPolicys = JsonConvert.DeserializeObject<List<PricingPolicy>>(result.Data.ToString());
                         }
                     }
                 }
@@ -173,7 +170,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,PricingId,OrderDate,OriginLocation,DestinationLocation,TotalWeight,TotalQuantity,ShipmentMethod,AdditionalServices,AdditionalFee,OrderStatus")] Data.Models.ShipmentOrder shipmentOrder)
+        public async Task<IActionResult> Create([Bind("CustomerId,PricingId,OrderDate,OriginLocation,DestinationLocation,TotalWeight,TotalQuantity,ShipmentMethod,AdditionalServices,AdditionalFee,OrderStatus")] ShipmentOrder shipmentOrder)
         {
             bool saveStatus = false;
             if (ModelState.IsValid)
@@ -204,7 +201,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             }
             else
             {
-                var customers = new List<Data.Models.Customer>();
+                var customers = new List<Customer>();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Users"))
@@ -215,12 +212,12 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                customers = JsonConvert.DeserializeObject<List<Data.Models.Customer>>(result.Data.ToString());
+                                customers = JsonConvert.DeserializeObject<List<Customer>>(result.Data.ToString());
                             }
                         }
                     }
                 }
-                var pricingPolicys = new List<Data.Models.PricingPolicy>();
+                var pricingPolicys = new List<PricingPolicy>();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync(Const.APIEndPoint + "PricingPolicy"))
@@ -231,7 +228,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                pricingPolicys = JsonConvert.DeserializeObject<List<Data.Models.PricingPolicy>>(result.Data.ToString());
+                                pricingPolicys = JsonConvert.DeserializeObject<List<PricingPolicy>>(result.Data.ToString());
                             }
                         }
                     }
@@ -251,7 +248,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 return NotFound();
             }
 
-            Data.Models.ShipmentOrder shipmentOrder = null;
+            ShipmentOrder shipmentOrder = null;
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders/" + id))
@@ -262,7 +259,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            shipmentOrder = JsonConvert.DeserializeObject<Data.Models.ShipmentOrder>(result.Data.ToString());
+                            shipmentOrder = JsonConvert.DeserializeObject<ShipmentOrder>(result.Data.ToString());
                         }
                     }
                 }
@@ -272,7 +269,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             {
                 return NotFound();
             }
-            var pricingPolicys = new List<Data.Models.PricingPolicy>();
+            var pricingPolicys = new List<PricingPolicy>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(Const.APIEndPoint + "PricingPolicy"))
@@ -283,12 +280,12 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            pricingPolicys = JsonConvert.DeserializeObject<List<Data.Models.PricingPolicy>>(result.Data.ToString());
+                            pricingPolicys = JsonConvert.DeserializeObject<List<PricingPolicy>>(result.Data.ToString());
                         }
                     }
                 }
             }
-            var customers = new List<Data.Models.Customer>();
+            var customers = new List<Customer>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Users"))
@@ -299,7 +296,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            customers = JsonConvert.DeserializeObject<List<Data.Models.Customer>>(result.Data.ToString());
+                            customers = JsonConvert.DeserializeObject<List<Customer>>(result.Data.ToString());
                         }
                     }
                 }
@@ -314,7 +311,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,CustomerId,PricingId,OrderDate,OriginLocation,DestinationLocation,TotalWeight,TotalQuantity,ShipmentMethod,AdditionalServices,AdditionalFee,OrderStatus")] Data.Models.ShipmentOrder shipmentOrder)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,CustomerId,PricingId,OrderDate,OriginLocation,DestinationLocation,TotalWeight,TotalQuantity,ShipmentMethod,AdditionalServices,AdditionalFee,OrderStatus")] ShipmentOrder shipmentOrder)
         {
             if (id != shipmentOrder.OrderId)
             {
@@ -350,7 +347,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             }
             else
             {
-                var pricingPolicys = new List<Data.Models.PricingPolicy>();
+                var pricingPolicys = new List<PricingPolicy>();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync(Const.APIEndPoint + "PricingPolicy"))
@@ -361,12 +358,12 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                pricingPolicys = JsonConvert.DeserializeObject<List<Data.Models.PricingPolicy>>(result.Data.ToString());
+                                pricingPolicys = JsonConvert.DeserializeObject<List<PricingPolicy>>(result.Data.ToString());
                             }
                         }
                     }
                 }
-                var customers = new List<Data.Models.Customer>();
+                var customers = new List<Customer>();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Users"))
@@ -377,7 +374,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                customers = JsonConvert.DeserializeObject<List<Data.Models.Customer>>(result.Data.ToString());
+                                customers = JsonConvert.DeserializeObject<List<Customer>>(result.Data.ToString());
                             }
                         }
                     }
@@ -396,7 +393,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 return NotFound();
             }
 
-            Data.Models.ShipmentOrder shipmentOrder = null;
+            ShipmentOrder shipmentOrder = null;
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrders/" + id))
@@ -407,7 +404,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            shipmentOrder = JsonConvert.DeserializeObject<Data.Models.ShipmentOrder>(result.Data.ToString());
+                            shipmentOrder = JsonConvert.DeserializeObject<ShipmentOrder>(result.Data.ToString());
                         }
                     }
                 }
@@ -455,7 +452,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             }
             else
             {
-                var pricingPolicys = new List<Data.Models.PricingPolicy>();
+                var pricingPolicys = new List<PricingPolicy>();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync(Const.APIEndPoint + "PricingPolicy"))
@@ -466,12 +463,12 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                pricingPolicys = JsonConvert.DeserializeObject<List<Data.Models.PricingPolicy>>(result.Data.ToString());
+                                pricingPolicys = JsonConvert.DeserializeObject<List<PricingPolicy>>(result.Data.ToString());
                             }
                         }
                     }
                 }
-                var customers = new List<Data.Models.Customer>();
+                var customers = new List<Customer>();
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync(Const.APIEndPoint + "Users"))
@@ -482,7 +479,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                customers = JsonConvert.DeserializeObject<List<Data.Models.Customer>>(result.Data.ToString());
+                                customers = JsonConvert.DeserializeObject<List<Customer>>(result.Data.ToString());
                             }
                         }
                     }

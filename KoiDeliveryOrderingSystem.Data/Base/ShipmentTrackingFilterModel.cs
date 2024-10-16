@@ -11,6 +11,7 @@ namespace KoiDeliveryOrderingSystem.Data.Base
         public string? Search { get; set; }
         public string? Order { get; set; } = "trackingId";
         public bool OrderByDescending { get; set; } = true;
+        public DateOnly? UpdateDate {  get; set; }
         public int PageNumer { get; set; } = 1;
     }
 }
