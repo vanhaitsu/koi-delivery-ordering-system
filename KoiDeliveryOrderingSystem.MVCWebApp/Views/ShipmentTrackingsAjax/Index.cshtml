@@ -213,7 +213,7 @@
                 dataType: "json",
                 success: function (result) {
                     var html = '';
-                    $.each(result.data, function (key, item) {
+                    $.each(result.data.data, function (key, item) {
                         html += '<tr>';
                         var orderDetails = item.order.shipmentOrderDetails.map(function (order) {
                             return `(${order.animalType.description}) ${order.description}`;

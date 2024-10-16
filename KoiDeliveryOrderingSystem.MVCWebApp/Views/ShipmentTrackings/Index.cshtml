@@ -6,7 +6,7 @@
 
 <h1>Index</h1>
 
-<form method="get">
+<form method="get" class="d-flex gap-5">
     <input type="text" name="search" value="@ViewBag.Search" placeholder="Search..." class="form-control" />
 
     <select class="form-select" name="order" aria-label="Order">
@@ -20,6 +20,8 @@
         <option value="false">Ascending</option>
         <option value="true">Descending</option>
     </select>
+
+    <input type="date" name="updateDate" class="form-control" />
 
     <input type="submit" value="Search" class="btn btn-primary"/>
 </form>
