@@ -4,9 +4,9 @@ using KoiDeliveryOrderingSystem.Common;
 using Newtonsoft.Json;
 using KoiDeliveryOrderingSystem.MVCWebApp.Base;
 using AnimalType = KoiDeliveryOrderingSystem.MVCWebApp.Models.AnimalType;
-using ShipmentOrderDetail = KoiDeliveryOrderingSystem.Data.Models.ShipmentOrderDetail;
+//using ShipmentOrderDetail = KoiDeliveryOrderingSystem.Data.Models.ShipmentOrderDetail;
 using ShipmentOrder = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrder;
-using KoiDeliveryOrderingSystem.Data.Models;
+//using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.MVCWebApp.Models;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
