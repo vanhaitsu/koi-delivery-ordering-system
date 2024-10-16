@@ -6,7 +6,7 @@ using KoiDeliveryOrderingSystem.MVCWebApp.Base;
 using AnimalType = KoiDeliveryOrderingSystem.MVCWebApp.Models.AnimalType;
 //using ShipmentOrderDetail = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrderDetail;
 using ShipmentOrder = KoiDeliveryOrderingSystem.MVCWebApp.Models.ShipmentOrder;
-using KoiDeliveryOrderingSystem.Data.Models;
+using KoiDeliveryOrderingSystem.MVCWebApp.Models;
 
 namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 {

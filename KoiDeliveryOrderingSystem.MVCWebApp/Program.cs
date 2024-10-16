@@ -1,6 +1,3 @@
-using KoiDeliveryOrderingSystem.Data.Repository;
-using KoiDeliveryOrderingSystem.Service;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,16 +7,6 @@ builder.Services.AddControllersWithViews();
 //builder.Services.AddScoped<FA24_SE1717_PRN231_G1_KoiDeliveryOrderingSystemContext>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<ShipmentTrackingService>();
-builder.Services.AddScoped<ShipmentTrackingRepository>();
-
-builder.Services.AddScoped<ShipmentOrderDetailService>();
-builder.Services.AddScoped<ShipmentOrderDetailRepository>();
-
-builder.Services.AddScoped<PackagingProcessRepository>();
-builder.Services.AddScoped<PackagingProcessService>();
-builder.Services.AddScoped<PricingPolicyRepository>();
-builder.Services.AddScoped<PricingPolicyService>();
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
