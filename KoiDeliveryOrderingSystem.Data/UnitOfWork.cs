@@ -14,6 +14,7 @@ namespace KoiDeliveryOrderingSystem.Data
         private ShipmentOrderDetailRepository shipmentOrderDetailRepository;
         private ShipmentOrderRepository shipmentOrderRepository;
         private UserRepository userRepository;
+        private AnimalTypeRepository animalTypeRepository;
 
         public UnitOfWork()
         {
@@ -24,6 +25,7 @@ namespace KoiDeliveryOrderingSystem.Data
         public ShipperRepository ShipperRepository => shipperRepository ??= new ShipperRepository(context);
         public ShipmentOrderRepository ShipmentOrderRepository => shipmentOrderRepository ??= new ShipmentOrderRepository(context);
         public UserRepository UserRepository => userRepository ??= new UserRepository(context);
+        public AnimalTypeRepository AnimalTypeRepository => animalTypeRepository ??= new AnimalTypeRepository(context);
 
         public HealCheckRepository HealCheckRepository
         {

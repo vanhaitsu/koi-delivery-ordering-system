@@ -27,6 +27,8 @@ builder.Services.AddScoped<ShipmentOrderService>();
 builder.Services.AddScoped<ShipmentOrderRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<AnimalTypeService>();
+builder.Services.AddScoped<AnimalTypeRepository>();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
