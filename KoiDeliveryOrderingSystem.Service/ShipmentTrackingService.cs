@@ -161,6 +161,7 @@ namespace KoiDeliveryOrderingSystem.Service
                     shipmentTrackingTmp.HandlerName = shipmentTracking.HandlerName;
                     shipmentTrackingTmp.Remarks = shipmentTracking.Remarks;
                     shipmentTrackingTmp.EstimatedArrival = shipmentTracking.EstimatedArrival;
+                    shipmentTrackingTmp.UpdateTime = shipmentTracking.UpdateTime;
 
                     result = await _unitOfWork.ShipmentTrackingRepository.UpdateAsync(shipmentTrackingTmp);
 
