@@ -1,49 +1,87 @@
 ﻿@model IEnumerable<KoiDeliveryOrderingSystem.MVCWebApp.Models.PackagingProcess>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Packaging Process Index";
 }
-<h1 style="font-size: 24px; font-weight: bold;">Index</h1>
+
+<h1 style="font-size: 24px; font-weight: bold;">Packaging Process Index</h1>
 
 <p>
     <a asp-action="Create" style="color: #1d72b8; text-decoration: none;">Create New</a>
 </p>
 
-<div style="overflow-x: auto;">
-    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-        <thead>
-            <tr style="background-color: #f9f9f9; border-bottom: 1px solid #ddd;">
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PackagingType)</th>
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PackagingInstructions)</th>
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PackagingDate)</th>
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.HandlerName)</th>
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.QualityCheckStatus)</th>
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.Remarks)</th>
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.EstimatedPackagingTime)</th>
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.ActualPackagingTime)</th>
-                <th style="padding: 8px 12px; text-align: left;">@Html.DisplayNameFor(model => model.PackagingCost)</th>
-                <th style="padding: 8px 12px;"></th>
+<form method="get" asp-action="Index" class="d-flex mb-4 align-items-end" style="gap: 10px;">
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="PackagingType" name="PackagingType" placeholder="Enter packaging type" value="@ViewData["PackagingType"]" />
+    </div>
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="HandlerName" name="HandlerName" placeholder="Enter handler name" value="@ViewData["HandlerName"]" />
+    </div>
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="QualityCheckStatus" name="QualityCheckStatus" placeholder="Enter quality check status" value="@ViewData["QualityCheckStatus"]" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.PackagingType)</th>
+            <th>@Html.DisplayNameFor(model => model.PackagingInstructions)</th>
+            <th>@Html.DisplayNameFor(model => model.PackagingDate)</th>
+            <th>@Html.DisplayNameFor(model => model.HandlerName)</th>
+            <th>@Html.DisplayNameFor(model => model.QualityCheckStatus)</th>
+            <th>@Html.DisplayNameFor(model => model.Remarks)</th>
+            <th>@Html.DisplayNameFor(model => model.EstimatedPackagingTime)</th>
+            <th>@Html.DisplayNameFor(model => model.ActualPackagingTime)</th>
+            <th>@Html.DisplayNameFor(model => model.PackagingCost)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.PackagingType)</td>
+                <td>@Html.DisplayFor(modelItem => item.PackagingInstructions)</td>
+                <td>@Html.DisplayFor(modelItem => item.PackagingDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.HandlerName)</td>
+                <td>@Html.DisplayFor(modelItem => item.QualityCheckStatus)</td>
+                <td>@Html.DisplayFor(modelItem => item.Remarks)</td>
+                <td>@Html.DisplayFor(modelItem => item.EstimatedPackagingTime)</td>
+                <td>@Html.DisplayFor(modelItem => item.ActualPackagingTime)</td>
+                <td>@Html.DisplayFor(modelItem => item.PackagingCost)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Delete</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PackagingType)</td>
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PackagingInstructions)</td>
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PackagingDate)</td>
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.HandlerName)</td>
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.QualityCheckStatus)</td>
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.Remarks)</td>
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.EstimatedPackagingTime)</td>
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.ActualPackagingTime)</td>
-                    <td style="padding: 8px 12px;">@Html.DisplayFor(modelItem => item.PackagingCost)</td>
-                    <td style="padding: 8px 12px;">
-                        <a asp-action="Edit" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.PackagingProcessId" style="color: #1d72b8;">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-OriginLocation="@ViewData["OriginLocation"]" asp-route-DestinationLocation="@ViewData["DestinationLocation"]" asp-route-AdditionalServices="@ViewData["AdditionalServices"]" asp-route-ShipmentMethod="@ViewData["ShipmentMethod"]">Previous</a>
+            </li>
+        }
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-OriginLocation="@ViewData["OriginLocation"]" asp-route-DestinationLocation="@ViewData["DestinationLocation"]" asp-route-AdditionalServices="@ViewData["AdditionalServices"]" asp-route-ShipmentMethod="@ViewData["ShipmentMethod"]">@i</a>
+            </li>
+        }
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-OriginLocation="@ViewData["OriginLocation"]" asp-route-DestinationLocation="@ViewData["DestinationLocation"]" asp-route-AdditionalServices="@ViewData["AdditionalServices"]" asp-route-ShipmentMethod="@ViewData["ShipmentMethod"]">Next</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+
+
