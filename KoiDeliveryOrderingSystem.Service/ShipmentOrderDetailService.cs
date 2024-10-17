@@ -2,12 +2,14 @@
 using KoiDeliveryOrderingSystem.Data.Models;
 using KoiDeliveryOrderingSystem.Data;
 using KoiDeliveryOrderingSystem.Service.Base;
+using KoiDeliveryOrderingSystem.Data.BaseModels;
 
 namespace KoiDeliveryOrderingSystem.Service
 {
     public interface IShipmentOrderDetailService
     {
         Task<IBusinessResult> GetAll();
+        Task<IBusinessResult> GetAllFilter(ShipmentOrderDetailFilterModel shipmentOrderDetailFilterModel);
         Task<IBusinessResult> GetById(int id);
         Task<IBusinessResult> Create(ShipmentOrderDetail shipmentOrderDetail);
         Task<IBusinessResult> Update(ShipmentOrderDetail shipmentOrderDetail);
@@ -33,6 +35,7 @@ namespace KoiDeliveryOrderingSystem.Service
 
             try
             {
+                shipmentOrderDetail.ShipmentOrderDetailId = await _unitOfWork.ShipmentOrderDetailRepository.GetMaxShipmentOrderDetailIdAsync() + 1;
                 var result = await _unitOfWork.ShipmentOrderDetailRepository.CreateAsync(shipmentOrderDetail);
 
                 if (result > 0)
@@ -80,10 +83,23 @@ namespace KoiDeliveryOrderingSystem.Service
             }
         }
 
-
         public async Task<IBusinessResult> GetAll()
         {
             var shipmentOrderDetail = await _unitOfWork.ShipmentOrderDetailRepository.GetAllAsync();
+
+            if (shipmentOrderDetail == null)
+            {
+                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG, new List<ShipmentTracking>());
+            }
+            else
+            {
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, shipmentOrderDetail);
+            }
+        }
+
+        public async Task<IBusinessResult> GetAllFilter(ShipmentOrderDetailFilterModel shipmentOrderDetailFilterModel)
+        {
+            var shipmentOrderDetail = await _unitOfWork.ShipmentOrderDetailRepository.GetAllAsync(shipmentOrderDetailFilterModel);
 
             if (shipmentOrderDetail == null)
             {
