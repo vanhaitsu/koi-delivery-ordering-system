@@ -38,17 +38,18 @@
             </select>
         </div>
         <div class="col-md-2">
-            <label for="packagingType" class="form-label">Package Type</label>
-            <select id="packagingType" name="packagingType" class="form-select">
+            <label for="drnpackagingType" class="form-label">Package Type</label>
+            <select id="drnpackagingType" name="drnpackagingType" class="form-select">
                 <option value="">-- Select Package Type --</option>
                 <option value="Box">Box</option>
                 <option value="Paper">Paper</option>
+                <option value="Standard">Standard</option>
             </select>
         </div>
 
         <div class="col-md-3">
-            <label for="shipmentTrackingId" class="form-label">Shipment Tracking</label>
-            <select id="shipmentTrackingId" name="shipmentTrackingId" class="form-select">
+            <label for="drnshipmentTrackingId" class="form-label">Shipment Tracking</label>
+            <select id="drnshipmentTrackingId" name="drnshipmentTrackingId" class="form-select">
                 <option value="">-- Select Shipment Tracking --</option>
                 @if (ViewData["ShipmentTrackingId"] != null)
                 {
@@ -61,8 +62,8 @@
         </div>
 
         <div class="col-md-3">
-            <label for="shipmentOrderDetailId" class="form-label">Shipment Order Detail</label>
-            <select id="shipmentOrderDetailId" name="shipmentOrderDetailId" class="form-select">
+            <label for="drnshipmentOrderDetailId" class="form-label">Shipment Order Detail</label>
+            <select id="drnshipmentOrderDetailId" name="drnshipmentOrderDetailId" class="form-select">
                 <option value="">-- Select Shipment Order Detail --</option>
                 @if (ViewData["ShipmentOrderDetailId"] != null)
                 {
@@ -378,9 +379,9 @@
                 search: $('#search').val() || null,
                 order: $('#order').val() || "id",
                 orderByDescending: $('#orderByDescending').val() || "true",
-                packagingType: $('#packagingType').val() || null,
-                shipmentTrackingId: $('#shipmentTrackingId').val() || null,
-                shipmentOrderDetailId: $('#shipmentOrderDetailId').val() || null,
+                packagingType: $('#drnpackagingType').val() || null,
+                shipmentTrackingId: $('#drnshipmentTrackingId').val() || null,
+                shipmentOrderDetailId: $('#drnshipmentOrderDetailId').val() || null,
                 pageNumber: pageNumber || 1
             };
 
@@ -475,7 +476,7 @@
                     $.each(result.data.data, function (key, item) {
                         html += `<option value="${item.shipmentOrderDetailId}">${item.shipmentOrderDetailId}</option>`;
                     });
-                    $('#shipmentOrderDetailId, #editShipmentOrderDetailId').append(html);
+                    $('#shipmentOrderDetailId, #editShipmentOrderDetailId,#drnshipmentOrderDetailId').append(html);
                 },
                 error: function (xhr, error) {
                     alert(xhr.statusText);
@@ -494,7 +495,7 @@
                     $.each(result.data.data, function (key, item) {
                         html += `<option value="${item.trackingId}">${item.trackingId}</option>`;
                     });
-                    $('#shipmentTrackingId, #editShipmentTrackingId').append(html);
+                    $('#shipmentTrackingId, #editShipmentTrackingId,#drnshipmentTrackingId').append(html);
                 },
                 error: function (xhr, error) {
                     alert(xhr.statusText);
