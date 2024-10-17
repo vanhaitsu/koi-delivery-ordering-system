@@ -5,7 +5,6 @@
 }
 
 <h1>HealthCheck</h1>
-
 <!-- Search Form -->
 <form method="get" class="mb-4">
     <div class="row g-2 align-items-center">
@@ -21,7 +20,7 @@
 <!-- Filter Dropdown Form -->
 <form method="get" class="mb-4">
     <div class="row g-3">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label for="orderByDescending" class="form-label">Order</label>
             <select name="orderByDescending" class="form-select">
                 <option value="">-- Select Order --</option>
@@ -29,7 +28,7 @@
                 <option value="false">Descending</option>
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label for="order" class="form-label">Order Type</label>
             <select name="order" class="form-select">
                 <option value="">-- Select Order Type --</option>
@@ -39,12 +38,34 @@
                 <option value="weight">Weight</option>
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label for="packagingType" class="form-label">Package Type</label>
             <select name="packagingType" class="form-select">
                 <option value="">-- Select Package Type --</option>
                 <option value="Box">Box</option>
                 <option value="Paper">Paper</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="shipmentTrackingId" class="form-label">Shipment Tracking</label>
+            <select id="shipmentTrackingId" name="shipmentTrackingId" class="form-select">
+                <option value="">-- Select Shipment Tracking --</option>
+                @foreach (var item in (IEnumerable<SelectListItem>)ViewData["ShipmentTrackingId"])
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="shipmentOrderDetailId" class="form-label">Shipment Order Detail</label>
+            <select id="shipmentOrderDetailId" name="shipmentOrderDetailId" class="form-select">
+                <option value="">-- Select Shipment Order Detail --</option>
+                @foreach (var item in (IEnumerable<SelectListItem>)ViewData["ShipmentOrderDetailId"])
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
             </select>
         </div>
     </div>
@@ -222,21 +243,3 @@
         </ul>
     </nav>
 </div>
-
-
-
-@* <div style="text-align: center; margin: 20px 0;">
-    @if (ViewBag.TotalCount > 10)
-    {
-        var totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / 10);
-        for (int i = 1; i <= totalPages; i++)
-        {
-            var linkClass = (i == ViewBag.CurrentPage) ? "pagination-link active" : "pagination-link";
-                    <a class="@linkClass" asp-route-pageNumber="@i" asp-route-search="@ViewBag.Search" asp-route-order="@ViewBag.Order" asp-route-orderByDescending="@ViewBag.OrderByDescending">@i</a>
-            @if (i < totalPages)
-            {
-                            <span> | </span>
-            }
-        }
-    }
-</div> *@

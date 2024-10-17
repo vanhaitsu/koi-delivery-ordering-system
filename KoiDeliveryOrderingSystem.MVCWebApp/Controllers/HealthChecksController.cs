@@ -16,12 +16,13 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         //}
 
         // GET: HealthChecks
-        public async Task<IActionResult> Index( string? search, int pageNumber = 1, string? order = null, bool? orderByDescending = false, string? packagingType = null)
+        public async Task<IActionResult> Index(string? search, int pageNumber = 1, string? order = null, bool? orderByDescending = false, string? packagingType = null, int? shipmentTrackingId = null, int? shipmentOrderDetailId = null)
         {
             using (var httpClient = new HttpClient())
             {
 
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + $"HealthChecks?search={search}&pageNumber={pageNumber}&order={order}&orderByDescending={orderByDescending}&packagingType={packagingType}"))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint +
+                $"HealthChecks?search={search}&pageNumber={pageNumber}&order={order}&orderByDescending={orderByDescending}&packagingType={packagingType}&shipmentTrackingId={shipmentTrackingId}&shipmentOrderDetailId={shipmentOrderDetailId}"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -30,18 +31,25 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
 
                         if (result != null && result.Data != null)
                         {
-                            var data = JsonConvert.DeserializeObject<QueryResultModel<HealthCheck>>(result.Data.ToString());
+                            var data = JsonConvert.DeserializeObject<PagedResult<HealthCheck>>(result.Data.ToString());
 
                             if (data != null && data.Data != null)
                             {
                                 ViewBag.TotalCount = data.TotalCount;
                                 ViewBag.CurrentPage = pageNumber;
+                                ViewBag.Search = search;
+                                var shipmentTrackings = await LoadShipmentTrackings(httpClient);
+                                ViewData["ShipmentTrackingId"] = new SelectList(shipmentTrackings, "TrackingId", "TrackingId");
+                                var shipmentOrderDetails = await LoadShipmentOrderDetails(httpClient);
+                                ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "ShipmentOrderDetailId");
                                 return View(data.Data);
                             }
                         }
                     }
                 }
             }
+            ViewData["ShipmentTrackingId"] = new SelectList(new List<ShipmentTracking>(), "TrackingId", "TrackingId");
+            ViewData["ShipmentOrderDetailId"] = new SelectList(new List<ShipmentOrderDetail>(), "ShipmentOrderDetailId", "ShipmentOrderDetailId");
             return View(new List<HealthCheck>());
         }
 
@@ -93,7 +101,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             var shipmentOrderDetails = new List<ShipmentOrderDetail>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails"))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -101,13 +109,14 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                            var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                            shipmentOrderDetails = temp.Data;
                         }
                     }
                 }
             }
-            
-            ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "Description");
+
+            ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "ShipmentOrderDetailId");
             return View();
         }
 
@@ -150,7 +159,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 var shipmentOrderDetails = new List<ShipmentOrderDetail>();
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails"))
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail"))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -158,12 +167,13 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                                var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                                shipmentOrderDetails = temp.Data;
                             }
                         }
                     }
                 }
-                ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "Description", healthCheck.ShipmentOrderDetailId);
+                ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "ShipmentOrderDetailId", healthCheck.ShipmentOrderDetailId);
                 return View(healthCheck);
             }
         }
@@ -205,7 +215,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
             var shipmentOrderDetails = new List<ShipmentOrderDetail>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails"))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -213,12 +223,13 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                            var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                            shipmentOrderDetails = temp.Data;
                         }
                     }
                 }
             }
-            ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "Description", healthCheck.ShipmentOrderDetailId);
+            ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "ShipmentOrderDetailId", healthCheck.ShipmentOrderDetailId);
             return View(healthCheck);
         }
 
@@ -266,7 +277,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 var shipmentOrderDetails = new List<ShipmentOrderDetail>();
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails"))
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail"))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -274,12 +285,13 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                                var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                                shipmentOrderDetails = temp.Data;
                             }
                         }
                     }
                 }
-                ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "Description", healthCheck.ShipmentOrderDetailId);
+                ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "ShipmentOrderDetailId", healthCheck.ShipmentOrderDetailId);
                 return View(healthCheck);
             }
         }
@@ -354,7 +366,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                 var shipmentOrderDetails = new List<ShipmentOrderDetail>();
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetails"))
+                    using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail"))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -362,14 +374,53 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                                var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                                shipmentOrderDetails = temp.Data;
                             }
                         }
                     }
                 }
-                ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "Description", id);
+                ViewData["ShipmentOrderDetailId"] = new SelectList(shipmentOrderDetails, "ShipmentOrderDetailId", "ShipmentOrderDetailId", id);
                 return View();
             }
+        }
+
+        private async Task<List<ShipmentTracking>> LoadShipmentTrackings(HttpClient httpClient)
+        {
+            var shipmentTrackings = new List<ShipmentTracking>();
+            using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentTrackings"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                    if (result != null && result.Data != null)
+                    {
+                        var temp = JsonConvert.DeserializeObject<FilterResult<ShipmentTracking>>(result.Data.ToString());
+                        shipmentTrackings = temp.Data;
+                    }
+                }
+            }
+            return shipmentTrackings;
+        }
+
+        private async Task<List<ShipmentOrderDetail>> LoadShipmentOrderDetails(HttpClient httpClient)
+        {
+            var shipmentOrderDetails = new List<ShipmentOrderDetail>();
+            using (var response = await httpClient.GetAsync(Const.APIEndPoint + "ShipmentOrderDetail"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<BusinessResult>(content);
+                    if (result != null && result.Data != null)
+                    {
+                        var temp = JsonConvert.DeserializeObject<FilterResult<ShipmentOrderDetail>>(result.Data.ToString());
+                        shipmentOrderDetails = temp.Data;
+                    }
+                }
+            }
+            return shipmentOrderDetails;
         }
     }
 }

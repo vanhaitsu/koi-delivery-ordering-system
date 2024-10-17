@@ -18,7 +18,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                var uri = $"{Const.APIEndPoint}ShipmentTrackings?pageNumer={pageNumber}&search={search}&orderByDescending={orderByDescending}&order={order}&updateDate={updateDate}";
+                var uri = $"{Const.APIEndPoint}ShipmentTrackings?pageNumber={pageNumber}&search={search}&orderByDescending={orderByDescending}&order={order}&updateDate={updateDate}";
 
                 using (var response = await httpClient.GetAsync(uri))
                 {

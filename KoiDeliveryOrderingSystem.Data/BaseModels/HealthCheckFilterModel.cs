@@ -13,6 +13,8 @@ namespace KoiDeliveryOrderingSystem.Data.BaseModels
         public string? Condition { get; set; } 
         public string? Search { get; set; } 
         public string? PackagingType { get; set; }
+        public int? ShipmentTrackingId {  get; set; }
+        public int? ShipmentOrderDetailId { get; set; }
         public int PageNumber { get; set; } = 1;
     }
 }
