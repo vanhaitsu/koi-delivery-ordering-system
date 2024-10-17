@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Shipment Order Detail</h1>
 
 <!-- Create Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
@@ -21,24 +21,20 @@
             </div>
             <div class="modal-body">
                 <form id="createForm">
-                    <div class="form-group">
+                   @*  <div class="form-group">
                         <label for="orderDetailId" class="control-label">Shipment Order Detail Id</label>
                         <input type="number" id="orderDetailId" class="form-control" required />
                         <span class="text-danger" id="orderDetailId"></span>
-                    </div>
+                    </div> *@
                     <div class="form-group">
                         <label for="orderId" class="control-label">Order ID</label>
-                        <select id="orderId" class="form-control" required>
-                            <option value="1">1</option>
-                        </select>
+                        <input id="orderId" type="number" class="form-control" required />
                         <span class="text-danger" id="orderIdError"></span>
                     </div>
                     <div class="form-group">
-                        <label for="animalTypeId" class="control-label">Animal Type ID</label>
-                        <select id="animalTypeId" class="form-control" required>
-                            <option value="1">1</option>
-                        </select>
-                        <span class="text-danger" id="animalTypeId"></span>
+                        <label for="animalTypeId" class="control-label">Animal Type</label>
+                        <select id="animalTypeId" class="form-control" required></select>
+                        @* <span class="text-danger" id="animalTypeId"></span> *@
                     </div>
                     <div class="form-group">
                         <label for="additionalServices" class="control-label">Additional services</label>
@@ -52,7 +48,12 @@
                     </div>
                     <div class="form-group">
                         <label for="status" class="control-label">Status</label>
-                        <input type="text" id="status" class="form-control" required />
+                        <select id="status" class="form-control" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Deliveried">Deliveried</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
                         <span class="text-danger" id="statusError"></span>
                     </div>
                     <div class="form-group">
@@ -87,7 +88,7 @@
                     </div>
                     <div class="form-group">
                         <label for="age" class="control-label">Age</label>
-                        <input type="test" id="age" class="form-control" required />
+                        <input type="number" id="age" class="form-control" required />
                         <span class="text-danger" id="ageError"></span>
                     </div>
                     <div class="form-group">
@@ -133,17 +134,13 @@
                     <input type="hidden" id="editShipmentOrderDetailId" />
                     <div class="form-group">
                         <label for="editOrderId" class="control-label">Order ID</label>
-                        <select id="editOrderId" class="form-control" required>
-                            <option value="1">1</option>
-                        </select>
+                        <input id="editOrderId" class="form-control" required />
                         <span class="text-danger" id="orderIdError"></span>
                     </div>
                     <div class="form-group">
                         <label for="editAnimalTypeId" class="control-label">Animal Type ID</label>
-                        <select id="editAnimalTypeId" class="form-control" required>
-                            <option value="1">1</option>
-                        </select>
-                        <span class="text-danger" id="animalTypeIdError"></span>
+                        <select id="editAnimalTypeId" class="form-control" required></select>
+                        @* <span class="text-danger" id="animalTypeIdError"></span> *@
                     </div>
                     <div class="form-group">
                         <label for="editAdditionalServices" class="control-label">Additional services</label>
@@ -157,7 +154,12 @@
                     </div>
                     <div class="form-group">
                         <label for="editStatus" class="control-label">Status</label>
-                        <input type="text" id="editStatus" class="form-control" required />
+                        <select id="editStatus" class="form-control" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Deliveried">Deliveried</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
                         <span class="text-danger" id="statusError"></span>
                     </div>
                     <div class="form-group">
@@ -192,7 +194,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editAge" class="control-label">Age</label>
-                        <input type="test" id="editAge" class="form-control" required />
+                        <input type="number" id="editAge" class="form-control" required />
                         <span class="text-danger" id="ageError"></span>
                     </div>
                     <div class="form-group">
@@ -263,6 +265,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Order Detail Id</th>
             <th>Order</th>
             <th>Animal Type</th>
             <th>Additional Services</th>
@@ -285,78 +288,105 @@
     <tbody class="ShipmentOrderDetails"></tbody>
 </table>
 
+@* <nav aria-label="Shipment order details pagination">
+    <ul class="pagination justify-content-center">
+        <!-- Pagination links will be loaded here -->
+    </ul>
+</nav>
+ *@
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
             loadData();
-            loadShipperData();
-            // loadOrderData();
+            loadAnimalTypeData();
+            loadOrderData
             loadOrderDetailData()
         });
 
         function loadData() {
-    $.ajax({
-        url: 'https://localhost:7122/api/ShipmentOrderDetail',
-        type: "GET",
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
-        success: function (result) {
-            var html = '';
-            $.each(result.data, function (key, item) {
-                html += '<tr>';
-                
-                // Handle shipmentOrder and animalType if they exist
-                var orderDetails = item.shipmentOrder 
-                    ? `Order ID: ${item.shipmentOrder.orderId}, Customer ID: ${item.shipmentOrder.customerId}`
-                    : 'No Order Details';
-                    
-                var animalTypeDesc = item.animalType 
-                    ? item.animalType.description 
-                    : 'N/A';
-                
-                html += '<td>' + (item.shipmentOrderId || 'N/A') + '</td>'; // Order ID
-                html += '<td>' + animalTypeDesc + '</td>'; // Animal Type Description
-                html += '<td>' + (item.additionalServices || 'N/A') + '</td>'; // Additional Services
-                html += '<td>' + (item.fee || 'N/A') + '</td>'; // Fee
-                html += '<td>' + (item.status || 'N/A') + '</td>'; // Status
-                html += '<td>' + (item.weight || 'N/A') + '</td>'; // Weight
-                html += '<td>' + (item.length || 'N/A') + '</td>'; // Length
-                html += '<td>' + new Date(item.dateOfEntry).toLocaleString() + '</td>'; // Date of Entry
-                html += '<td>' + (item.gender || 'N/A') + '</td>'; // Gender
-                html += '<td>' + (item.color || 'N/A') + '</td>'; // Color
-                html += '<td>' + (item.healthStatus || 'N/A') + '</td>'; // Health Status
-                html += '<td>' + (item.age || 'N/A') + '</td>'; // Age
-                html += '<td>' + (item.achievement || 'N/A') + '</td>'; // Achievement
-                html += '<td>' + (item.origin || 'N/A') + '</td>'; // Origin
-                html += '<td>' + (item.imageUrl || 'N/A') + '</td>'; // Image URL
-                html += '<td>' + (item.description || 'N/A') + '</td>'; // Description
-                html += '<td>';
-                html += `<a href="#" onclick="showEditModal(${item.shipmentOrderDetailId})">Edit</a> | `;
-                html += `<a href="#" onclick="showDetailsModal(${item.shipmentOrderDetailId})">Details</a> | `;
-                html += `<a href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmation" onclick="deleteShipment(${item.shipmentOrderDetailId})">Delete</a>`;
-                html += '</td>';
-                html += '</tr>';
-                });
-                $('.ShipmentOrderDetails').html(html);
-            },
-            error: function (xhr, error) {
-                alert(xhr.statusText);
-            }
-        });
-    }
-
-        function loadShipperData() {
+            var url = `https://localhost:7122/api/ShipmentOrderDetail`;
             $.ajax({
-                url: 'https://localhost:7122/api/Shippers',
+                url: url,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var html = '';
+                    $.each(result.data.data, function (key, item) {
+                        html += '<tr>';
+
+                        // Handle shipmentOrder and animalType if they exist
+                        var orderDetails = item.shipmentOrder
+                            ? `Order ID: ${item.shipmentOrder.orderId}, Customer ID: ${item.shipmentOrder.customerId}`
+                            : 'No Order Details';
+
+                        var animalTypeDesc = item.animalType
+                            ? item.animalType.description
+                            : 'N/A';
+
+                        html += '<td>' + (item.shipmentOrderDetailId || 'N/A') + '</td>'; // Order Detail ID
+                        html += '<td>' + (item.shipmentOrderId || 'N/A') + '</td>'; // Order ID
+                        html += '<td>' + animalTypeDesc + '</td>'; // Animal Type Description
+                        html += '<td>' + (item.additionalServices || 'N/A') + '</td>'; // Additional Services
+                        html += '<td>' + (item.fee || 'N/A') + '</td>'; // Fee
+                        html += '<td>' + (item.status || 'N/A') + '</td>'; // Status
+                        html += '<td>' + (item.weight || 'N/A') + '</td>'; // Weight
+                        html += '<td>' + (item.length || 'N/A') + '</td>'; // Length
+                        html += '<td>' + new Date(item.dateOfEntry).toLocaleString() + '</td>'; // Date of Entry
+                        html += '<td>' + (item.gender || 'N/A') + '</td>'; // Gender
+                        html += '<td>' + (item.color || 'N/A') + '</td>'; // Color
+                        html += '<td>' + (item.healthStatus || 'N/A') + '</td>'; // Health Status
+                        html += '<td>' + (item.age || 'N/A') + '</td>'; // Age
+                        html += '<td>' + (item.achievement || 'N/A') + '</td>'; // Achievement
+                        html += '<td>' + (item.origin || 'N/A') + '</td>'; // Origin
+                        html += '<td>' + (item.imageUrl || 'N/A') + '</td>'; // Image URL
+                        html += '<td>' + (item.description || 'N/A') + '</td>'; // Description
+                        html += '<td>';
+                        html += `<a href="#" onclick="showEditModal(${item.shipmentOrderDetailId})">Edit</a> | `;
+                        html += `<a href="#" onclick="showDetailsModal(${item.shipmentOrderDetailId})">Details</a> | `;
+                        html += `<a href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmation" onclick="deleteShipment(${item.shipmentOrderDetailId})">Delete</a>`;
+                        html += '</td>';
+                        html += '</tr>';
+                    });
+                    $('.ShipmentOrderDetails').html(html); // Insert rows into the tbody
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function loadOrderData() {
+            $.ajax({
+                url: 'https://localhost:7122/api/ShipmentOrders',
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
                     var html = '';
                     $.each(result.data, function (key, item) {
-                        html += `<option value="${item.shipperId}">${item.fullName}</option>`;
+                        html += `<option value="${item.orderId}">${item.orderId}</option>`;
                     });
-                    $('#shipperId, #editShipperId').append(html);
+                    $('#orderId, #editOrderId').append(html);
+                },
+                error: function (xhr, error) {
+                    alert(xhr.statusText);
+                }
+            });
+        }
+
+        function loadAnimalTypeData() {
+            $.ajax({
+                url: 'https://localhost:7122/api/AnimalType',
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var html = '';
+                    $.each(result.data, function (key, item) {
+                        html += `<option value="${item.animalTypeId}">${item.description}</option>`;
+                    });
+                    $('#animalTypeId, #editAnimalTypeId').append(html);
                 },
                 error: function (xhr, error) {
                     alert(xhr.statusText);
