@@ -109,7 +109,8 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                            var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                            shipmentOrderDetails = temp.Data;
                         }
                     }
                 }
@@ -166,7 +167,8 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                                var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                                shipmentOrderDetails = temp.Data;
                             }
                         }
                     }
@@ -221,7 +223,8 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                         var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                         if (result != null && result.Data != null)
                         {
-                            shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                            var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                            shipmentOrderDetails = temp.Data;
                         }
                     }
                 }
@@ -282,7 +285,8 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                                var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                                shipmentOrderDetails = temp.Data;
                             }
                         }
                     }
@@ -370,7 +374,8 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                shipmentOrderDetails = JsonConvert.DeserializeObject<List<ShipmentOrderDetail>>(result.Data.ToString());
+                                var temp = JsonConvert.DeserializeObject<PagedResult<ShipmentOrderDetail>>(result.Data.ToString());
+                                shipmentOrderDetails = temp.Data;
                             }
                         }
                     }

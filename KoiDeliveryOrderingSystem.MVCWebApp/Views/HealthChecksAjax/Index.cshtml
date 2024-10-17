@@ -157,7 +157,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <input type="button" value="Create" class="btn btn-primary" onclick="submitForm()" />
+                <input form="create" type="button" value="Create" class="btn btn-primary" onclick="submitForm()" />
             </div>
         </div>
     </div>
@@ -366,6 +366,11 @@
                     loadData(currentPage);
                 }
             });
+
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                loadData();
+            });
         });
 
         function loadData(pageNumber) {
@@ -511,7 +516,7 @@
                 PackagingType: $('#packagingType').val(),
                 NextCheckupDate: $('#nextCheckupDate').val(),
             };
-
+            console.log(formData);
             $.ajax({
                 url: 'https://localhost:7122/api/HealthChecks',
                 type: 'POST',
