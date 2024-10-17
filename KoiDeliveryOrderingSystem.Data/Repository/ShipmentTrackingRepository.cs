@@ -57,7 +57,7 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
             totalCount = await query.CountAsync();
 
             // Pagination
-            int skip = (model.PageNumer - 1) * 10;
+            int skip = (model.PageNumber - 1) * 10;
             query = query.Skip(skip).Take(10);
 
             return new FilterResult<ShipmentTracking>

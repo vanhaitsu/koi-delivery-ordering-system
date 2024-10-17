@@ -4,6 +4,24 @@
 
 <h1>Index</h1>
 
+<form method="get" class="d-flex gap-5">
+    <input type="text" name="search" placeholder="Search..." class="form-control" />
+
+    <select class="form-select" name="order" aria-label="Order">
+        <option value="updateTime">Update time</option>
+        <option value="shipmentStatus">Shipment status</option>
+    </select>
+
+    <select class="form-select" name="orderByDescending" aria-label="Sort order">
+        <option value="false">Ascending</option>
+        <option value="true">Descending</option>
+    </select>
+
+    <input type="date" name="updateDate" class="form-control" />
+
+    <input type="submit" value="Search" class="btn btn-primary" />
+</form>
+
 <!-- Create Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
     Create New
@@ -195,18 +213,38 @@
     <tbody class="ShipmentTrackings"></tbody>
 </table>
 
+<div class="Pagination">
+</div>
+
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
             loadData();
             loadShipperData();
             loadOrderData();
+
+            $('form').on('submit', function(e) {
+                e.preventDefault();
+                loadData();
+            });
         });
 
-        function loadData() {
+        function loadData(page) {
+            var search = $('input[name="search"]').val();
+            var order = $('select[name="order"]').val();
+            var orderByDescending = $('select[name="orderByDescending"]').val();
+            var updateDate = $('input[name="updateDate"]').val();
+
             $.ajax({
                 url: 'https://localhost:7122/api/ShipmentTrackings',
                 type: "GET",
+                data: {
+                    pageNumber: page,
+                    search: search,
+                    order: order,
+                    orderByDescending: orderByDescending,
+                    updateDate: updateDate
+                },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -230,11 +268,27 @@
                         html += '</tr>';
                     });
                     $('.ShipmentTrackings').html(html);
+
+                    updatePagination(result.data.totalCount, page);
                 },
                 error: function (xhr, error) {
                     alert(xhr.statusText);
                 }
             });
+        }
+
+        function updatePagination(totalCount, currentPage) {
+            var totalPages = Math.ceil(totalCount / 10);
+            var paginationHtml = '';
+
+            for (var i = 1; i <= totalPages; i++) {
+                paginationHtml += `<a href="#" onclick="loadData(${i})">${i}</a>`;
+                if (i < totalPages) {
+                    paginationHtml += ' | ';
+                }
+            }
+
+            $('.Pagination').html(paginationHtml);
         }
 
         function loadShipperData() {
