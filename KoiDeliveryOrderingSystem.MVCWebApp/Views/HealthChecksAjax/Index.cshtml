@@ -304,6 +304,7 @@
         $(document).ready(function () {
             loadData(currentPage);
             loadShipmentTrackingData();
+            loadShipmentOrderDetailData();
 
             $('#searchForm').submit(function (e) {
                 e.preventDefault();
@@ -420,7 +421,7 @@
 
         function loadShipmentOrderDetailData() {
             $.ajax({
-                url: 'https://localhost:7122/api/ShipmentOrderDetails',
+                url: 'https://localhost:7122/api/ShipmentOrderDetail',
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
