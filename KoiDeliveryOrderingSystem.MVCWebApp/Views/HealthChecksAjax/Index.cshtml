@@ -420,14 +420,14 @@
 
         function loadShipmentOrderDetailData() {
             $.ajax({
-                url: 'https://localhost:7122/api/ShipmentOrderDetails',
+                url: 'https://localhost:7122/api/ShipmentOrderDetail',
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
                     var html = '';
                     $.each(result.data, function (key, item) {
-                        html += `<option value="${item.shipmentOrderDetailId}">${item.description}</option>`;
+                        html += `<option value="${item.shipmentOrderDetailId}">${item.shipmentOrderDetailId}</option>`;
                     });
                     $('#shipmentOrderDetailId, #editShipmentOrderDetailId').append(html);
                 },
