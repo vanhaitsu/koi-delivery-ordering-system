@@ -31,7 +31,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             ViewBag.TotalCount = data.TotalCount;
                             ViewBag.CurrentPage = pageNumber;
                             ViewBag.Search = search;
-                            ViewBag.Status = search;
+                            ViewBag.Status = status;
                             //ViewBag.Order = order;
                             ViewBag.OrderByDescending = orderByDescending;
 
@@ -90,7 +90,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                     }
                 }
             }
-            ViewData["OrderId"] = new SelectList(orders, "OrderId", "OrderId");
+            ViewBag.ShipmentOrderId = new SelectList(orders, "OrderId", "OrderId");
 
             var animalTypes = new List<AnimalType>();
             using (var httpClient = new HttpClient())
@@ -218,7 +218,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                     }
                 }
             }
-            ViewData["OrderId"] = new SelectList(orders, "OrderId", "OrderId");
+            ViewBag.ShipmentOrderId = new SelectList(orders, "OrderId", "OrderId");
 
             var animalTypes = new List<AnimalType>();
             using (var httpClient = new HttpClient())

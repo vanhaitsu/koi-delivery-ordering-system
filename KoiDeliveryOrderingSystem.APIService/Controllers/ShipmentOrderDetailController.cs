@@ -28,6 +28,14 @@ namespace KoiDeliveryOrderingSystem.APIService.Controllers
             return await _shipmentOrderDetailService.GetAllFilter(model);
         }
 
+        //// GET: api/ShipmentTrackings
+        //[HttpGet]
+
+        //public async Task<IBusinessResult> GetAll()
+        //{
+        //    return await _shipmentOrderDetailService.GetAll();
+        //}
+
         // GET: api/ShipmentTrackings/5
         [HttpGet("{id}")]
         public async Task<IBusinessResult> GetShipmentOrderDetails(int id)

@@ -191,6 +191,7 @@ namespace KoiDeliveryOrderingSystem.Service
                 }
                 else
                 {
+                    shipmentOrderDetail.ShipmentOrderDetailId = await _unitOfWork.ShipmentOrderDetailRepository.GetMaxShipmentOrderDetailIdAsync() + 1;
                     result = await _unitOfWork.ShipmentOrderDetailRepository.CreateAsync(shipmentOrderDetail);
 
                     if (result > 0)
