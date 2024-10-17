@@ -8,8 +8,45 @@
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
     Create New
 </button>
+<form id="shipmentOrderFilterForm" class="d-flex mb-4 align-items-end" style="gap: 10px;">
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="OriginLocation" name="OriginLocation" placeholder="Enter origin location" />
+    </div>
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="DestinationLocation" name="DestinationLocation" placeholder="Enter destination location" />
+    </div>
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="AdditionalServices" name="AdditionalServices" placeholder="Enter additional services" />
+    </div>
+    <div class="flex-fill">
+        <input type="text" class="form-control" id="ShipmentMethod" name="ShipmentMethod" placeholder="Enter shipment method" />
+    </div>
+    <div class="flex-fill">
+        <select class="form-control" id="OrderStatus" name="OrderStatus">
+            <option value="">Select Order Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Deliveried">Deliveried</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+    </div>
+    <div class="flex-fill">
+        <select class="form-control" id="OrderDateSort" name="OrderDateSort">
+            <option value="">Sort by Order Date</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+    </div>
+    <div class="flex-fill">
+        <select class="form-control" id="TotalQuantitySort" name="TotalQuantitySort">
+            <option value="">Sort by Total Quantity</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+    </div>
+    <button type="button" id="searchBtn" class="btn btn-primary">Search</button>
+</form>
 
-<!-- Create Modal -->
 <div class="modal fade" id="create" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -210,7 +247,6 @@
         </div>
     </div>
 </div>
-
 <table class="table">
     <thead>
         <tr>
@@ -231,51 +267,153 @@
     </thead>
     <tbody class="ShipmentOrders"></tbody>
 </table>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <!-- Pagination items will be generated here -->
+    </ul>
+</nav>
+
 
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
-            loadShipmentOrders();
+            loadAllShipmentOrders(); 
             loadCustomers();
             loadPricingDetails();
+            $('#shipmentOrderFilterForm input, #shipmentOrderFilterForm select').on('input change', function () {
+                $('#searchBtn').addClass('active'); 
+            });
+
+            $('#searchBtn').on('click', function () {
+                $(this).addClass('active');
+                filterShipmentOrders(); 
+            });
         });
 
-        function loadShipmentOrders() {
+        let allOrders = []; 
+        const pageSize = 3; 
+
+        function loadAllShipmentOrders() {
             $.ajax({
                 url: 'https://localhost:7122/api/ShipmentOrders',
-                type: "GET",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
+                type: 'GET',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
                 success: function (result) {
-                    var html = '';
-                    $.each(result.data, function (key, item) {
-                        html += '<tr>';
-                        html += '<td>' + item.orderId + '</td>';
-                        html += '<td>' + item.customerId + '</td>';
-                        html += '<td>' + item.pricingId + '</td>';
-                        html += '<td>' + new Date(item.orderDate).toLocaleString() + '</td>';
-                        html += '<td>' + item.originLocation + '</td>';
-                        html += '<td>' + item.destinationLocation + '</td>';
-                        html += '<td>' + item.totalWeight + '</td>';
-                        html += '<td>' + item.totalQuantity + '</td>';
-                        html += '<td>' + item.shipmentMethod + '</td>';
-                        html += '<td>' + item.additionalServices + '</td>';
-                        html += '<td>' + item.additionalFee + '</td>';
-                        html += '<td>' + item.orderStatus + '</td>';
-                        html += '<td>';
-                        html += `<a href="#" onclick="showEditModal(${item.orderId})">Edit</a> | `;
-                        html += `<a href="#" onclick="showDetailsModal(${item.orderId})">Details</a> | `;
-                        html += `<a href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmation" onclick="deleteShipmentOrder(${item.orderId})">Delete</a>`;
-                        html += '</td>';
-                        html += '</tr>';
-                    });
-                    $('.ShipmentOrders').html(html);
+                    allOrders = result.data || []; 
+                    console.log("All Orders Loaded: ", allOrders); 
+                    loadShipmentOrders(1); 
                 },
-                error: function (xhr, error) {
-                    alert(xhr.statusText);
+                error: function (xhr, status, error) {
+                    console.error('Failed to load orders:', xhr.statusText);
+                    alert('Error loading shipment orders.');
                 }
             });
         }
+
+        function filterShipmentOrders() {
+            const originLocation = $('#OriginLocation').val().toLowerCase();
+            const destinationLocation = $('#DestinationLocation').val().toLowerCase();
+            const additionalServices = $('#AdditionalServices').val().toLowerCase();
+            const shipmentMethod = $('#ShipmentMethod').val().toLowerCase();
+            const orderStatus = $('#OrderStatus').val();
+            const orderDateSort = $('#OrderDateSort').val();
+            const totalQuantitySort = $('#TotalQuantitySort').val();
+
+            console.log("Filtering Orders with: ", {
+                originLocation,
+                destinationLocation,
+                additionalServices,
+                shipmentMethod,
+                orderStatus
+            }); 
+
+            let filteredOrders = allOrders.filter(order => {
+                return (
+                    (originLocation === '' || order.originLocation.toLowerCase().includes(originLocation)) &&
+                    (destinationLocation === '' || order.destinationLocation.toLowerCase().includes(destinationLocation)) &&
+                    (additionalServices === '' || order.additionalServices.toLowerCase().includes(additionalServices)) &&
+                    (shipmentMethod === '' || order.shipmentMethod.toLowerCase().includes(shipmentMethod)) &&
+                    (orderStatus === '' || order.orderStatus === orderStatus)
+                );
+            });
+
+            if (orderDateSort) {
+                    filteredOrders.sort((a, b) => {
+                        const dateA = new Date(a.orderDate);
+                        const dateB = new Date(b.orderDate);
+                        return orderDateSort === 'asc' ? dateA - dateB : dateB - dateA; 
+                    });
+            }
+
+            if (totalQuantitySort) {
+                filteredOrders.sort((a, b) => {
+                    return totalQuantitySort === 'asc'
+                        ? a.totalQuantity - b.totalQuantity
+                        : b.totalQuantity - a.totalQuantity;
+                });
+            }
+
+            console.log("Filtered Orders: ", filteredOrders); 
+
+            if (filteredOrders.length > 0) {
+                loadShipmentOrders(1, filteredOrders); 
+            } else {
+                $('.ShipmentOrders').html('<tr><td colspan="12">No orders found.</td></tr>');
+            }
+        }
+
+        function loadShipmentOrders(page, orders = allOrders) {
+            const start = (page - 1) * pageSize; 
+            const end = start + pageSize; 
+            const paginatedOrders = orders.slice(start, end); 
+
+            let html = ''; 
+            if (paginatedOrders.length > 0) {
+                $.each(paginatedOrders, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.orderId + '</td>';
+                    html += '<td>' + item.customerId + '</td>';
+                    html += '<td>' + item.pricingId + '</td>';
+                    html += '<td>' + new Date(item.orderDate).toLocaleString() + '</td>';
+                    html += '<td>' + item.originLocation + '</td>';
+                    html += '<td>' + item.destinationLocation + '</td>';
+                    html += '<td>' + item.totalWeight + '</td>';
+                    html += '<td>' + item.totalQuantity + '</td>';
+                    html += '<td>' + item.shipmentMethod + '</td>';
+                    html += '<td>' + item.additionalServices + '</td>';
+                    html += '<td>' + item.additionalFee + '</td>';
+                    html += '<td>' + item.orderStatus + '</td>';
+                    html += '<td>';
+                    html += `<a href="#" onclick="showEditModal(${item.orderId})">Edit</a> | `;
+                    html += `<a href="#" onclick="showDetailsModal(${item.orderId})">Details</a> | `;
+                    html += `<a href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmation" onclick="deleteShipmentOrder(${item.orderId})">Delete</a>`;
+                    html += '</td>';
+                    html += '</tr>';
+                });
+            } else {
+                html = '<tr><td colspan="12">No orders found for this page.</td></tr>';
+            }
+
+            $('.ShipmentOrders').html(html);
+
+            generatePagination(Math.ceil(orders.length / pageSize), page);
+        }
+
+        function generatePagination(totalPages, currentPage) {
+            let paginationHtml = '';
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHtml += `<li class="page-item active"><span class="page-link">${i}</span></li>`;
+                } else {
+                    paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="loadShipmentOrders(${i}); return false;">${i}</a></li>`;
+                }
+            }
+            $('.pagination').html(paginationHtml); 
+        }
+
+
+
 
         function loadCustomers() {
             $.ajax({
@@ -314,7 +452,6 @@
                 }
             });
         }
-
         function submitShipmentOrderForm() {
             const formData = {
                 CustomerId: $('#customerId').val(),
@@ -336,7 +473,8 @@
                 contentType: 'application/json',
                 data: JSON.stringify(formData),
                 success: function (response) {
-                    loadShipmentOrders();
+                    loadAllShipmentOrders();
+
                     $('#createForm')[0].reset();
                     $('#create').modal('hide');
                 },
@@ -395,7 +533,8 @@
                 contentType: 'application/json',
                 data: JSON.stringify(formData),
                 success: function (response) {
-                    loadShipmentOrders();
+                    loadAllShipmentOrders();
+
                     $('#edit').modal('hide');
                     alert('Updare ShipmentOrder successfully');
                 },
@@ -440,7 +579,7 @@
                     type: 'DELETE',
                     contentType: 'application/json',
                     success: function () {
-                        loadShipmentOrders();
+                        loadAllShipmentOrders();
                         $('#deleteConfirmation').modal('hide');
                     },
                     error: function (xhr) {
