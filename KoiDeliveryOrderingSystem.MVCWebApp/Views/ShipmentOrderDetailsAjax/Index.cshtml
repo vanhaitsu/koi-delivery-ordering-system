@@ -11,6 +11,42 @@
     Create New
 </button>
 
+<form method="get" class="p-4 bg-light shadow-sm rounded">
+    <!-- Search Input -->
+    <div class="mb-3">
+        <label for="search" class="form-label fw-bold">Order Detail ID</label>
+        <input type="text" name="search" id="search" value="@ViewBag.Search" placeholder="Enter order detail ID" class="form-control border border-primary rounded-pill" />
+    </div>
+
+    <!-- Order Status Select -->
+    <div class="mb-3">
+        <label for="status" class="form-label fw-bold">Select Order Status</label>
+        <select class="form-select border border-primary rounded-pill" id="status" name="status">
+            <option value="" selected>Select status</option>
+            <option value="Pending">Pending</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Deliveried">Deliveried</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+    </div>
+
+    <!-- Sort by Date of Entry -->
+    <div class="mb-3">
+        <label for="orderByDescending" class="form-label fw-bold">Sort by Date of Entry</label>
+        <select class="form-select border border-primary rounded-pill" name="orderByDescending" id="orderByDescending" aria-label="Sort order">
+            <option value="" selected>Select sort order</option>
+            <option value="false">Ascending</option>
+            <option value="true">Descending</option>
+        </select>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center">
+        <input type="submit" value="Search" class="btn btn-primary btn-lg rounded-pill px-4" />
+    </div>
+</form>
+
+
 <!-- Create Modal -->
 <div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -288,12 +324,9 @@
     <tbody class="ShipmentOrderDetails"></tbody>
 </table>
 
-@* <nav aria-label="Shipment order details pagination">
-    <ul class="pagination justify-content-center">
-        <!-- Pagination links will be loaded here -->
-    </ul>
-</nav>
- *@
+<div class="Pagination pagination-container mt-4 d-flex justify-content-center">
+</div>
+
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
@@ -303,11 +336,19 @@
             loadOrderDetailData()
         });
 
-        function loadData() {
-            var url = `https://localhost:7122/api/ShipmentOrderDetail`;
+        function loadData(page) {
+            var search = $('input[name="search"]').val();
+            var status = $('select[name="status"]').val();
+            var orderByDescending = $('select[name="orderByDescending"]').val();
             $.ajax({
-                url: url,
+                url: 'https://localhost:7122/api/ShipmentOrderDetail',
                 type: "GET",
+                data: {
+                    pageNumber: page,
+                    search: search || "",
+                    status: status || "",
+                    orderByDescending: orderByDescending || false
+                },
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
@@ -328,7 +369,7 @@
                         html += '<td>' + (item.shipmentOrderId || 'N/A') + '</td>'; // Order ID
                         html += '<td>' + animalTypeDesc + '</td>'; // Animal Type Description
                         html += '<td>' + (item.additionalServices || 'N/A') + '</td>'; // Additional Services
-                        html += '<td>' + (item.fee || 'N/A') + '</td>'; // Fee
+                        html += '<td>' + (item.fee || '0') + '</td>'; // Fee
                         html += '<td>' + (item.status || 'N/A') + '</td>'; // Status
                         html += '<td>' + (item.weight || 'N/A') + '</td>'; // Weight
                         html += '<td>' + (item.length || 'N/A') + '</td>'; // Length
@@ -349,11 +390,25 @@
                         html += '</tr>';
                     });
                     $('.ShipmentOrderDetails').html(html); // Insert rows into the tbody
+                    updatePagination(result.data.totalCount, page);
                 },
                 error: function (xhr, error) {
                     alert(xhr.statusText);
                 }
             });
+        }
+        function updatePagination(totalCount, currentPage) {
+            var totalPages = Math.ceil(totalCount / 10);
+            var paginationHtml = '';
+
+            for (var i = 1; i <= totalPages; i++) {
+                paginationHtml += `<a href="#" class="page-link" onclick="loadData(${i})">${i}</a>`;
+                if (i < totalPages) {
+                    paginationHtml += ' | ';
+                }
+            }
+
+            $('.Pagination').html(paginationHtml);
         }
 
         function loadOrderData() {
