@@ -3,6 +3,7 @@ using KoiDeliveryOrderingSystem.Data.BaseModels;
 using KoiDeliveryOrderingSystem.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,11 +22,12 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
             if (!string.IsNullOrEmpty(healthCheckFilterModel.Search))
             {
                 string searchLower = healthCheckFilterModel.Search.ToLower();
+                decimal searchValue;
                 query = query.Where(a =>
                     a.DoctorName.ToLower().Contains(searchLower) ||
                     a.Condition.ToLower().Contains(searchLower) ||
-                    a.Temperature.ToString().Equals(healthCheckFilterModel.Search) ||
-                    a.Weight.ToString().Equals(healthCheckFilterModel.Search));
+                    (decimal.TryParse(healthCheckFilterModel.Search, out searchValue) &&
+         (a.Temperature == searchValue || a.Weight == searchValue)));
             }
             if (!string.IsNullOrEmpty(healthCheckFilterModel.PackagingType))
             {
