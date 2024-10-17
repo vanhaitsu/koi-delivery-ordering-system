@@ -18,15 +18,17 @@
 
 <!-- Filter Dropdown Form -->
 <form id="filterForm" method="get" class="mb-4">
-    <div class="row g-2">
-        <div class="col-sm-4">
+    <div class="row g-3">
+        <div class="col-md-2">
+            <label for="orderByDescending" class="form-label">Order</label>
             <select id="orderByDescending" name="orderByDescending" class="form-select">
                 <option value="">-- Select Order --</option>
                 <option value="true">Ascending</option>
                 <option value="false">Descending</option>
             </select>
         </div>
-        <div class="col-sm-4">
+        <div class="col-md-2">
+            <label for="order" class="form-label">Order Type</label>
             <select id="order" name="order" class="form-select">
                 <option value="">-- Select Order Type --</option>
                 <option value="id">Id</option>
@@ -35,11 +37,40 @@
                 <option value="weight">Weight</option>
             </select>
         </div>
-        <div class="col-sm-4">
+        <div class="col-md-2">
+            <label for="packagingType" class="form-label">Package Type</label>
             <select id="packagingType" name="packagingType" class="form-select">
                 <option value="">-- Select Package Type --</option>
                 <option value="Box">Box</option>
                 <option value="Paper">Paper</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="shipmentTrackingId" class="form-label">Shipment Tracking</label>
+            <select id="shipmentTrackingId" name="shipmentTrackingId" class="form-select">
+                <option value="">-- Select Shipment Tracking --</option>
+                @if (ViewData["ShipmentTrackingId"] != null)
+                {
+                    foreach (var item in (IEnumerable<SelectListItem>)ViewData["ShipmentTrackingId"])
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="shipmentOrderDetailId" class="form-label">Shipment Order Detail</label>
+            <select id="shipmentOrderDetailId" name="shipmentOrderDetailId" class="form-select">
+                <option value="">-- Select Shipment Order Detail --</option>
+                @if (ViewData["ShipmentOrderDetailId"] != null)
+                {
+                    foreach (var item in (IEnumerable<SelectListItem>)ViewData["ShipmentOrderDetailId"])
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
             </select>
         </div>
     </div>
@@ -49,6 +80,9 @@
         </div>
     </div>
 </form>
+
+
+
 <!-- Create Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
     Create New
@@ -257,36 +291,42 @@
         margin-top: 20px;
         margin-bottom: 20px;
     }
+
     .pagination {
         display: flex;
         list-style-type: none;
         padding: 0;
     }
-    .pagination li {
-        margin: 0 5px;
-    }
-    .pagination .page-link {
-        color: #007bff;
-        background-color: #fff;
-        border: 1px solid #dee2e6;
-        padding: 0.375rem 0.75rem;
-        border-radius: 0.25rem;
-        text-decoration: none;
-    }
-    .pagination .page-link:hover {
-        background-color: #e9ecef;
-    }
-    .pagination .active .page-link {
-        color: #fff;
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-    .pagination .disabled .page-link {
-        color: #6c757d;
-        pointer-events: none;
-        background-color: #fff;
-        border-color: #dee2e6;
-    }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.25rem;
+            text-decoration: none;
+        }
+
+            .pagination .page-link:hover {
+                background-color: #e9ecef;
+            }
+
+        .pagination .active .page-link {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .pagination .disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
 </style>
 
 <div class="pagination-container">
@@ -304,6 +344,7 @@
         $(document).ready(function () {
             loadData(currentPage);
             loadShipmentTrackingData();
+            loadShipmentOrderDetailData();
 
             $('#searchForm').submit(function (e) {
                 e.preventDefault();
@@ -333,6 +374,8 @@
                 order: $('#order').val() || "id",
                 orderByDescending: $('#orderByDescending').val() || "true",
                 packagingType: $('#packagingType').val() || null,
+                shipmentTrackingId: $('#shipmentTrackingId').val() || null,
+                shipmentOrderDetailId: $('#shipmentOrderDetailId').val() || null,
                 pageNumber: pageNumber || 1
             };
 
@@ -379,10 +422,10 @@
             var maxPagesToShow = 5;
 
             paginationHtml += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                <a class="page-link" href="#" data-page="${currentPage - 1}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>`;
+                                <a class="page-link" href="#" data-page="${currentPage - 1}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>`;
 
             var startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
             var endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
@@ -396,8 +439,8 @@
 
             for (var i = startPage; i <= endPage; i++) {
                 paginationHtml += `<li class="page-item ${i === currentPage ? 'active' : ''}">
-                    <a class="page-link" href="#" data-page="${i}">${i}</a>
-                </li>`;
+                                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                                </li>`;
             }
 
             if (endPage < totalPages) {
@@ -408,15 +451,13 @@
             }
 
             paginationHtml += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-                <a class="page-link" href="#" data-page="${currentPage + 1}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>`;
+                                <a class="page-link" href="#" data-page="${currentPage + 1}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>`;
 
             $('#paginationControls').html(paginationHtml);
         }
-
-
 
         function loadShipmentOrderDetailData() {
             $.ajax({
@@ -426,7 +467,7 @@
                 dataType: "json",
                 success: function (result) {
                     var html = '';
-                    $.each(result.data, function (key, item) {
+                    $.each(result.data.data, function (key, item) {
                         html += `<option value="${item.shipmentOrderDetailId}">${item.shipmentOrderDetailId}</option>`;
                     });
                     $('#shipmentOrderDetailId, #editShipmentOrderDetailId').append(html);

@@ -5,7 +5,6 @@
 }
 
 <h1>HealthCheck</h1>
-
 <!-- Search Form -->
 <form method="get" class="mb-4">
     <div class="row g-2 align-items-center">
@@ -244,21 +243,3 @@
         </ul>
     </nav>
 </div>
-
-
-
-@* <div style="text-align: center; margin: 20px 0;">
-    @if (ViewBag.TotalCount > 10)
-    {
-        var totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / 10);
-        for (int i = 1; i <= totalPages; i++)
-        {
-            var linkClass = (i == ViewBag.CurrentPage) ? "pagination-link active" : "pagination-link";
-                    <a class="@linkClass" asp-route-pageNumber="@i" asp-route-search="@ViewBag.Search" asp-route-order="@ViewBag.Order" asp-route-orderByDescending="@ViewBag.OrderByDescending">@i</a>
-            @if (i < totalPages)
-            {
-                            <span> | </span>
-            }
-        }
-    }
-</div> *@
