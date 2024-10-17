@@ -3,7 +3,6 @@
 }
 
 <h1>Index</h1>
-
 <!-- Create Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
     Create New
@@ -197,7 +196,7 @@
     <thead>
         <tr>
 @*             <th>PackagingProcessID</th>
- *@            <th>PackagingType</th>
+ *@         <th>PackagingType</th>
             <th>PackagingInstructions</th>
             <th>PackagingDate</th>
             <th>HandlerName</th>
@@ -284,9 +283,9 @@
                 EstimatedPackagingTime: $('#estimatedPackagingTime').val(),
                 ActualPackagingTime: $('#actualPackagingTime').val(),
                 PackagingCost: $('#packagingCost').val(),
-                OrderId: $('#orderId').val()
+                ShipmentOrderId: $('#orderId').val()
             };
-            if (formData.OrderId === "0") {
+            if (formData.ShipmentOrderId === "0") {
                 alert("Please select a valid Order ID.");
                 return;
             }
@@ -316,7 +315,7 @@
                 dataType: "json",
                 success: function (data) {
                     $('#editPackagingProcessId').val(data.data.packagingProcessId);
-                    $('#editOrderId').val(data.data.orderId);
+                    $('#editOrderId').val(data.data.shipmentOrderId);
                     $('#editPackagingType').val(data.data.packagingType);
                     $('#editPackagingInstructions').val(data.data.packagingInstructions);
                     $('#editPackagingDate').val(data.data.packagingDate);
@@ -336,7 +335,7 @@
         function updatePackagingProcess() {
             const formData = {
                 PackagingProcessId: $('#editPackagingProcessId').val(),
-                OrderId: $('#editOrderId').val(),
+                ShipmentOrderId: $('#editOrderId').val(),
                 PackagingType: $('#editPackagingType').val(),
                 PackagingInstructions: $('#editPackagingInstructions').val(),
                 PackagingDate: $('#editPackagingDate').val(),
