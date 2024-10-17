@@ -25,8 +25,9 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
          }*/
 
         // GET: PackagingProcesses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 5, string PackagingType = null, string HandlerName = null, string QualityCheckStatus = null)
         {
+            List<PackagingProcess> data = new List<PackagingProcess>();
             using (var httpClient = new HttpClient())
             {
                 try
@@ -39,18 +40,36 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var result = JsonConvert.DeserializeObject<BusinessResult>(content);
                             if (result != null && result.Data != null)
                             {
-                                var data = JsonConvert.DeserializeObject<List<PackagingProcess>>(result.Data.ToString());
-                                return View(data);
+                                data = JsonConvert.DeserializeObject<List<PackagingProcess>>(result.Data.ToString());
                             }
                         }
                     }
                 }
                 catch (HttpRequestException ex)
                 {
-                    Console.WriteLine($"Lỗi khi gửi yêu cầu: {ex.Message}");
+                    Console.WriteLine($"Error fetching data: {ex.Message}");
                 }
             }
-            return View(new List<PackagingProcess>());
+
+            // Filter the data locally
+            if (!string.IsNullOrEmpty(PackagingType))
+                data = data.Where(x => x.PackagingType.Contains(PackagingType)).ToList();
+            if (!string.IsNullOrEmpty(HandlerName))
+                data = data.Where(x => x.HandlerName.Contains(HandlerName)).ToList();
+            if (!string.IsNullOrEmpty(QualityCheckStatus))
+                data = data.Where(x => x.QualityCheckStatus.Contains(QualityCheckStatus)).ToList();
+
+            // Calculate pagination
+            int totalItems = data.Count;
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            var paginatedData = data.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            // Pass pagination data to the view
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+
+            return View(paginatedData);
         }
 
         // GET: PackagingProcesses/Delete/5

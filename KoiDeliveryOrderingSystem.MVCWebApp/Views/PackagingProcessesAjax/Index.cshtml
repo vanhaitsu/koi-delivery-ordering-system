@@ -26,9 +26,7 @@
                     </div>
                     <div class="form-group">
                         <label for="orderId" class="control-label">Order ID</label>
-                        <select id="orderId" class="form-control" required>
-                            <option value="0">Select Order ID</option>
-                        </select>
+                        <select id="orderId" class="form-control" required></select>
                         <span class="text-danger" id="orderIdError"></span>
                     </div>
                     <div class="form-group">
@@ -100,10 +98,7 @@
                     <input type="hidden" id="editPackagingProcessId" />
                     <div class="form-group">
                         <label for="editOrderId" class="control-label">Order ID</label>
-                        <select id="editOrderId" class="form-control" required>
-                            <option value="0">Select Order ID</option>
-                        </select>
-                        <span class="text-danger" id="editOrderIdError"></span>
+                        <select id="editOrderId" class="form-control" required></select>
                     </div>
                     <div class="form-group">
                         <label for="editPackagingType" class="control-label">Packaging Type</label>
@@ -201,8 +196,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th>PackagingProcessID</th>
-            <th>PackagingType</th>
+@*             <th>PackagingProcessID</th>
+ *@            <th>PackagingType</th>
             <th>PackagingInstructions</th>
             <th>PackagingDate</th>
             <th>HandlerName</th>
@@ -221,7 +216,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             loadData();
-            loadShipperData();
             loadOrderData();
         });
 
@@ -235,7 +229,7 @@
                     var html = '';
                     $.each(result.data, function (key, item) {
                         html += '<tr>';
-                        html += '<td>' + item.packagingProcessId + '</td>';
+                      //  html += '<td>' + item.packagingProcessId + '</td>';
                         html += '<td>' + item.packagingType + '</td>';
                         html += '<td>' + item.packagingInstructions + '</td>';
                         html += '<td>' + (item.packagingDate !== null ? new Date(item.packagingDate).toLocaleDateString() : 'N/A') + '</td>';
