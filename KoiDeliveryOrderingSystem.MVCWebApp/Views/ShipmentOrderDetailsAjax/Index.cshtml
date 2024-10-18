@@ -357,17 +357,17 @@
                         html += '<tr>';
 
                         // Handle shipmentOrder and animalType if they exist
-                        var orderDetails = item.shipmentOrder
-                            ? `Order ID: ${item.shipmentOrder.orderId}, Customer ID: ${item.shipmentOrder.customerId}`
-                            : 'No Order Details';
+                        // var orderDetails = item.shipmentOrder
+                        //     ? `Order ID: ${item.shipmentOrder.orderId}, Customer ID: ${item.shipmentOrder.customerId}`
+                        //     : 'No Order Details';
 
-                        var animalTypeDesc = item.animalType
-                            ? item.animalType.description
-                            : 'N/A';
+                        // var animalTypeDesc = item.animalType
+                        //     ? item.animalType.description
+                        //     : 'N/A';
 
                         html += '<td>' + (item.shipmentOrderDetailId || 'N/A') + '</td>'; // Order Detail ID
                         html += '<td>' + (item.shipmentOrderId || 'N/A') + '</td>'; // Order ID
-                        html += '<td>' + animalTypeDesc + '</td>'; // Animal Type Description
+                        html += '<td>' + (item.animalType ? item.animalType.description : 'N/A') + '</td>'; // Animal Type Description
                         html += '<td>' + (item.additionalServices || 'N/A') + '</td>'; // Additional Services
                         html += '<td>' + (item.fee || '0') + '</td>'; // Fee
                         html += '<td>' + (item.status || 'N/A') + '</td>'; // Status
