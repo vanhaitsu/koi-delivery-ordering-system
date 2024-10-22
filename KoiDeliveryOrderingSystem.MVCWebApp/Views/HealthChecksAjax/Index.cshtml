@@ -7,14 +7,21 @@
 <!-- Search Form -->
 <form id="searchForm" method="get" class="mb-4">
     <div class="row g-2 align-items-center">
-        <div class="col-sm-10">
-            <input type="text" id="search" name="search" class="form-control" placeholder="Search..." value="@ViewBag.Search" />
+        <div class="col-sm-3">
+            <input type="text" id="searchWeight" name="searchWeight" class="form-control" placeholder="Search Weight..." value="@ViewBag.SearchWeight" />
         </div>
-        <div class="col-sm-2 text-end">
+        <div class="col-sm-3">
+            <input type="text" id="searchDoctorName" name="searchDoctorName" class="form-control" placeholder="Search Doctor Name..." value="@ViewBag.SearchDoctorName" />
+        </div>
+        <div class="col-sm-3">
+            <input type="text" id="searchTemperature" name="searchTemperature" class="form-control" placeholder="Search Temperature..." value="@ViewBag.SearchTemperature" />
+        </div>
+        <div class="col-sm-3 text-end">
             <input type="submit" value="Search" class="btn btn-primary w-100" />
         </div>
     </div>
 </form>
+
 
 <!-- Filter Dropdown Form -->
 <form id="filterForm" method="get" class="mb-4">
@@ -376,7 +383,9 @@
 
         function loadData(pageNumber) {
             const healthCheckFilterModel = {
-                search: $('#search').val() || null,
+                searchWeight: $('#searchWeight').val() || null,
+                searchDoctorName: $('#searchDoctorName').val() || null,
+                searchTemperature: $('#searchTemperature').val() || null,
                 order: $('#order').val() || "id",
                 orderByDescending: $('#orderByDescending').val() || "true",
                 packagingType: $('#drnpackagingType').val() || null,

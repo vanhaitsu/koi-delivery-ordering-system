@@ -8,14 +8,21 @@
 <!-- Search Form -->
 <form method="get" class="mb-4">
     <div class="row g-2 align-items-center">
-        <div class="col-md-9">
-            <input type="text" name="search" class="form-control" placeholder="Search..." value="@ViewBag.Search" />
+        <div class="col-md-3">
+            <input type="text" name="searchWeight" class="form-control" placeholder="Search Weight" value="@ViewBag.SearchWeight" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="searchDoctorName" class="form-control" placeholder="Search Doctor Name" value="@ViewBag.SearchDoctorName" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="searchTemperature" class="form-control" placeholder="Search Temperature" value="@ViewBag.SearchTemperature" />
         </div>
         <div class="col-md-3 text-end">
             <input type="submit" value="Search" class="btn btn-primary w-100" />
         </div>
     </div>
 </form>
+
 
 <!-- Filter Dropdown Form -->
 <form method="get" class="mb-4">
