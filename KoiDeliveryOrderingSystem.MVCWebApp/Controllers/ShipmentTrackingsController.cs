@@ -14,11 +14,11 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
     public class ShipmentTrackingsController : Controller
     {
         // GET: ShipmentTrackings
-        public async Task<IActionResult> Index(string? search, DateOnly? updateDate, int? pageNumber = 1, bool orderByDescending = false, string? order = null)
+        public async Task<IActionResult> Index(string? handlerName,string? currentLocation, string? remarks, DateOnly? updateDate, int? pageNumber = 1, bool orderByDescending = false, string? order = null)
         {
             using (var httpClient = new HttpClient())
             {
-                var uri = $"{Const.APIEndPoint}ShipmentTrackings?pageNumber={pageNumber}&search={search}&orderByDescending={orderByDescending}&order={order}&updateDate={updateDate}";
+                var uri = $"{Const.APIEndPoint}ShipmentTrackings?pageNumber={pageNumber}&handlerName={handlerName}&currentLocation={currentLocation}&remarks={remarks}&orderByDescending={orderByDescending}&order={order}&updateDate={updateDate}";
 
                 using (var response = await httpClient.GetAsync(uri))
                 {
@@ -31,7 +31,9 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             var data = JsonConvert.DeserializeObject<PagedResult<ShipmentTracking>>(result.Data.ToString());
                             ViewBag.TotalCount = data.TotalCount;
                             ViewBag.CurrentPage = pageNumber;
-                            ViewBag.Search = search;
+                            ViewBag.CurrentLocation = currentLocation;
+                            ViewBag.Remarks = remarks;
+                            ViewBag.HandlerName = handlerName;
                             ViewBag.Order = order;
                             ViewBag.OrderByDescending = orderByDescending;
 

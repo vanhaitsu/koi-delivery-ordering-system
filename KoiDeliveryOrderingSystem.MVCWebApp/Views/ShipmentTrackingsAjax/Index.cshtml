@@ -5,7 +5,9 @@
 <h1>Index</h1>
 
 <form method="get" class="d-flex gap-5">
-    <input type="text" name="search" placeholder="Search..." class="form-control" />
+    <input type="text" name="handlerName" placeholder="Enter HabdleName..." class="form-control" />
+    <input type="text" name="currentLocation" placeholder="Enter CurrentLocation..." class="form-control" />
+    <input type="text" name="remarks" placeholder="Enter Remarks..." class="form-control" />
 
     <select class="form-select" name="order" aria-label="Order">
         <option value="updateTime">Update time</option>
@@ -230,7 +232,9 @@
         });
 
         function loadData(page) {
-            var search = $('input[name="search"]').val();
+            var handlerName = $('input[name="handlerName"]').val();
+            var currentLocation = $('input[name="currentLocation"]').val();
+            var remarks = $('input[name="remarks"]').val();
             var order = $('select[name="order"]').val();
             var orderByDescending = $('select[name="orderByDescending"]').val();
             var updateDate = $('input[name="updateDate"]').val();
@@ -240,7 +244,9 @@
                 type: "GET",
                 data: {
                     pageNumber: page,
-                    search: search,
+                    handlerName: handlerName,
+                    currentLocation: currentLocation,
+                    remarks: remarks,
                     order: order,
                     orderByDescending: orderByDescending,
                     updateDate: updateDate
