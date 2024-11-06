@@ -19,24 +19,26 @@
 
     <!-- Order Status Select -->
     <div class="mb-3">
-        <label for="OrderStatus" class="form-label fw-bold">Select Order Status</label>
-        <select class="form-select border border-primary rounded-pill" id="OrderStatus" name="status">
+        <label for="OrderStatus" class="form-label fw-bold">Order Status</label>
+        <input type="text" name="status" id="OrderStatus" value="@ViewBag.Status" placeholder="Enter order's status" class="form-control border border-primary rounded-pill" />
+        @* <select class="form-select border border-primary rounded-pill" id="OrderStatus" name="status">
             <option value="" selected>Select status</option>
             <option value="Pending">Pending</option>
             <option value="In transit">In transit</option>
             <option value="Deliveried">Deliveried</option>
             <option value="Cancelled">Cancelled</option>
-        </select>
+        </select> *@
     </div>
 
     <!-- Sort by Date of Entry -->
     <div class="mb-3">
-        <label for="orderByDescending" class="form-label fw-bold">Sort by Date of Entry</label>
-        <select class="form-select border border-primary rounded-pill" name="orderByDescending" id="orderByDescending" aria-label="Sort order">
+        <label for="orderByDescending" class="form-label fw-bold">Origin</label>
+        <input type="text" name="origin" id="OrderStatus" value="@ViewBag.Origin" placeholder="Enter origin" class="form-control border border-primary rounded-pill" />
+        @* <select class="form-select border border-primary rounded-pill" name="orderByDescending" id="orderByDescending" aria-label="Sort order">
             <option value="" selected>Select sort order</option>
             <option value="false">Ascending</option>
             <option value="true">Descending</option>
-        </select>
+        </select> *@
     </div>
 
     <!-- Submit Button -->
@@ -86,21 +88,21 @@
             <th>
                 @Html.DisplayNameFor(model => model.HealthStatus)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Age)
-            </th>
-            <th>
+            </th> *@
+            @* <th>
                 @Html.DisplayNameFor(model => model.Achievement)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Origin)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
+            </th> *@
+            @* <th>
                 @Html.DisplayNameFor(model => model.Description)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -145,21 +147,21 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.HealthStatus)
                 </td>
-                <td>
+                @* <td>
                     @Html.DisplayFor(modelItem => item.Age)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Achievement)
-                </td>
+                </td> *@
                 <td>
                     @Html.DisplayFor(modelItem => item.Origin)
                 </td>
-                <td>
+                @* <td>
                     @Html.DisplayFor(modelItem => item.ImageUrl)
-                </td>
-                <td>
+                </td> *@
+                @* <td>
                     @Html.DisplayFor(modelItem => item.Description)
-                </td>
+                </td> *@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ShipmentOrderDetailId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.ShipmentOrderDetailId">Details</a> |
@@ -179,7 +181,7 @@
                 @for (int i = 1; i <= totalPages; i++)
                 {
                     <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-route-pageNumber="@i" asp-route-search="@ViewBag.Search" asp-route-order="@ViewBag.Order" asp-route-orderByDescending="@ViewBag.OrderByDescending">@i</a>
+                        <a class="page-link" asp-route-pageNumber="@i" asp-route-search="@ViewBag.Search" asp-route-status="@ViewBag.Status" asp-route-origin="@ViewBag.Origin">@i</a>
                     </li>
                 }
             </ul>
@@ -187,4 +189,18 @@
     }
 </div>
 
-
+@* <div>
+    @if (ViewBag.TotalCount > 0)
+    {
+        var totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / 10);
+        for (int i = 1; i <= totalPages; i++)
+        {
+            <a asp-route-pageNumber="@i" asp-route-search="@ViewBag.Search" asp-route-status="@ViewBag.Status" asp-route-origin="@ViewBag.Origin">@i</a>
+            @if (i < totalPages)
+            {
+                <span> | </span>
+            }
+        }
+    }
+</div>
+ *@

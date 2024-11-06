@@ -29,6 +29,11 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
                 query = query.Where(x => x.Status.ToString().Contains(shipmentOrderDetailFilterModel.Status));
             }
 
+            if (!string.IsNullOrWhiteSpace(shipmentOrderDetailFilterModel.Origin))
+            {
+                query = query.Where(x => x.Origin.ToString().Contains(shipmentOrderDetailFilterModel.Origin));
+            }
+
             // Sort
             if (shipmentOrderDetailFilterModel.OrderByDescending)
             {
@@ -48,7 +53,7 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
             totalCount = await query.CountAsync();
 
             // Pagination
-            int skip = (shipmentOrderDetailFilterModel.PageNumber - 1) * 10;
+            int skip = ((int)shipmentOrderDetailFilterModel.PageNumber - 1) * 10;
             query = query.Skip(skip).Take(10);
 
             return new FilterResult<ShipmentOrderDetail>

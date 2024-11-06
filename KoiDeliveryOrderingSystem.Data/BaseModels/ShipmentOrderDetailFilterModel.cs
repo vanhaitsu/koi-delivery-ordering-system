@@ -7,6 +7,7 @@
         public int? AnimalTypeId { get; set; }
         public string? Status { get; set; }
         public string? Search { get; set; }
+        public string? Origin { get; set; }
         public int PageNumber { get; set; } = 1;
     }
 }

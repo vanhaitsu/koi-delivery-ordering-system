@@ -11,33 +11,24 @@
     Create New
 </button>
 
+
 <form method="get" class="p-4 bg-light shadow-sm rounded">
     <!-- Search Input -->
     <div class="mb-3">
         <label for="search" class="form-label fw-bold">Order Detail ID</label>
-        <input type="text" name="search" id="search" value="@ViewBag.Search" placeholder="Enter order detail ID" class="form-control border border-primary rounded-pill" />
+        <input type="text" name="search" placeholder="Enter order detail ID" class="form-control border border-primary rounded-pill" />
     </div>
 
     <!-- Order Status Select -->
     <div class="mb-3">
-        <label for="status" class="form-label fw-bold">Select Order Status</label>
-        <select class="form-select border border-primary rounded-pill" id="status" name="status">
-            <option value="" selected>Select status</option>
-            <option value="Pending">Pending</option>
-            <option value="In transit">In transit</option>
-            <option value="Deliveried">Deliveried</option>
-            <option value="Cancelled">Cancelled</option>
-        </select>
+        <label for="status" class="form-label fw-bold">Order Status</label>
+        <input type="text" name="status" placeholder="Enter order's status" class="form-control border border-primary rounded-pill" />
     </div>
 
     <!-- Sort by Date of Entry -->
     <div class="mb-3">
-        <label for="orderByDescending" class="form-label fw-bold">Sort by Date of Entry</label>
-        <select class="form-select border border-primary rounded-pill" name="orderByDescending" id="orderByDescending" aria-label="Sort order">
-            <option value="" selected>Select sort order</option>
-            <option value="false">Ascending</option>
-            <option value="true">Descending</option>
-        </select>
+        <label for="origin" class="form-label fw-bold">Origin</label>
+        <input type="text" name="origin" placeholder="Enter origin" class="form-control border border-primary rounded-pill" />
     </div>
 
     <!-- Submit Button -->
@@ -333,12 +324,18 @@
             loadData();
             loadAnimalTypeData();
             loadOrderData
-            loadOrderDetailData()
+            loadOrderDetailData();
+
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                loadData();
+            });
         });
 
         function loadData(page) {
             var search = $('input[name="search"]').val();
-            var status = $('select[name="status"]').val();
+            var status = $('input[name="status"]').val();
+            var origin = $('input[name="origin"]').val();
             var orderByDescending = $('select[name="orderByDescending"]').val();
             $.ajax({
                 url: 'https://localhost:7122/api/ShipmentOrderDetail',
@@ -347,6 +344,7 @@
                     pageNumber: page,
                     search: search || "",
                     status: status || "",
+                    origin: origin || "",
                     orderByDescending: orderByDescending || false
                 },
                 contentType: "application/json;charset=utf-8",
