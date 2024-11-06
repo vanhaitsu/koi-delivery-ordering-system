@@ -11,7 +11,9 @@ namespace KoiDeliveryOrderingSystem.Data.BaseModels
         public string? Order { get; set; } = "id";
         public bool OrderByDescending { get; set; } = false;
         public string? Condition { get; set; } 
-        public string? Search { get; set; } 
+        public string? searchWeight { get; set; }
+        public string? searchDoctorName { get; set; }
+        public string? searchTemperature { get; set; }
         public string? PackagingType { get; set; }
         public int? ShipmentTrackingId {  get; set; }
         public int? ShipmentOrderDetailId { get; set; }

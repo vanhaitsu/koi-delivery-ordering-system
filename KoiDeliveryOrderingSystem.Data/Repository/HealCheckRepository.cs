@@ -18,17 +18,22 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
         public async Task<QueryResultModel<HealthCheck>> GetAllAsync(HealthCheckFilterModel healthCheckFilterModel)
         {
             IQueryable<HealthCheck> query = _context.HealthChecks.Include(a => a.ShipmentOrderDetail).Include(a => a.ShipmentTracking);
-            // Search
-            if (!string.IsNullOrEmpty(healthCheckFilterModel.Search))
+            if (!string.IsNullOrEmpty(healthCheckFilterModel.searchDoctorName) ||
+         !string.IsNullOrEmpty(healthCheckFilterModel.searchWeight) ||
+         !string.IsNullOrEmpty(healthCheckFilterModel.searchTemperature))
             {
-                string searchLower = healthCheckFilterModel.Search.ToLower();
-                decimal searchValue;
+                string searchDoctorNameLower = healthCheckFilterModel.searchDoctorName?.ToLower();
+                decimal searchWeightValue, searchTemperatureValue;
+
                 query = query.Where(a =>
-                    a.DoctorName.ToLower().Contains(searchLower) &&
-                    a.Condition.ToLower().Contains(searchLower) &&
-                    (decimal.TryParse(healthCheckFilterModel.Search, out searchValue) &&
-         (a.Temperature == searchValue || a.Weight == searchValue)));
+                    (string.IsNullOrEmpty(healthCheckFilterModel.searchDoctorName) || a.DoctorName.ToLower().Contains(searchDoctorNameLower)) &&
+                    (string.IsNullOrEmpty(healthCheckFilterModel.searchWeight) ||
+                        (decimal.TryParse(healthCheckFilterModel.searchWeight, out searchWeightValue) && a.Weight == searchWeightValue)) &&
+                    (string.IsNullOrEmpty(healthCheckFilterModel.searchTemperature) ||
+                        (decimal.TryParse(healthCheckFilterModel.searchTemperature, out searchTemperatureValue) && a.Temperature == searchTemperatureValue))
+                );
             }
+
             if (!string.IsNullOrEmpty(healthCheckFilterModel.PackagingType))
             {
                 query = query.Where(a => a.PackagingType == healthCheckFilterModel.PackagingType);

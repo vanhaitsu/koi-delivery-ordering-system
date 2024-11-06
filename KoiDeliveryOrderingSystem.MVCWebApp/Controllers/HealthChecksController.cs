@@ -16,13 +16,13 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
         //}
 
         // GET: HealthChecks
-        public async Task<IActionResult> Index(string? search, int pageNumber = 1, string? order = null, bool? orderByDescending = false, string? packagingType = null, int? shipmentTrackingId = null, int? shipmentOrderDetailId = null)
+        public async Task<IActionResult> Index(string? searchWeight,string? searchDoctorName,string? searchTemperature ,int pageNumber = 1, string? order = null, bool? orderByDescending = false, string? packagingType = null, int? shipmentTrackingId = null, int? shipmentOrderDetailId = null)
         {
             using (var httpClient = new HttpClient())
             {
 
                 using (var response = await httpClient.GetAsync(Const.APIEndPoint +
-                $"HealthChecks?search={search}&pageNumber={pageNumber}&order={order}&orderByDescending={orderByDescending}&packagingType={packagingType}&shipmentTrackingId={shipmentTrackingId}&shipmentOrderDetailId={shipmentOrderDetailId}"))
+                $"HealthChecks?searchWeight={searchWeight}&searchDoctorName={searchDoctorName}&searchTemperature={searchTemperature}&pageNumber={pageNumber}&order={order}&orderByDescending={orderByDescending}&packagingType={packagingType}&shipmentTrackingId={shipmentTrackingId}&shipmentOrderDetailId={shipmentOrderDetailId}"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -37,7 +37,9 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             {
                                 ViewBag.TotalCount = data.TotalCount;
                                 ViewBag.CurrentPage = pageNumber;
-                                ViewBag.Search = search;
+                                ViewBag.SearchWeight = searchWeight;
+                                ViewBag.SearchDoctorName = searchDoctorName;
+                                ViewBag.SearchTemperature = searchTemperature;
                                 var shipmentTrackings = await LoadShipmentTrackings(httpClient);
                                 ViewData["ShipmentTrackingId"] = new SelectList(shipmentTrackings, "TrackingId", "TrackingId");
                                 var shipmentOrderDetails = await LoadShipmentOrderDetails(httpClient);

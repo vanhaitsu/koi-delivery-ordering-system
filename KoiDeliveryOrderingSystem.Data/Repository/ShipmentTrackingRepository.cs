@@ -23,9 +23,9 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
                         .ThenInclude(x => x.AnimalType);
 
             // Search
-            if (!string.IsNullOrWhiteSpace(model.Search))
+            if (!string.IsNullOrWhiteSpace(model.CurrentLocation)|| !string.IsNullOrWhiteSpace(model.HandlerName) || !string.IsNullOrWhiteSpace(model.Remarks))
             {
-                query = query.Where(x => x.HandlerName.ToLower().Contains(model.Search.ToLower()) || x.CurrentLocation.ToLower().Contains(model.Search.ToLower()) || x.Remarks.ToLower().Contains(model.Search.ToLower()));
+                query = query.Where(x => x.HandlerName.ToLower().Contains(model.HandlerName.ToLower()) && x.CurrentLocation.ToLower().Contains(model.CurrentLocation.ToLower()) && x.Remarks.ToLower().Contains(model.Remarks.ToLower()));
             }
 
             // Filter
