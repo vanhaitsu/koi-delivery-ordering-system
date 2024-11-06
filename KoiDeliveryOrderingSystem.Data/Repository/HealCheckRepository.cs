@@ -24,8 +24,8 @@ namespace KoiDeliveryOrderingSystem.Data.Repository
                 string searchLower = healthCheckFilterModel.Search.ToLower();
                 decimal searchValue;
                 query = query.Where(a =>
-                    a.DoctorName.ToLower().Contains(searchLower) ||
-                    a.Condition.ToLower().Contains(searchLower) ||
+                    a.DoctorName.ToLower().Contains(searchLower) &&
+                    a.Condition.ToLower().Contains(searchLower) &&
                     (decimal.TryParse(healthCheckFilterModel.Search, out searchValue) &&
          (a.Temperature == searchValue || a.Weight == searchValue)));
             }

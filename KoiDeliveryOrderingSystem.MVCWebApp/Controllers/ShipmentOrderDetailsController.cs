@@ -14,11 +14,11 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
     public class ShipmentOrderDetailsController : Controller
     {
         // GET: ShipmentOrderDetails
-        public async Task<IActionResult> Index(string? search, string? status, int? pageNumber = 1, bool orderByDescending = false)
+        public async Task<IActionResult> Index(string? search, string? status, string? origin, int? pageNumber = 1)
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(Const.APIEndPoint + $"ShipmentOrderDetail?pageNumer={pageNumber}&search={search}&orderByDescending={orderByDescending}&status={status}"))
+                using (var response = await httpClient.GetAsync(Const.APIEndPoint + $"ShipmentOrderDetail?pageNumber={pageNumber}&search={search}&origin={origin}&status={status}"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -33,7 +33,7 @@ namespace KoiDeliveryOrderingSystem.MVCWebApp.Controllers
                             ViewBag.Search = search;
                             ViewBag.Status = status;
                             //ViewBag.Order = order;
-                            ViewBag.OrderByDescending = orderByDescending;
+                            ViewBag.Origin = origin;
 
                             return View(data.Data);
                             //return View(data);
